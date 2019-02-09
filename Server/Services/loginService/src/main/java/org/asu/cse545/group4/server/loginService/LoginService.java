@@ -1,4 +1,4 @@
-package org.asu.cse545.group4.server.service.loginService;
+package org.asu.cse545.group4.server.loginService;
 
 public class LoginService
 {
