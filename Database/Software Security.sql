@@ -1,10 +1,8 @@
-CREATE USER 'san'@'localhost' IDENTIFIED BY 'SoftwareSecurity12'; 
-GRANT ALL PRIVILEGES ON softwareSecurity.* To 'san'@'localhost'; 
-FLUSH PRIVILEGES;
+
 
 CREATE TABLE `tbl_user` 
 (
-	`user_id` int,
+	`user_id` int NOT NULL AUTO_INCREMENT,
 	`username` varchar(255),
 	`password` varchar(255),
 	`status` int,
@@ -17,7 +15,7 @@ CREATE TABLE `tbl_user`
 
 CREATE TABLE `tbl_event_log` 
 (
-	`event_id` int,
+	`event_id` int NOT NULL AUTO_INCREMENT,
 	`event_name` varchar(255),
 	`created_date` datetime,
 	`event_type` int,
@@ -32,7 +30,7 @@ CREATE TABLE `tbl_user_profile`
 	`middle_name` varchar(255),
 	`last_name` varchar(255),
 	`email` varchar(255),
-	`phone` int,
+	`phone` varchar(15),
 	`tier` int(1),
 	`address1` varchar(255),
 	`address2` varchar(255),
@@ -45,7 +43,7 @@ CREATE TABLE `tbl_user_profile`
 
 CREATE TABLE `tbl_transaction` 
 (
-	`transaction_id` int,
+	`transaction_id` int NOT NULL AUTO_INCREMENT,
 	`transaction_type` int,
 	`transaction_status` int,
 	`transaction_amount` int,
@@ -61,7 +59,7 @@ CREATE TABLE `tbl_transaction`
 
 CREATE TABLE `tbl_request` 
 (
-	`request_id` int,
+	`request_id` int NOT NULL AUTO_INCREMENT,
 	`requested_by` int,
 	`type_of_request` int,
 	`request_assigned_to` int,
@@ -71,10 +69,10 @@ CREATE TABLE `tbl_request`
 
 CREATE TABLE `tbl_account` 
 (
-	`account_id` int,
+	`account_id` int NOT NULL AUTO_INCREMENT,
 	`user_id` int,
 	`account_type` int,
-	`current_amount` long,
+	`current_amount` bigint,
 	`created_date` datetime,
 	
 	PRIMARY KEY (`account_id`)
@@ -82,7 +80,7 @@ CREATE TABLE `tbl_account`
 
 CREATE TABLE `tbl_appointment` 
 (
-	`appointment_id` int,
+	`appointment_id` int NOT NULL AUTO_INCREMENT,
 	`appointment_user_id` int,
 	`assigned_to_user_id` int,
 	`created_date` datetime,
