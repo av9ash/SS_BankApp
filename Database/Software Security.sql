@@ -1,4 +1,6 @@
+create database softwareSecurity;
 
+use softwareSecurity;
 
 CREATE TABLE `tbl_user` 
 (
