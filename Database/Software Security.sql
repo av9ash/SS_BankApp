@@ -120,3 +120,15 @@ ALTER TABLE `tbl_appointment` ADD FOREIGN KEY (`assigned_to_user_id`) REFERENCES
 
 
 
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(100,1,"Tier 1 Employee");
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(100,2,"Tier 2 Employee");
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(100,3,"Tier 3 Employee");
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(100,4,"External Customer");
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(100,5,"External Merchant");
+
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(101,1,"Checking Account");
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(101,2,"Savings Account");
+
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(102,1,"Transaction In Progress");
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(102,2,"Transaction Completed");
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(102,3,"Transaction Declined");
