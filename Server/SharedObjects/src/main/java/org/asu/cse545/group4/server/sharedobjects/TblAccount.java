@@ -22,7 +22,7 @@ public class TblAccount implements Serializable {
 	@Id
 	@Column(name = "account_id", unique = true, nullable = false)
 	private int accountId;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private TblUser tblUser;
 	@Column(name = "account_type")
@@ -32,9 +32,9 @@ public class TblAccount implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_date", length = 19)
 	private Date createdDate;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblAccountByFromAccount")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "tblAccountByFromAccount")
 	private Set<TblTransaction> tblTransactionsForFromAccount = new HashSet(0);
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblAccountByToAccount")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "tblAccountByToAccount")
 	private Set<TblTransaction> tblTransactionsForToAccount = new HashSet(0);
 
 	public TblAccount() {

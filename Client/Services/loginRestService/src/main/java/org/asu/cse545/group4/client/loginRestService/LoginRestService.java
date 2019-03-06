@@ -2,6 +2,7 @@ package org.asu.cse545.group4.client.loginrestservice;
 
 import java.security.Principal;
 
+import org.asu.cse545.group4.client.utils.UserExclusionStrategy;
 import org.asu.cse545.group4.server.loginservice.service.LoginService;
 import org.asu.cse545.group4.server.sharedobjects.TblUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @Controller
 public class LoginRestService
@@ -25,4 +29,16 @@ public class LoginRestService
 		loginService.insertUser(lol);
 	    return lol;
 	  }
+	
+	@PostMapping(value="/searchUser", consumes="application/json",produces="application/json")
+	public @ResponseBody String search(@RequestBody TblUser user)
+	{
+		System.out.println("inside search");
+		TblUser returnedUser = loginService.searchUser(user);
+		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
+		//Map<String,Object> returnMap = new HashMap<String, Object> ();
+		//returnMap
+		return gson.toJson(returnedUser);
+		//return returnedUser;
+	}
 }

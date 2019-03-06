@@ -16,10 +16,10 @@ public class TblRequest implements Serializable {
 	@Id
 	@Column(name = "request_id", unique = true, nullable = false)
 	private int requestId;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "request_assigned_to")
 	private TblUser tblUserByRequestAssignedTo;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "requested_by")
 	private TblUser tblUserByRequestedBy;
 	@Column(name = "type_of_request")

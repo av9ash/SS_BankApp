@@ -40,19 +40,19 @@ public class TblUser implements Serializable {
 	private Date modifiedDate;
 	@Column(name = "is_external_user")
 	private Integer isExternalUser;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblUserByAssignedToUserId")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "tblUserByAssignedToUserId")
 	private Set<TblAppointment> tblAppointmentsForAssignedToUserId = new HashSet(0);
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "tblUser")
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "tblUser")
 	private TblUserProfile tblUserProfile;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblUserByAppointmentUserId")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "tblUserByAppointmentUserId")
 	private Set<TblAppointment> tblAppointmentsForAppointmentUserId = new HashSet(0);
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblUser")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "tblUser")
 	private Set<TblAccount> tblAccounts = new HashSet(0);
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblUser")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "tblUser")
 	private Set<TblTransaction> tblTransactions = new HashSet(0);
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblUserByRequestAssignedTo")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "tblUserByRequestAssignedTo")
 	private Set<TblRequest> tblRequestsForRequestAssignedTo = new HashSet(0);
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tblUserByRequestedBy")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "tblUserByRequestedBy")
 	private Set<TblRequest> tblRequestsForRequestedBy = new HashSet(0);
 
 	public TblUser() {

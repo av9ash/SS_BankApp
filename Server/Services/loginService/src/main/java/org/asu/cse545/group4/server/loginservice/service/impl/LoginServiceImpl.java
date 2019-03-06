@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Service("loginService")
 public class LoginServiceImpl implements LoginService {
 	@Autowired
@@ -15,5 +16,12 @@ public class LoginServiceImpl implements LoginService {
 	@Transactional
 	public void insertUser(TblUser user) {
 		this.loginDAO.insertUser(user);
+	}
+	
+	@Transactional
+	public TblUser searchUser(TblUser user)
+	{
+		TblUser returnedUser = this.loginDAO.searchUser(user);
+		return returnedUser;
 	}
 }

@@ -21,7 +21,7 @@ public class TblUserProfile implements Serializable {
 	@GeneratedValue(generator = "org.asu.cse545.group4.server.sharedobjects.TblUserProfileIdGenerator")
 	@Column(name = "user_id", unique = true, nullable = false)
 	private int userId;
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
 	@PrimaryKeyJoinColumn
 	private TblUser tblUser;
 	@Column(name = "first_name")
