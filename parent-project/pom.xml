@@ -84,7 +84,9 @@
   <modules>
     <module>../Server/SharedObjects</module>
     <module>../Server/Services/loginService</module>
+    <module>../Server/Services/appointmentService</module>
     <module>../Client/Services/loginRestService</module>
+    <module>../Client/Services/appointmentRestService</module>
     <module>../warPackaging</module>
   </modules>
 </project>
