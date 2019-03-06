@@ -22,6 +22,9 @@ enum TransactionStatus
 public class TransactionDAOImpl implements TransactionDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
+	private static final int CREDIT=1;
+	private static final int DEBIT=2;
+	private static final int TRANSFER=3;
 
 	public String addTransaction(TblTransaction transaction , int userId)
 	{
@@ -45,7 +48,8 @@ public class TransactionDAOImpl implements TransactionDAO {
 		TransactionStatus status = TransactionStatus.ERROR;
 		TblAccount userAccount = this.sessionFactory.getCurrentSession().get(TblAccount.class , userId);
 		// authorize check
-		if(transaction.getTransactionAmount() > toIntExact(userAccount.getCurrentAmount()))
+		int transType = transaction.getTransactionType();
+		if( ( transType == DEBIT || transType == TRANSFER) &&  transaction.getTransactionAmount() > toIntExact(userAccount.getCurrentAmount()))
 		{
 			status = TransactionStatus.INSUFFICIENT_BALANCE;
 		}
