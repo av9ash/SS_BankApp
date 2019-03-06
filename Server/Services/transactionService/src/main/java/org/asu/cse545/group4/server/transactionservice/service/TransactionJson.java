@@ -8,6 +8,8 @@ import java.io.IOException;
 
 public class TransactionJson
 {
+	@JsonProperty("transaction_id")
+	private int transactionId;
 	@JsonProperty("user_id")
 	private int userId;
 	@JsonProperty("type")
@@ -18,6 +20,40 @@ public class TransactionJson
 	private int fromAccount;
 	@JsonProperty("to_account")
 	private int toAccount;
+	@JsonProperty("approved_by")
+	private int approvedBy;
+	@JsonProperty("transaction_status")
+	private int transactionStatus;
+
+	public void setTransactionStatus(int status)
+	{
+		this.transactionStatus = status;
+	}
+
+	public int getTransactionStatus()
+	{
+		return this.transactionStatus;
+	}
+
+	public void setApprovedBy(int id)
+	{
+		this.approvedBy = id;
+	}
+
+	public int getApprovedBy()
+	{
+		return this.approvedBy;
+	}
+
+	public void setTransactionId(int id)
+	{
+		this.transactionId = id;
+	}
+
+	public int getTransactionId()
+	{
+		return this.transactionId;
+	}
 
 	public void setUserId(int id)
 	{
@@ -73,10 +109,20 @@ public class TransactionJson
 	public TblTransaction getTransactionObj() throws IOException
 	{
 		JSONObject transaction = new JSONObject();
-  		transaction.put("tblAccountByToAccount" , this.getToAccount());
+		if(this.getTransactionId() != 0){
+			transaction.put("transactionId" , this.getTransactionId());
+		}
+		if(this.getToAccount() != 0)
+		{
+  			transaction.put("tblAccountByToAccount" , this.getToAccount());
+  		}
 		transaction.put("tblAccountByFromAccount" , this.getFromAccount());
 		transaction.put("transactionType" , this.getTransactionType());
 		transaction.put("transactionAmount" , this.getTransactionAmount());
+		if(this.getApprovedBy() != 0){
+			transaction.put("tblUser" , this.getApprovedBy());
+		}
+		transaction.put("transactionStatus" , this.getTransactionStatus());
   		ObjectMapper objectMapper = new ObjectMapper();
 		TblTransaction transObj = objectMapper.readValue(transaction.toString(), TblTransaction.class);
 		return transObj;

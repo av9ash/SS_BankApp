@@ -21,9 +21,10 @@ public class TransactionRestService
 
 	@PostMapping(value="/transaction",consumes="application/json",produces="application/json")
 	  public @ResponseBody TblTransaction transaction(@RequestBody TransactionJson newTransaction) {
+	  	TblTransaction transaction = null;
 	  	try
 	  	{
-	  		TblTransaction transaction = newTransaction.getTransactionObj();	  		
+	  		transaction = newTransaction.getTransactionObj();	  		
 	  		// TODO
 	  		// check for User authorization
 			this.transactionService.addTransaction(transaction);
@@ -31,7 +32,8 @@ public class TransactionRestService
 		}
 		catch(Exception e)
 		{
-			return null;
+			// handle 
+			return transaction;
 		}
 	  }
 }
