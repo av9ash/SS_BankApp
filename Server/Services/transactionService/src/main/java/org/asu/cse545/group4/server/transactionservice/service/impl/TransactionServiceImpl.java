@@ -13,7 +13,7 @@ public class TransactionServiceImpl implements TransactionService {
 	private TransactionDAO transactionDAO;
 
 	@Transactional
-	public void addTransaction(TblTransaction transaction) {
-		this.transactionDAO.addTransaction(transaction);
+	public String addTransaction(TblTransaction transaction, int userId) {
+		return this.transactionDAO.addTransaction(transaction,userId);
 	}
 }

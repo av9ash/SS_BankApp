@@ -20,20 +20,20 @@ public class TransactionRestService
 	private TransactionService transactionService;
 
 	@PostMapping(value="/transaction",consumes="application/json",produces="application/json")
-	  public @ResponseBody TblTransaction transaction(@RequestBody TransactionJson newTransaction) {
+	  public @ResponseBody String transaction(@RequestBody TransactionJson newTransaction) {
 	  	TblTransaction transaction = null;
 	  	try
 	  	{
 	  		transaction = newTransaction.getTransactionObj();	  		
 	  		// TODO
 	  		// check for User authorization
-			this.transactionService.addTransaction(transaction);
-			return transaction;
+			String response = this.transactionService.addTransaction(transaction , newTransaction.getUserId());
+			return response;
 		}
 		catch(Exception e)
 		{
 			// handle 
-			return transaction;
+			return e.toString();
 		}
 	  }
 }
