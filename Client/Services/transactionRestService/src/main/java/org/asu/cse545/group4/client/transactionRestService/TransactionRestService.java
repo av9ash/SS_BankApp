@@ -2,6 +2,7 @@ package org.asu.cse545.group4.client.transactionrestservice;
 
 import java.security.Principal;
 import org.asu.cse545.group4.server.transactionservice.service.TransactionService;
+import org.asu.cse545.group4.server.transactionservice.service.TransactionJson;
 import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,8 +20,18 @@ public class TransactionRestService
 	private TransactionService transactionService;
 
 	@PostMapping(value="/transaction",consumes="application/json",produces="application/json")
-	  public @ResponseBody TblTransaction transaction(@RequestBody TblTransaction newTransaction) {
-	  	transactionService.addTransaction(newTransaction);
-	    return newTransaction;
+	  public @ResponseBody TblTransaction transaction(@RequestBody TransactionJson newTransaction) {
+	  	try
+	  	{
+	  		TblTransaction transaction = newTransaction.getTransactionObj();	  		
+	  		// TODO
+	  		// check for User authorization
+			this.transactionService.addTransaction(transaction);
+			return transaction;
+		}
+		catch(Exception e)
+		{
+			return null;
+		}
 	  }
 }

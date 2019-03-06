@@ -31,6 +31,16 @@
 			<artifactId>loginRestService</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>org.asu.cse545.group4.server</groupId>
+			<artifactId>transactionService</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.asu.cse545.group4.client</groupId>
+			<artifactId>transactionRestService</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -61,6 +71,17 @@
 					<dependency>
 						<groupId>org.asu.cse545.group4.client</groupId>
 						<artifactId>loginRestService</artifactId>
+						<version>1.0-SNAPSHOT</version>
+					</dependency>
+
+					<dependency>
+						<groupId>org.asu.cse545.group4.server</groupId>
+						<artifactId>transactionService</artifactId>
+						<version>1.0-SNAPSHOT</version>
+					</dependency>
+					<dependency>
+						<groupId>org.asu.cse545.group4.client</groupId>
+						<artifactId>transactionRestService</artifactId>
 						<version>1.0-SNAPSHOT</version>
 					</dependency>
 				</dependencies>
