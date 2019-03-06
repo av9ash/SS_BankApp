@@ -132,3 +132,10 @@ insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_catego
 insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(102,1,"Transaction In Progress");
 insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(102,2,"Transaction Completed");
 insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(102,3,"Transaction Declined");
+
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(103,1,"Appointment Created");
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(103,2,"Appointment Serviced");
+
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(104,1,"Request Created");
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(104,2,"Request Approved");
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(104,1,"Request Declined");
