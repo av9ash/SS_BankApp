@@ -16,4 +16,10 @@ public class TransactionServiceImpl implements TransactionService {
 	public String addTransaction(TblTransaction transaction, int userId) {
 		return this.transactionDAO.addTransaction(transaction,userId);
 	}
+
+	@Transactional
+	public String approveTransaction(int transactionId, int approverId)
+	{
+		return this.transactionDAO.approveTransaction(transactionId,approverId);
+	}
 }

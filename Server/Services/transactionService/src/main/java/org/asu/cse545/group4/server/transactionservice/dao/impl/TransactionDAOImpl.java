@@ -4,6 +4,7 @@ import java.util.Date;
 import org.asu.cse545.group4.server.transactionservice.dao.TransactionDAO;
 import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
 import org.asu.cse545.group4.server.sharedobjects.TblAccount;
+import org.asu.cse545.group4.server.sharedobjects.TblUser;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,8 @@ public class TransactionDAOImpl implements TransactionDAO {
 	{
 		TransactionStatus status = TransactionStatus.ERROR;
 		TblAccount userAccount = this.sessionFactory.getCurrentSession().get(TblAccount.class , userId);
-		// authorize check
+		//TODO
+		// authorize check for userId
 		int transType = transaction.getTransactionType();
 		if( ( transType == DEBIT || transType == TRANSFER) &&  transaction.getTransactionAmount() > toIntExact(userAccount.getCurrentAmount()))
 		{
@@ -58,5 +60,29 @@ public class TransactionDAOImpl implements TransactionDAO {
 			status = TransactionStatus.OK;
 		}
 		return status;
+	}
+
+	public String approveTransaction(int transactionId , int approverId)
+	{
+		TblTransaction transaction = this.sessionFactory.getCurrentSession().get(TblTransaction.class, transactionId);
+		if(transaction == null)
+			return TransactionStatus.ERROR.name();
+		//TODO
+		// check approver has priviliges to approve a transaction
+
+		//TODO validate again
+		// int transactionUserId = transaction.getTblAccountByFromAccount().getTblUser().getUserId();
+		// TransactionStatus status = validateTransaction( transaction , transactionUserId);
+		TransactionStatus status  = TransactionStatus.OK;
+		if (status == TransactionStatus.OK)
+		{
+			//TODO
+			// performTransaction
+			transaction.setTransactionStatus(2);
+			transaction.setTblUser(this.sessionFactory.getCurrentSession().get(TblUser.class,approverId));
+			transaction.setTransactionUpdatedDate(new Date());
+			this.sessionFactory.getCurrentSession().saveOrUpdate(transaction);
+		}
+		return status.name();
 	}
 }

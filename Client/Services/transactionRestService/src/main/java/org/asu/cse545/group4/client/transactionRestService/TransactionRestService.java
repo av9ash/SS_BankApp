@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.json.*;
 
 @Controller
 public class TransactionRestService
@@ -35,5 +36,16 @@ public class TransactionRestService
 			// handle 
 			return e.toString();
 		}
+	  }
+
+
+	  @PostMapping(value="/approveTransaction", consumes = "application/json" , produces = "application/json")
+	  public @ResponseBody String approveTransaction(@RequestBody String requestString)
+	  {
+	  		JSONObject request = new JSONObject(requestString);
+	  		if (!request.has("transaction_id") || !request.has("approved_by")) {
+	  			return "INVALID_REQUEST";
+	  		}
+	  		return this.transactionService.approveTransaction(request.getInt("transaction_id") , request.getInt("approved_by"));
 	  }
 }
