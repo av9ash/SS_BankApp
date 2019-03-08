@@ -19,6 +19,12 @@ enum TransactionStatus
 	NOT_ATHOURIZED;
 }
 
+enum Action
+{
+	CREDIT,
+	DEBIT;
+}
+
 @Repository
 public class TransactionDAOImpl implements TransactionDAO {
 	@Autowired
@@ -47,11 +53,11 @@ public class TransactionDAOImpl implements TransactionDAO {
 	public TransactionStatus validateTransaction(TblTransaction transaction, int userId)
 	{
 		TransactionStatus status = TransactionStatus.ERROR;
-		TblAccount userAccount = this.sessionFactory.getCurrentSession().get(TblAccount.class , userId);
+		TblAccount fromAccount = this.sessionFactory.getCurrentSession().get(TblAccount.class , transaction.getTblAccountByFromAccount().getAccountId());
 		//TODO
 		// authorize check for userId
 		int transType = transaction.getTransactionType();
-		if( ( transType == DEBIT || transType == TRANSFER) &&  transaction.getTransactionAmount() > toIntExact(userAccount.getCurrentAmount()))
+		if( ( transType == DEBIT || transType == TRANSFER) &&  transaction.getTransactionAmount() > toIntExact(fromAccount.getCurrentAmount()))
 		{
 			status = TransactionStatus.INSUFFICIENT_BALANCE;
 		}
@@ -73,16 +79,76 @@ public class TransactionDAOImpl implements TransactionDAO {
 		//TODO validate again
 		// int transactionUserId = transaction.getTblAccountByFromAccount().getTblUser().getUserId();
 		// TransactionStatus status = validateTransaction( transaction , transactionUserId);
+
 		TransactionStatus status  = TransactionStatus.OK;
 		if (status == TransactionStatus.OK)
 		{
-			//TODO
-			// performTransaction
+			boolean success = performTransaction(transaction);
+			if(!success)
+			{
+				status = TransactionStatus.ERROR;
+				return status.name();
+			}
 			transaction.setTransactionStatus(2);
 			transaction.setTblUser(this.sessionFactory.getCurrentSession().get(TblUser.class,approverId));
 			transaction.setTransactionUpdatedDate(new Date());
 			this.sessionFactory.getCurrentSession().saveOrUpdate(transaction);
 		}
 		return status.name();
+	}
+
+
+	public boolean persistTransaction(int accountId, int amount, Action action)
+	{
+		boolean status = false;
+		try
+		{
+			TblAccount account = this.sessionFactory.getCurrentSession().get(TblAccount.class , accountId);
+			long currAmount = account.getCurrentAmount();
+			if(action == Action.DEBIT)
+			{
+				currAmount = currAmount - amount;
+			}
+			else if(action == Action.CREDIT)
+			{
+				currAmount = currAmount + amount;
+			}
+			account.setCurrentAmount(currAmount);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(account);
+			status = true;
+		}
+		catch(Exception e)
+		{
+
+		}
+		return status;
+	}
+
+
+	public boolean performTransaction(TblTransaction transaction)
+	{
+		boolean status = false;
+		try
+		{
+			int type = transaction.getTransactionType();
+			if(type == CREDIT)
+			{
+				status = persistTransaction(transaction.getTblAccountByFromAccount().getAccountId() , transaction.getTransactionAmount(), Action.CREDIT);
+			}
+			else if(type == DEBIT)
+			{
+				status = persistTransaction(transaction.getTblAccountByFromAccount().getAccountId() , transaction.getTransactionAmount(), Action.DEBIT);
+			}
+			else if(type == TRANSFER)
+			{
+				status = persistTransaction(transaction.getTblAccountByFromAccount().getAccountId() , transaction.getTransactionAmount(), Action.DEBIT);
+				status &= persistTransaction(transaction.getTblAccountByToAccount().getAccountId() , transaction.getTransactionAmount(), Action.CREDIT);
+			}
+		}
+		catch(Exception e)
+		{
+
+		}
+		return status;
 	}
 }
