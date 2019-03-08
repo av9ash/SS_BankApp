@@ -151,4 +151,22 @@ public class TransactionDAOImpl implements TransactionDAO {
 		}
 		return status;
 	}
+
+	public String declineTransaction(int transactionId , int declinerId)
+	{
+		TransactionStatus status = TransactionStatus.OK;
+		try
+		{
+			TblTransaction transaction = this.sessionFactory.getCurrentSession().get(TblTransaction.class, transactionId);
+			transaction.setTransactionStatus(3);
+			transaction.setTblUser(this.sessionFactory.getCurrentSession().get(TblUser.class,declinerId));
+			transaction.setTransactionUpdatedDate(new Date());
+			this.sessionFactory.getCurrentSession().saveOrUpdate(transaction);
+		}
+		catch(Exception e)
+		{
+			status = TransactionStatus.ERROR;
+		}
+		return status.name();
+	}
 }

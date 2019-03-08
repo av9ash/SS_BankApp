@@ -48,4 +48,15 @@ public class TransactionRestService
 	  		}
 	  		return this.transactionService.approveTransaction(request.getInt("transaction_id") , request.getInt("approved_by"));
 	  }
+
+
+	  @PostMapping(value="/declineTransaction" , consumes = "application/json" , produces = "application/json")
+	  public @ResponseBody String declineTransaction(@RequestBody String requestString)
+	  {
+	  		JSONObject request = new JSONObject(requestString);
+	  		if (!request.has("transaction_id") || !request.has("declined_by")) {
+	  			return "INVALID_REQUEST";
+	  		}
+	  		return this.transactionService.declineTransaction(request.getInt("transaction_id") , request.getInt("declined_by"));
+	  }
 }

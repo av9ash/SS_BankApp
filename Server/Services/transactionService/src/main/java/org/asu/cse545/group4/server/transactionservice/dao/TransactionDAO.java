@@ -9,4 +9,6 @@ public abstract interface TransactionDAO
   public abstract String approveTransaction(int transactionId , int approverId);
 
   public abstract boolean performTransaction(TblTransaction transaction);
+  
+  public abstract String declineTransaction(int transactionId , int declinerId);
 }

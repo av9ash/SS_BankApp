@@ -22,4 +22,10 @@ public class TransactionServiceImpl implements TransactionService {
 	{
 		return this.transactionDAO.approveTransaction(transactionId,approverId);
 	}
+
+	@Transactional
+	public String declineTransaction(int transactionId, int declinerId)
+	{
+		return this.transactionDAO.declineTransaction(transactionId,declinerId);
+	}
 }
