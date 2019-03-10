@@ -4,6 +4,7 @@ import java.security.Principal;
 import org.asu.cse545.group4.server.transactionservice.service.TransactionService;
 import org.asu.cse545.group4.server.transactionservice.service.TransactionJson;
 import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
+import org.asu.cse545.group4.server.sharedobjects.TblUserProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,5 +59,15 @@ public class TransactionRestService
 	  			return "INVALID_REQUEST";
 	  		}
 	  		return this.transactionService.declineTransaction(request.getInt("transaction_id") , request.getInt("declined_by"));
+	  }
+
+	  @PostMapping(value="/searchAccount", consumes="application/json" , produces = "application/json")
+	  public @ResponseBody String searchAccount(@RequestBody String reqString)
+	  {
+	  	JSONObject request = new JSONObject(reqString);
+	  	if (!request.has("email") && !request.has("phone")) {
+	  		return "INVALID_REQUEST";
+	  	}
+	  	return this.transactionService.searchAccount(reqString);
 	  }
 }

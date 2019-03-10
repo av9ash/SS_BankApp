@@ -5,11 +5,21 @@ import org.asu.cse545.group4.server.transactionservice.dao.TransactionDAO;
 import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
 import org.asu.cse545.group4.server.sharedobjects.TblAccount;
 import org.asu.cse545.group4.server.sharedobjects.TblUser;
+import org.asu.cse545.group4.server.sharedobjects.TblUserProfile;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import static java.lang.Math.toIntExact;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import org.hibernate.query.Query;
+import java.util.List;
+import org.hibernate.Hibernate;
+import org.json.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 enum TransactionStatus
 {
@@ -168,5 +178,90 @@ public class TransactionDAOImpl implements TransactionDAO {
 			status = TransactionStatus.ERROR;
 		}
 		return status.name();
+	}
+
+
+	public  TblUserProfile searchProfile(String userProfileStr)
+	{
+		try
+		{
+
+			JSONObject userProfile = new JSONObject(userProfileStr);
+			Query query = sessionFactory.getCurrentSession().createSQLQuery("select * from tbl_user_profile as t where t.email = :email or t.phone = :phone");
+			if (userProfile.has("email")) {
+				query.setParameter("email", userProfile.get("email"));
+			}
+			else
+			{
+				query.setParameter("email", "");	
+			}
+
+			if (userProfile.has("phone")) {
+				query.setParameter("phone", userProfile.get("phone"));
+			}
+			else
+			{
+				query.setParameter("phone", "");	
+			}
+			List<Object[]> result = query.list();
+			if (result != null && !result.isEmpty()) 
+			{
+				Object[] obj = result.get(0);
+				TblUserProfile ans = new TblUserProfile();
+				ans.setUserId((Integer)obj[0]);
+				ans.setFirstName((String)obj[1]);
+				ans.setMiddleName((String)obj[2]);
+				ans.setLastName((String)obj[3]);
+				if (userProfile.has("email")) {
+					ans.setEmail((String)obj[4]);
+				}
+				if (userProfile.has("phone")) {
+					ans.setPhone((String)obj[5]);
+				}
+				return ans;
+			}
+			return null;
+    	}
+    	catch(Exception e)
+    	{
+    		return null;
+    	}
+	}
+
+	public  String searchAccount(String userProfile)
+	{
+		try
+		{
+			TblUserProfile ans = searchProfile(userProfile);
+			JSONObject returnObj = new JSONObject();
+			if (ans == null) {
+				return returnObj.toString();
+			}
+			Query query = sessionFactory.getCurrentSession().createSQLQuery("select * from tbl_account as t where t.user_id = :userId");
+			query.setParameter("userId", ans.getUserId());
+			List<Object[]> result = query.list();
+			
+			JSONArray jsonArray = new JSONArray();
+			if (result != null && !result.isEmpty()) 
+			{				
+				for(Object[] obj : result)
+				{
+					JSONObject json = new JSONObject();
+					json.put("account_id" , obj[0]);
+					//TODO account type as String
+					json.put("account_type" , obj[2]);
+					jsonArray.put(json);
+				}
+			}
+			returnObj.put("first_name" ,ans.getFirstName());
+			returnObj.put("middle_name" ,ans.getMiddleName());
+			returnObj.put("last_name" ,ans.getLastName());			
+			returnObj.put("accounts" ,jsonArray );
+			return returnObj.toString();
+		}
+		catch(Exception e)
+		{
+			return "";
+		}
 	}
 }

@@ -3,6 +3,7 @@ package org.asu.cse545.group4.server.transactionservice.service.impl;
 import org.asu.cse545.group4.server.transactionservice.dao.TransactionDAO;
 import org.asu.cse545.group4.server.transactionservice.service.TransactionService;
 import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
+import org.asu.cse545.group4.server.sharedobjects.TblUserProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,5 +28,11 @@ public class TransactionServiceImpl implements TransactionService {
 	public String declineTransaction(int transactionId, int declinerId)
 	{
 		return this.transactionDAO.declineTransaction(transactionId,declinerId);
+	}
+
+	@Transactional
+	public  String searchAccount(String userProfile)
+	{
+		return this.transactionDAO.searchAccount(userProfile);
 	}
 }
