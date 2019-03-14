@@ -1,4 +1,4 @@
-package org.asu.cse545.group4.client.loginrestservice;
+package org.asu.cse545.group4.client.loginRestService;
 
 import java.security.Principal;
 
