@@ -24,7 +24,7 @@ public class TblUser implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id", unique = true, nullable = false)
 	private int userId;
-	@Column(name = "username")
+	@Column(name = "username",unique = true)
 	private String username;
 	@Column(name = "password")
 	private String password;

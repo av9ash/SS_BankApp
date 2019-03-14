@@ -17,6 +17,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Repository
 public class LoginDAOImpl implements LoginDAO {
@@ -28,6 +29,11 @@ public class LoginDAOImpl implements LoginDAO {
 		Date date = new Date();
 		user.setCreatedDate(date);
 		user.setModifiedDate(date);
+		//encrypting password
+		String userPass =  user.getPassword();
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
+		String hashedPassword = passwordEncoder.encode(userPass);
+		user.setPassword(hashedPassword);	
 		this.sessionFactory.getCurrentSession().save(user);
 		TblUserProfile userProfile = user.getTblUserProfile();
 		userProfile.setTblUser(user);
@@ -46,10 +52,10 @@ public class LoginDAOImpl implements LoginDAO {
         	criteriaQuery.where(builder.equal(userQuery.get("username"),user.getUsername()));
         }
         
-        if(user.getPassword() != null)
+       /* if(user.getPassword() != null)
         {
         	criteriaQuery.where(builder.equal(userQuery.get("password"),user.getPassword()));
-        }
+        }*/
         
         if(user.getIsExternalUser() != null)
         {
@@ -61,8 +67,16 @@ public class LoginDAOImpl implements LoginDAO {
         if(!results.isEmpty())
         {
         	TblUser returnedUser = results.get(0);
-        	Hibernate.initialize(returnedUser);
-        	return returnedUser;
+        	String encryptedPass = returnedUser.getPassword();
+        	String rawPass = user.getPassword();
+        	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
+        	if(passwordEncoder.matches(rawPass, encryptedPass)) {
+        		Hibernate.initialize(returnedUser);
+            	return returnedUser;
+        	}else {
+        		return null;
+        	}
+        	
         }
         else
         {

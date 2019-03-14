@@ -1,4 +1,4 @@
-package org.asu.cse545.group4.client.loginrestservice;
+package org.asu.cse545.group4.client.loginRestService;
 
 import java.security.Principal;
 
@@ -27,16 +27,21 @@ public class LoginRestService
 	@Autowired
 	private EventService eventService;
 	
-	@PostMapping(value="/verifyUser",consumes="application/json",produces="application/json")
-	  public @ResponseBody TblUser verify(@RequestBody TblUser lol) {
+	@PostMapping(value="/insertUser",consumes="application/json",produces="application/json")
+	  public @ResponseBody String verify(@RequestBody TblUser newUser) {
 	    //model.addAttribute("message", "You are logged in as " + principal.getName());
 		System.out.println("Inside Rest");
-		loginService.insertUser(lol);
-		
-	    return lol;
+		loginService.insertUser(newUser);
+		TblEventLog event = new TblEventLog();
+		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
+		event.setEventType(1);
+		event.setEventName("User "+newUser.getUsername()+" created Successfully");
+		eventService.logEvent(event);
+		return gson.toJson(newUser);
+		//return newUser;
 	  }
 	
-	@PostMapping(value="/searchUser", consumes="application/json",produces="application/json")
+	@PostMapping(value="/loginUser", consumes="application/json",produces="application/json")
 	public @ResponseBody String search(@RequestBody TblUser user)
 	{
 		System.out.println("inside search");
@@ -48,7 +53,7 @@ public class LoginRestService
 		TblEventLog event = new TblEventLog();
 		if(returnedUser != null)
 		{
-			event.setEventName("User Logged In Successfully");
+			event.setEventName("User "+returnedUser.getUsername()+" Logged In Successfully");
 		}
 		else
 		{
