@@ -180,55 +180,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 		return status.name();
 	}
 
-
-	public  TblUserProfile searchProfile(String userProfileStr)
-	{
-		try
-		{
-
-			JSONObject userProfile = new JSONObject(userProfileStr);
-			Query query = sessionFactory.getCurrentSession().createSQLQuery("select * from tbl_user_profile as t where t.email = :email or t.phone = :phone");
-			if (userProfile.has("email")) {
-				query.setParameter("email", userProfile.get("email"));
-			}
-			else
-			{
-				query.setParameter("email", "");	
-			}
-
-			if (userProfile.has("phone")) {
-				query.setParameter("phone", userProfile.get("phone"));
-			}
-			else
-			{
-				query.setParameter("phone", "");	
-			}
-			List<Object[]> result = query.list();
-			if (result != null && !result.isEmpty()) 
-			{
-				Object[] obj = result.get(0);
-				TblUserProfile ans = new TblUserProfile();
-				ans.setUserId((Integer)obj[0]);
-				ans.setFirstName((String)obj[1]);
-				ans.setMiddleName((String)obj[2]);
-				ans.setLastName((String)obj[3]);
-				if (userProfile.has("email")) {
-					ans.setEmail((String)obj[4]);
-				}
-				if (userProfile.has("phone")) {
-					ans.setPhone((String)obj[5]);
-				}
-				return ans;
-			}
-			return null;
-    	}
-    	catch(Exception e)
-    	{
-    		return null;
-    	}
-	}
-
-	public  String searchAccount(String userProfile)
+	public  String searchAccount(TblUserProfile userProfile)
 	{
 		try
 		{
@@ -262,6 +214,39 @@ public class TransactionDAOImpl implements TransactionDAO {
 		catch(Exception e)
 		{
 			return "";
+		}
+	}
+
+	public TblUserProfile searchProfile(TblUserProfile userProfile)
+	{
+		try
+		{
+			final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+	        CriteriaQuery<TblUserProfile> criteriaQuery = builder.createQuery(TblUserProfile.class);
+	       Root<TblUserProfile> userQuery = criteriaQuery.from(TblUserProfile.class);       
+	        if(userProfile.getEmail() != null)
+	       {
+	           criteriaQuery.where(builder.equal(userQuery.get("email"),userProfile.getEmail()));
+	       }        
+	       if(userProfile.getPhone() != null)
+	       {
+	           criteriaQuery.where(builder.equal(userQuery.get("phone"),userProfile.getPhone()));
+	       }        
+	       Query<TblUserProfile> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
+	       final List<TblUserProfile> results = query.getResultList();
+	        if(!results.isEmpty())
+	       {
+	           TblUserProfile returnedUser = results.get(0);
+	           return returnedUser;
+	       }
+	       else
+	       {
+	           return null;
+	       }
+		}
+		catch(Exception e)
+		{
+			return null;
 		}
 	}
 }

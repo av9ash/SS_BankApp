@@ -31,7 +31,7 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Transactional
-	public  String searchAccount(String userProfile)
+	public  String searchAccount(TblUserProfile userProfile)
 	{
 		return this.transactionDAO.searchAccount(userProfile);
 	}

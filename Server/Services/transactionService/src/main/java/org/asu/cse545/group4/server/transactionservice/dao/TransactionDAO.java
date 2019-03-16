@@ -13,7 +13,7 @@ public abstract interface TransactionDAO
   
   public abstract String declineTransaction(int transactionId , int declinerId);
 
-  public abstract TblUserProfile searchProfile(String userProfile);
+  public abstract String searchAccount(TblUserProfile userProfile);
 
-  public abstract String searchAccount(String userProfile);
+  public abstract TblUserProfile searchProfile(TblUserProfile userProfile);
 }

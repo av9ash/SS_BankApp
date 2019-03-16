@@ -62,12 +62,9 @@ public class TransactionRestService
 	  }
 
 	  @PostMapping(value="/searchAccount", consumes="application/json" , produces = "application/json")
-	  public @ResponseBody String searchAccount(@RequestBody String reqString)
+	  public @ResponseBody String searchAccount(@RequestBody TblUserProfile profile)
 	  {
-	  	JSONObject request = new JSONObject(reqString);
-	  	if (!request.has("email") && !request.has("phone")) {
-	  		return "INVALID_REQUEST";
-	  	}
-	  	return this.transactionService.searchAccount(reqString);
+	  	return this.transactionService.searchAccount(profile);
 	  }
+
 }

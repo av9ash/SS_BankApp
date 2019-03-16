@@ -29,6 +29,16 @@
 	"phone" : "phone no"
 }
 
-
+Response :
+{
+	"first_name": "first-name",
+    "last_name": "last-name",
+    "accounts": [
+        {
+            "account_type": 1,
+            "account_id": 2
+        }
+    ]
+}
 
 

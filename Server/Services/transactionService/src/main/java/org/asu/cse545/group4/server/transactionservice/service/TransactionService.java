@@ -11,5 +11,6 @@ public abstract interface TransactionService
 
   public abstract String declineTransaction(int transactionId, int declinerId);
 
-  public abstract String searchAccount(String userProfile);
+  public abstract String searchAccount(TblUserProfile userProfile);
+  
 }
