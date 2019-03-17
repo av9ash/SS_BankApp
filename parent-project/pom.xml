@@ -104,6 +104,7 @@
   <modules>
     <module>../Server/SharedObjects</module>
     <module>../Server/Services/eventService</module>
+    <module>../Server/Services/otpservice</module>
     <module>../Server/Services/loginService</module>
     <module>../Server/Services/appointmentService</module>
     <module>../Server/Services/transactionService</module>
