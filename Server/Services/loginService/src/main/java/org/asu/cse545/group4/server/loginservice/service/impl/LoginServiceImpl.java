@@ -2,6 +2,7 @@ package org.asu.cse545.group4.server.loginservice.service.impl;
 
 import org.asu.cse545.group4.server.loginservice.dao.LoginDAO;
 import org.asu.cse545.group4.server.loginservice.service.LoginService;
+import org.asu.cse545.group4.server.sharedobjects.TblCatalog;
 import org.asu.cse545.group4.server.sharedobjects.TblUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,13 @@ public class LoginServiceImpl implements LoginService {
 	}
 	
 	@Transactional
-	public TblUser searchUser(TblUser user)
+	public TblCatalog searchUser(TblUser user)
 	{
-		TblUser returnedUser = this.loginDAO.searchUser(user);
+		TblCatalog returnedUser = this.loginDAO.searchUser(user);
+		
+		String catalogDesc = returnedUser.getCatalogCategoryDescription();
+		String[] allDesc = catalogDesc.split(",");
+		
 		return returnedUser;
 	}
 }

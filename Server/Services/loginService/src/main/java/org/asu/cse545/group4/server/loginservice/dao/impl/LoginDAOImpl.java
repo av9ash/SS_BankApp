@@ -8,6 +8,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import org.asu.cse545.group4.server.loginservice.dao.LoginDAO;
+import org.asu.cse545.group4.server.sharedobjects.TblCatalog;
+import org.asu.cse545.group4.server.sharedobjects.TblCatalogId;
 import org.asu.cse545.group4.server.sharedobjects.TblUser;
 import org.asu.cse545.group4.server.sharedobjects.TblUserProfile;
 import org.hibernate.Criteria;
@@ -41,7 +43,7 @@ public class LoginDAOImpl implements LoginDAO {
 		session.saveOrUpdate(userProfile);
 	}
 	
-	public TblUser searchUser(TblUser user)
+	public TblCatalog searchUser(TblUser user)
 	{
 		final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
 		CriteriaQuery<TblUser> criteriaQuery = builder.createQuery(TblUser.class);
@@ -72,7 +74,12 @@ public class LoginDAOImpl implements LoginDAO {
         	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
         	if(passwordEncoder.matches(rawPass, encryptedPass)) {
         		Hibernate.initialize(returnedUser);
-            	return returnedUser;
+        		int userId = returnedUser.getIsExternalUser();
+        		List<TblCatalog> user1 = getUserFromCatalog(userId);
+        		
+        		//return json object
+            	return user1.get(0);
+            	
         	}else {
         		return null;
         	}
@@ -82,5 +89,32 @@ public class LoginDAOImpl implements LoginDAO {
         {
         	return null;
         }
+	}
+
+	private List<TblCatalog> getUserFromCatalog(int userType) {
+		final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<TblCatalog> criteriaQuery = builder.createQuery(TblCatalog.class);
+		
+        Root<TblCatalog> userQuery = criteriaQuery.from(TblCatalog.class);
+        
+        TblCatalogId catalog = new TblCatalogId(105,userType);
+        
+        if(userType>0){
+        	
+         criteriaQuery.where(builder.equal(userQuery.get("id"),catalog));
+         
+        }
+       
+        Query<TblCatalog> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
+        final List<TblCatalog> results = query.getResultList();
+        if(!results.isEmpty())
+        {
+        	return results;
+        }
+        else
+        {
+        	return null;
+        }
+		
 	}
 }

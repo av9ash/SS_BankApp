@@ -5,6 +5,8 @@ import java.security.Principal;
 import org.asu.cse545.group4.client.utils.UserExclusionStrategy;
 import org.asu.cse545.group4.server.eventservice.service.EventService;
 import org.asu.cse545.group4.server.loginservice.service.LoginService;
+import org.asu.cse545.group4.server.sharedobjects.TblCatalog;
+import org.asu.cse545.group4.server.sharedobjects.TblCatalogId;
 import org.asu.cse545.group4.server.sharedobjects.TblEventLog;
 import org.asu.cse545.group4.server.sharedobjects.TblUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,7 @@ public class LoginRestService
 	public @ResponseBody String search(@RequestBody TblUser user)
 	{
 		System.out.println("inside search");
-		TblUser returnedUser = loginService.searchUser(user);
+		TblCatalog returnedUser = loginService.searchUser(user);
 		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
 		//Map<String,Object> returnMap = new HashMap<String, Object> ();
 		//returnMap
@@ -53,7 +55,7 @@ public class LoginRestService
 		TblEventLog event = new TblEventLog();
 		if(returnedUser != null)
 		{
-			event.setEventName("User "+returnedUser.getUsername()+" Logged In Successfully");
+			event.setEventName("User Logged In Successfully");
 		}
 		else
 		{
