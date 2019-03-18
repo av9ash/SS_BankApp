@@ -1,7 +1,10 @@
 package org.asu.cse545.group4.server.sharedobjects;
 
+import java.io.Serializable;
+
 public class ModuleList implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private boolean AccountTransactionModule;
 	private boolean EmailPhoneTransactionModule;
 	private boolean AppointmentModule;
