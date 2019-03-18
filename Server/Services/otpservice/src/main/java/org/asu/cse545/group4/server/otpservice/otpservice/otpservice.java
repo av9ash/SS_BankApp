@@ -47,10 +47,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class otpservice {
-public static final String ACCOUNT_SID = "ACe9e461c81f6540a36a8639de41089ece";
-public static final String AUTH_TOKEN = "d6ed3b700cce76f6554dfd2ed0e90d46";
-public static final String CLIENT_SECRET="PFlqnrutDE8omT8g-Qqv3dbK";
-public static final String CLIENT_ID="768998422893-pve5hdpbg498h2i6oi0s7rs6im51mvn5.apps.googleusercontent.com";
+public static final String ACCOUNT_SID = "";
+public static final String AUTH_TOKEN = "";
+public static final String CLIENT_SECRET="-";
+public static final String CLIENT_ID="-.apps.googleusercontent.com";
 
 
 
