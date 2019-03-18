@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+<parent>
+    <groupId>org.asu.cse545.group4</groupId>
+    <artifactId>parent-project</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>../../../parent-project</relativePath>
+  </parent>
+  <groupId>org.asu.cse545.group4.server</groupId>
+  <artifactId>otpservice</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>otpservice</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    
+<dependency>
+<groupId>com.twilio.sdk</groupId>
+<artifactId>twilio</artifactId>
+<version>7.36.1</version>
+</dependency>
+<dependency>
+    <groupId>com.sun.mail</groupId>
+    <artifactId>javax.mail</artifactId>
+    <version>1.6.2</version>
+</dependency>
+
+<dependency>
+  <groupId>com.google.apis</groupId>
+  <artifactId>google-api-services-gmail</artifactId>
+  <version>v1-rev98-1.25.0</version>
+</dependency>    
+    
+  </dependencies>
+</project>
