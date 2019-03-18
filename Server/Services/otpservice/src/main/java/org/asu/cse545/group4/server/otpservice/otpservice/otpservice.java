@@ -78,9 +78,9 @@ public void sendMessage(String msg) {
 }
 
 public void sendEmail(String otp) {
-	String from="sumukharadhakrishna";
-	String pass="s51014600640";
-	String[] to= {"sradha10@asu.edu"};
+	String from="";
+	String pass="";
+	String[] to= {""};
 	String subject = "OTP";
     String body = "your otp is "+otp;
 	
