@@ -1,5 +1,6 @@
 package org.asu.cse545.group4.server.loginservice.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class LoginDAOImpl implements LoginDAO {
 		session.saveOrUpdate(userProfile);
 	}
 	
-	public TblCatalog searchUser(TblUser user)
+	public List<Object> searchUser(TblUser user)
 	{
 		final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
 		CriteriaQuery<TblUser> criteriaQuery = builder.createQuery(TblUser.class);
@@ -59,10 +60,10 @@ public class LoginDAOImpl implements LoginDAO {
         	criteriaQuery.where(builder.equal(userQuery.get("password"),user.getPassword()));
         }*/
         
-        if(user.getIsExternalUser() != null)
+       /* if(user.getIsExternalUser() != null)
         {
         	criteriaQuery.where(builder.equal(userQuery.get("isExternalUser"),user.getIsExternalUser()));
-        }
+        }*/
         
         Query<TblUser> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
         final List<TblUser> results = query.getResultList();
@@ -76,9 +77,12 @@ public class LoginDAOImpl implements LoginDAO {
         		Hibernate.initialize(returnedUser);
         		int userId = returnedUser.getIsExternalUser();
         		List<TblCatalog> user1 = getUserFromCatalog(userId);
+        		List<Object> resultUser = new ArrayList<>();
+        		resultUser.add(returnedUser.getUserId());
+        		resultUser.add(user1.get(0));
         		
         		//return json object
-            	return user1.get(0);
+            	return resultUser;
             	
         	}else {
         		return null;

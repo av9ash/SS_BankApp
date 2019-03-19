@@ -1,6 +1,7 @@
 package org.asu.cse545.group4.client.loginRestService;
 
 import java.security.Principal;
+import java.util.Map;
 
 import org.asu.cse545.group4.client.utils.UserExclusionStrategy;
 import org.asu.cse545.group4.server.eventservice.service.EventService;
@@ -47,7 +48,7 @@ public class LoginRestService
 	public @ResponseBody String search(@RequestBody TblUser user)
 	{
 		System.out.println("inside search");
-		TblCatalog returnedUser = loginService.searchUser(user);
+		Map<Integer, Map<String, Boolean>> returnedUser = loginService.searchUser(user);
 		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
 		//Map<String,Object> returnMap = new HashMap<String, Object> ();
 		//returnMap

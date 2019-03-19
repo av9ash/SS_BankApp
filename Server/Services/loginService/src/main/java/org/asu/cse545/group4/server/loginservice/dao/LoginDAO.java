@@ -1,5 +1,7 @@
 package org.asu.cse545.group4.server.loginservice.dao;
 
+import java.util.List;
+
 import org.asu.cse545.group4.server.sharedobjects.TblCatalog;
 import org.asu.cse545.group4.server.sharedobjects.TblUser;
 
@@ -7,5 +9,5 @@ public abstract interface LoginDAO
 {
   public abstract void insertUser(TblUser paramTblUser);
   
-  public abstract TblCatalog searchUser(TblUser user);
+  public abstract List<Object> searchUser(TblUser user);
 }
