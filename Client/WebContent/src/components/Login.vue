@@ -24,8 +24,6 @@
           <span class="input-group-addon"><i class="fa fa-lock"></i></span>
           <input class="form-control" name="password" placeholder="Password" type="password" v-model="password">
         </div>
-        <!-- <button type="submit" class="btn btn-primary btn-lg" v-on:click="login()">Login</button> -->
-        <!--<button type="submit" class="btn btn-primary btn-lg" v-on:click="login()">Login</button>-->
         <button type="submit" v-bind:class="'btn btn-primary btn-lg ' + loading">Login</button>
       </form>
 
@@ -37,6 +35,7 @@
 
 <script>
 import api from '../api'
+import store from '../store'
 
 export default {
   name: 'Login',
@@ -53,58 +52,7 @@ export default {
     }
   },
   methods: {
-    // checkCreds() {
-    //   const { username, password } = this
-    //
-    //   this.toggleLoading()
-    //   this.resetResponse()
-    //   this.$store.commit('TOGGLE_LOADING')
-    //
-    //   /* Making API call to authenticate a user */
-    //   api
-    //     .request('post', '/login', { username, password })
-    //     .then(response => {
-    //       this.toggleLoading()
-    //
-    //       var data = response.data
-    //       /* Checking if error object was returned from the server */
-    //       if (data.error) {
-    //         var errorName = data.error.name
-    //         if (errorName) {
-    //           this.response =
-    //             errorName === 'InvalidCredentialsError'
-    //               ? 'Username/Password incorrect. Please try again.'
-    //               : errorName
-    //         } else {
-    //           this.response = data.error
-    //         }
-    //
-    //         return
-    //       }
-    //
-    //       /* Setting user in the state and caching record to the localStorage */
-    //       if (data.user) {
-    //         var token = 'Bearer ' + data.token
-    //
-    //         this.$store.commit('SET_USER', data.user)
-    //         this.$store.commit('SET_TOKEN', token)
-    //
-    //         if (window.localStorage) {
-    //           window.localStorage.setItem('user', JSON.stringify(data.user))
-    //           window.localStorage.setItem('token', token)
-    //         }
-    //
-    //         this.$router.push(data.redirect ? data.redirect : '/')
-    //       }
-    //     })
-    //     .catch(error => {
-    //       this.$store.commit('TOGGLE_LOADING')
-    //       console.log(error)
-    //
-    //       this.response = 'Server appears to be offline'
-    //       this.toggleLoading()
-    //     })
-    // },
+    
      toggleLoading() {
        this.loading = this.loading === '' ? 'loading' : ''
      },
@@ -137,7 +85,7 @@ export default {
 		
 		*/
 		api
-        .request('post', './rest/searchUser', { username, password })
+        .request('post', './rest/loginUser', { username, password })
          .then(response => {
 		 var data = response.data
 		 if(data === undefined)
@@ -146,7 +94,9 @@ export default {
 		 }
 		 else
 		 {
-			this.$store.commit('SET_USER', data.username)
+			console.log("data"+data);
+			this.$store.commit('SET_USER', data.userId)
+			this.$store.commit('SET_MODULE_MAP',data.moduleMap)
 			this.$emit('authenticated', true)
 			this.$router.replace({ name: 'Dashboard' })
 		 }
