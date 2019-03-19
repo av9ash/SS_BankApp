@@ -67,4 +67,9 @@ public class TransactionRestService
 	  	return this.transactionService.searchAccount(profile);
 	  }
 
+	  @PostMapping(value="/searchTransaction", consumes="application/json" , produces = "application/json")
+	  public @ResponseBody TblTransaction searchTransaction(@RequestBody TblTransaction transaction)
+	  {
+	  		return this.transactionService.searchTransaction(transaction);
+	  }
 }

@@ -35,4 +35,10 @@ public class TransactionServiceImpl implements TransactionService {
 	{
 		return this.transactionDAO.searchAccount(userProfile);
 	}
+
+	@Transactional
+	public  TblTransaction searchTransaction(TblTransaction transaction)
+	{
+		return this.transactionDAO.searchTransaction(transaction);
+	}
 }

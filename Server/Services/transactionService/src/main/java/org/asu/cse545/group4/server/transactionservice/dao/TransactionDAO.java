@@ -16,4 +16,6 @@ public abstract interface TransactionDAO
   public abstract String searchAccount(TblUserProfile userProfile);
 
   public abstract TblUserProfile searchProfile(TblUserProfile userProfile);
+
+  public abstract TblTransaction searchTransaction(TblTransaction transaction);
 }
