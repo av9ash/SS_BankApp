@@ -17,6 +17,9 @@ import org.hibernate.Hibernate;
 import org.json.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.asu.cse545.group4.server.sharedobjects.TblRequest;
+import org.asu.cse545.group4.server.sharedobjects.TblUser;
+import org.hibernate.Criteria;
+
 @Repository
 public class RequestDAOImpl implements RequestDAO {
 	@Autowired
@@ -38,5 +41,17 @@ public class RequestDAOImpl implements RequestDAO {
 		TblRequest currentReq = this.sessionFactory.getCurrentSession().get(TblRequest.class , request.getRequestId() );
 		currentReq.setTblUserByRequestAssignedTo(request.getTblUserByRequestAssignedTo());
 		this.sessionFactory.getCurrentSession().saveOrUpdate(currentReq);
+	}
+
+	public List<TblRequest> getPendingRequests()
+	{
+		final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<TblRequest> criteriaQuery = builder.createQuery(TblRequest.class);
+		Root<TblRequest> requestQuery = criteriaQuery.from(TblRequest.class);
+
+		criteriaQuery.where(builder.isNull(requestQuery.get("tblUserByRequestAssignedTo")));
+		Query<TblRequest> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
+		final List<TblRequest> requests = query.getResultList();
+		return requests;
 	}
 }
