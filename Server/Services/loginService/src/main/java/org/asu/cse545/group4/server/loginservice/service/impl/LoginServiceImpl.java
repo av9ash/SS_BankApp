@@ -25,12 +25,13 @@ public class LoginServiceImpl implements LoginService {
 	}
 	
 	@Transactional
-	public Map<Integer, Map<String, Boolean>> searchUser(TblUser user)
+	//public Map<Integer, Map<String, Boolean>> searchUser(TblUser user)
+	public Map<String, Object> searchUser(TblUser user)
 	{
 		List<Object> returnedUser = this.loginDAO.searchUser(user);
 		
 		
-		Map<Integer,Map<String,Boolean>> returnedModuleList = new HashMap<>();
+		Map<String,Object> returnedModuleList = new HashMap<>();
 		
 		String catalogDesc = ((TblCatalog) returnedUser.get(1)).getCatalogCategoryDescription();
 		
@@ -55,7 +56,8 @@ public class LoginServiceImpl implements LoginService {
 			}
 		}
 		
-		returnedModuleList.put((Integer)returnedUser.get(0), moduleList);
+		returnedModuleList.put("userId",(Integer)returnedUser.get(0));
+		returnedModuleList.put("moduleMap", moduleList);
 
 		
 		return returnedModuleList;

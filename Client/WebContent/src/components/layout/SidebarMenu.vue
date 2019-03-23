@@ -120,20 +120,20 @@
         <span class="page">Dashboard</span>
       </a>
     </router-link>
-    <li class="header">Transact</li>
-    <router-link tag="li" class="pageLink" to="/creditdebit">
+    <li class="header" v-if="moduleMap.AccountTransactionModule">Transact</li>
+    <router-link tag="li" class="pageLink" v-if="moduleMap.AccountTransactionModule" to="/creditdebit">
       <a>
         <i class="fa fa-table"></i>
         <span class="page">Credit/Debit</span>
       </a>
     </router-link>
-    <router-link tag="li" class="pageLink" to="/account">
+    <router-link tag="li" class="pageLink" v-if="moduleMap.AccountTransactionModule" to="/account">
       <a>
         <i class="fa fa-table"></i>
         <span class="page">Between Accounts</span>
       </a>
     </router-link>
-    <router-link tag="li" class="pageLink" to="/email">
+    <router-link tag="li" class="pageLink" v-if="moduleMap.AccountTransactionModule" to="/email">
       <a>
         <i class="fa fa-table"></i>
         <span class="page">Email/Phone</span>
@@ -185,8 +185,20 @@
   </ul>
 </template>
 <script>
+import store from '../../store'
   export default {
-    name: 'SidebarMenu'
+    name: 'SidebarMenu',
+	data() {
+	return
+	{
+		moduleMap: null
+	}
+	},
+	created: function()
+	{
+		this.moduleMap = store.state.moduleMap
+		console.log("this.moduleMap::"+this.moduleMap)
+	}
   }
 </script>
 <style>
