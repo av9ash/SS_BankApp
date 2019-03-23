@@ -189,19 +189,22 @@ public class TransactionDAOImpl implements TransactionDAO {
 			if (ans == null) {
 				return returnObj.toString();
 			}
-			Query query = sessionFactory.getCurrentSession().createSQLQuery("select * from tbl_account as t where t.user_id = :userId");
-			query.setParameter("userId", ans.getUserId());
-			List<Object[]> result = query.list();
-			
+			final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+			CriteriaQuery<TblAccount> criteriaQuery = builder.createQuery(TblAccount.class);
+			Root<TblAccount> accQuery = criteriaQuery.from(TblAccount.class);
+			criteriaQuery.where(builder.equal(accQuery.get("tblUser") , ans.getTblUser()));
+			Query<TblAccount> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
+			final List<TblAccount> accounts = query.getResultList();			
+
 			JSONArray jsonArray = new JSONArray();
-			if (result != null && !result.isEmpty()) 
+			if (accounts != null && !accounts.isEmpty()) 
 			{				
-				for(Object[] obj : result)
+				for(TblAccount obj : accounts)
 				{
 					JSONObject json = new JSONObject();
-					json.put("account_id" , obj[0]);
+					json.put("account_id" , obj.getAccountId());
 					//TODO account type as String
-					json.put("account_type" , obj[2]);
+					json.put("account_type" , obj.getAccountType());
 					jsonArray.put(json);
 				}
 			}
