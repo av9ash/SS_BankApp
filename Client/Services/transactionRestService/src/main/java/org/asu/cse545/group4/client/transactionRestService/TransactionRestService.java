@@ -90,5 +90,5 @@ public class TransactionRestService
 	  		List<TblTransaction> transactions = this.transactionService.getTransactionsForAccount(account);
 	  		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
 			return gson.toJson(transactions);
-	  }
+	 }
 }

@@ -50,19 +50,19 @@
     <artifactId>hibernate-c3p0</artifactId>
     <version>${hibernate.version}</version>
   </dependency>
-
+  
 <dependency>
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-core</artifactId>
 	<version>${hibernate.version}</version>
 </dependency>
 
-    <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
-    <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>javax.servlet-api</artifactId>
-        <version>3.1.0</version>
-    </dependency>
+<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+<dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>javax.servlet-api</artifactId>
+    <version>3.1.0</version>
+</dependency>
 
     <dependency>
         <groupId>mysql</groupId>
@@ -96,10 +96,12 @@
     <module>../Server/Services/loginService</module>
     <module>../Server/Services/appointmentService</module>
     <module>../Server/Services/transactionService</module>
+    <module>../Server/Services/requestService</module>
 	  <module>../Client/Utilities</module>
     <module>../Client/Services/loginRestService</module>
     <module>../Client/Services/appointmentRestService</module>    
     <module>../Client/Services/transactionRestService</module>
+    <module>../Client/Services/requestRestService</module>
     <module>../warPackaging</module>
   </modules>
 </project>
