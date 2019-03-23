@@ -120,21 +120,25 @@
         <span class="page">Dashboard</span>
       </a>
     </router-link>
-    <li class="header" v-if="moduleMap.AccountTransactionModule">Transact</li>
-    <router-link tag="li" class="pageLink" v-if="moduleMap.AccountTransactionModule" to="/creditdebit">
+    <!--<li class="header" v-if="moduleMap.AccountTransactionModule">Transact</li>-->
+    <li class="header">Transact</li>
+    <!--<router-link tag="li" class="pageLink" v-if="moduleMap.AccountTransactionModule" to="/creditdebit">-->
+      <router-link tag="li" class="pageLink" to="/creditdebit">
       <a>
         <i class="fa fa-table"></i>
         <span class="page">Credit/Debit</span>
       </a>
     </router-link>
-    <router-link tag="li" class="pageLink" v-if="moduleMap.AccountTransactionModule" to="/account">
-      <a>
+    <!--<router-link tag="li" class="pageLink" v-if="moduleMap.AccountTransactionModule" to="/account">-->
+    <router-link tag="li" class="pageLink" to="/account">
+    <a>
         <i class="fa fa-table"></i>
         <span class="page">Between Accounts</span>
       </a>
     </router-link>
-    <router-link tag="li" class="pageLink" v-if="moduleMap.AccountTransactionModule" to="/email">
-      <a>
+    <!--<router-link tag="li" class="pageLink" v-if="moduleMap.AccountTransactionModule" to="/email">-->
+    <router-link tag="li" class="pageLink" to="/email">
+    <a>
         <i class="fa fa-table"></i>
         <span class="page">Email/Phone</span>
       </a>
@@ -160,7 +164,7 @@
         <span class="page">Update Information</span>
       </a>
     </router-link>
-    <router-link tag="li" class="pageLink" to="/repos">
+    <router-link tag="li" class="pageLink" to="/createAppointment">
       <a>
         <i class="fa fa-book"></i>
         <span class="page">Create Appointment</span>
