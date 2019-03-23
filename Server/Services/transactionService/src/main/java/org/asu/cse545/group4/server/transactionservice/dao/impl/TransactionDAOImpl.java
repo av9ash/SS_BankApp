@@ -42,6 +42,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 	private static final int CREDIT=1;
 	private static final int DEBIT=2;
 	private static final int TRANSFER=3;
+	private static final int CRITICAL_TRANSACTION_AMOUNT = 1000;
 
 	public String addTransaction(TblTransaction transaction , int userId)
 	{
@@ -53,7 +54,14 @@ public class TransactionDAOImpl implements TransactionDAO {
 			transaction.setTransactionCreatedDate(date);
 			transaction.setTransactionUpdatedDate(date);
 			transaction.setTransactionStatus(1);
-			transaction.setIsCriticalTransaction(0);
+			if(transaction.getTransactionAmount() >= CRITICAL_TRANSACTION_AMOUNT)
+			{
+				transaction.setIsCriticalTransaction(1);
+			}
+			else
+			{
+				transaction.setIsCriticalTransaction(0);	
+			}
 			this.sessionFactory.getCurrentSession().save(transaction);
 		}
 		return status.name();
@@ -189,19 +197,22 @@ public class TransactionDAOImpl implements TransactionDAO {
 			if (ans == null) {
 				return returnObj.toString();
 			}
-			Query query = sessionFactory.getCurrentSession().createSQLQuery("select * from tbl_account as t where t.user_id = :userId");
-			query.setParameter("userId", ans.getUserId());
-			List<Object[]> result = query.list();
-			
+			final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+			CriteriaQuery<TblAccount> criteriaQuery = builder.createQuery(TblAccount.class);
+			Root<TblAccount> accQuery = criteriaQuery.from(TblAccount.class);
+			criteriaQuery.where(builder.equal(accQuery.get("tblUser") , ans.getTblUser()));
+			Query<TblAccount> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
+			final List<TblAccount> accounts = query.getResultList();			
+
 			JSONArray jsonArray = new JSONArray();
-			if (result != null && !result.isEmpty()) 
+			if (accounts != null && !accounts.isEmpty()) 
 			{				
-				for(Object[] obj : result)
+				for(TblAccount obj : accounts)
 				{
 					JSONObject json = new JSONObject();
-					json.put("account_id" , obj[0]);
+					json.put("account_id" , obj.getAccountId());
 					//TODO account type as String
-					json.put("account_type" , obj[2]);
+					json.put("account_type" , obj.getAccountType());
 					jsonArray.put(json);
 				}
 			}
@@ -249,4 +260,28 @@ public class TransactionDAOImpl implements TransactionDAO {
 			return null;
 		}
 	}
+	
+	public TblTransaction getTransaction(TblTransaction transaction)
+	{
+		TblTransaction found = this.sessionFactory.getCurrentSession().get(TblTransaction.class , transaction.getTransactionId());	
+		return found;
+	}
+
+
+	public List<TblTransaction> getTransactionsForAccount(TblAccount account)
+	{
+		TblAccount db_account = this.sessionFactory.getCurrentSession().get(TblAccount.class, account.getAccountId());
+		if (db_account == null) {
+			return null;
+		}
+		final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<TblTransaction> criteriaQuery = builder.createQuery(TblTransaction.class);
+		Root<TblTransaction> transQuery = criteriaQuery.from(TblTransaction.class);
+		criteriaQuery.where(builder.equal(transQuery.get("tblAccountByFromAccount") , db_account));
+		criteriaQuery.orderBy(builder.desc(transQuery.get("transactionCreatedDate")));
+		Query<TblTransaction> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
+		final List<TblTransaction> accountTransactions = query.getResultList();			
+		return accountTransactions;
+	}
+
 }

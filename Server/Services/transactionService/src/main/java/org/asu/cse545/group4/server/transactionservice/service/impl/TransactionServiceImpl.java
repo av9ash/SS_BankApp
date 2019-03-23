@@ -3,10 +3,12 @@ package org.asu.cse545.group4.server.transactionservice.service.impl;
 import org.asu.cse545.group4.server.transactionservice.dao.TransactionDAO;
 import org.asu.cse545.group4.server.transactionservice.service.TransactionService;
 import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
+import org.asu.cse545.group4.server.sharedobjects.TblAccount;
 import org.asu.cse545.group4.server.sharedobjects.TblUserProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 @Service("transactionService")
 public class TransactionServiceImpl implements TransactionService {
@@ -34,5 +36,17 @@ public class TransactionServiceImpl implements TransactionService {
 	public  String searchAccount(TblUserProfile userProfile)
 	{
 		return this.transactionDAO.searchAccount(userProfile);
+	}
+
+	@Transactional
+	public TblTransaction getTransaction(TblTransaction transaction)
+	{
+		return this.transactionDAO.getTransaction(transaction);
+	}
+
+	@Transactional
+	public  List<TblTransaction> getTransactionsForAccount(TblAccount account)
+	{
+		return this.transactionDAO.getTransactionsForAccount(account);
 	}
 }
