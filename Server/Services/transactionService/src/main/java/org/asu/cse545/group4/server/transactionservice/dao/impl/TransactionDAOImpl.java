@@ -249,4 +249,10 @@ public class TransactionDAOImpl implements TransactionDAO {
 			return null;
 		}
 	}
+
+	public TblTransaction getTransaction(TblTransaction transaction)
+	{
+		TblTransaction found = this.sessionFactory.getCurrentSession().get(TblTransaction.class , transaction.getTransactionId());	
+		return found;
+	}
 }

@@ -14,12 +14,27 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.json.*;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.asu.cse545.group4.client.utils.UserExclusionStrategy;
+import java.io.IOException;
 @Controller
 public class TransactionRestService
 {	
 
 	@Autowired
 	private TransactionService transactionService;
+
+
+	@PostMapping(value="/getTransaction",consumes="application/json",produces="application/json")
+	public @ResponseBody String getTransaction(@RequestBody TransactionJson newTransaction) throws IOException
+	{
+		// check for user auth
+		TblTransaction transaction = newTransaction.getTransactionObj();
+		TblTransaction ret =  this.transactionService.getTransaction(transaction);
+		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
+		return gson.toJson(ret);
+	}
 
 	@PostMapping(value="/transaction",consumes="application/json",produces="application/json")
 	  public @ResponseBody String transaction(@RequestBody TransactionJson newTransaction) {

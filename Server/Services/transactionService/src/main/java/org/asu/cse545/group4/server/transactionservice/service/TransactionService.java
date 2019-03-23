@@ -13,4 +13,5 @@ public abstract interface TransactionService
 
   public abstract String searchAccount(TblUserProfile userProfile);
   
+  public abstract TblTransaction getTransaction(TblTransaction transaction);
 }
