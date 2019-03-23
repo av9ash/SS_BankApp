@@ -42,6 +42,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 	private static final int CREDIT=1;
 	private static final int DEBIT=2;
 	private static final int TRANSFER=3;
+	private static final int CRITICAL_TRANSACTION_AMOUNT = 1000;
 
 	public String addTransaction(TblTransaction transaction , int userId)
 	{
@@ -53,7 +54,14 @@ public class TransactionDAOImpl implements TransactionDAO {
 			transaction.setTransactionCreatedDate(date);
 			transaction.setTransactionUpdatedDate(date);
 			transaction.setTransactionStatus(1);
-			transaction.setIsCriticalTransaction(0);
+			if(transaction.getTransactionAmount() >= CRITICAL_TRANSACTION_AMOUNT)
+			{
+				transaction.setIsCriticalTransaction(1);
+			}
+			else
+			{
+				transaction.setIsCriticalTransaction(0);	
+			}
 			this.sessionFactory.getCurrentSession().save(transaction);
 		}
 		return status.name();
