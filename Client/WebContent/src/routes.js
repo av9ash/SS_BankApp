@@ -12,6 +12,7 @@ import ServerView from './components/views/Server.vue'
 import ReposView from './components/views/Repos.vue'
 import createAppointmentView from './components/views/createAppointment'
 import accountCreationView from './components/views/accountCreation'
+import updateInformationView from './components/views/updateInformation'
 
 // Routes
 const routes = [
@@ -82,6 +83,11 @@ const routes = [
         component: accountCreationView,
         name: 'Account Creation',
         meta: {description: 'Creation of an account'}
+      }, {
+        path: 'updateInformation',
+        component: updateInformationView,
+        name: 'Update Information',
+        meta: {description: 'Updating Information'}
       }
     ]
   }, {

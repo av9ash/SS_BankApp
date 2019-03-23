@@ -13,6 +13,17 @@
 
               <!-- with characthers -->
 
+              <div>
+                <h5><b> Type of account: </b></h5>
+                <label class="radio-inline">
+                  <input type="radio" name="optradio" required>Savings
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="optradio">Checking
+                </label>
+              </div>
+              <br />
+
               <div class="input-group">
                 <span class="input-group-addon">
                   <i class="fa fa-phone" aria-hidden="true"></i>
@@ -66,11 +77,10 @@
 </template>
 <script>
   require('moment')
-  import datepicker from 'vue-date-picker'
 
   export default {
     name: 'accountCreation',
-    components: { datepicker },
+    components: { },
     computed: {
       datetime () {
         return new Date()

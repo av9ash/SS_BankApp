@@ -158,7 +158,7 @@
         <span class="page">Account Creation</span>
       </a>
     </router-link>
-    <router-link tag="li" class="pageLink" to="/repos">
+    <router-link tag="li" class="pageLink" to="/updateInformation">
       <a>
         <i class="fa fa-book"></i>
         <span class="page">Update Information</span>
