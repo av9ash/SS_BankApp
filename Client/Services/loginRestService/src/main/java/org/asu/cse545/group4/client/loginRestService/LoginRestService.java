@@ -67,4 +67,12 @@ public class LoginRestService
 		return gson.toJson(returnedUser);
 		//return returnedUser;
 	}
+
+	@PostMapping(value = "/getUser" , consumes="application/json" , produces = "application/json")
+	public @ResponseBody String getUser(@RequestBody TblUser user)
+	{
+		TblUser db_user = loginService.getUser(user);
+		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
+		return gson.toJson(db_user);
+	}
 }

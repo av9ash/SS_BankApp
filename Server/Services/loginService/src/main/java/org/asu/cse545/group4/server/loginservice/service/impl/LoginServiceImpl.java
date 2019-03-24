@@ -70,4 +70,11 @@ public class LoginServiceImpl implements LoginService {
 		}
 
 	}
+
+	@Transactional
+	public TblUser getUser(TblUser user)
+	{
+		TblUser db_user = this.loginDAO.getUser(user);
+		return db_user;
+	}
 }

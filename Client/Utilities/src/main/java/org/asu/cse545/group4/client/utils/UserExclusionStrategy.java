@@ -21,6 +21,14 @@ public class UserExclusionStrategy implements ExclusionStrategy{
 	    		 || (f.getDeclaringClass() == TblTransaction.class && f.getName().equals("tblAccountByFromAccount"))
 	    		 || (f.getDeclaringClass() == TblTransaction.class && f.getName().equals("tblAccountByToAccount"))
 	    		 || (f.getDeclaringClass() == TblRequest.class && f.getName().equals("tblUserByRequestAssignedTo"))
-	    		 || (f.getDeclaringClass() == TblRequest.class && f.getName().equals("tblUserByRequestedBy"))) ;  
+	    		 || (f.getDeclaringClass() == TblUser.class && f.getName().equals("password"))
+	    		 || (f.getDeclaringClass() == TblUser.class && f.getName().equals("incorrectAttempts"))
+	    		 || (f.getDeclaringClass() == TblUser.class && f.getName().equals("tblAppointmentsForAssignedToUserId"))
+	    		 || (f.getDeclaringClass() == TblUser.class && f.getName().equals("tblRequestsForRequestAssignedTo"))
+	    		 || (f.getDeclaringClass() == TblUser.class && f.getName().equals("tblAppointmentsForAppointmentUserId"))
+	    		 || (f.getDeclaringClass() == TblUser.class && f.getName().equals("tblAccounts"))
+	    		 || (f.getDeclaringClass() == TblUser.class && f.getName().equals("tblTransactions"))
+	    		 || (f.getDeclaringClass() == TblUser.class && f.getName().equals("tblRequestsForRequestedBy"))
+	    		 || (f.getDeclaringClass() == TblRequest.class && f.getName().equals("tblRequestsForRequestedBy")));  
 	}
 }

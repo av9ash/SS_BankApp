@@ -130,4 +130,10 @@ public class LoginDAOImpl implements LoginDAO {
         }
 		
 	}
+
+    public  TblUser getUser(TblUser user)
+    {
+        TblUser dbUser = this.sessionFactory.getCurrentSession().get(TblUser.class , user.getUserId());
+        return dbUser;
+    }
 }

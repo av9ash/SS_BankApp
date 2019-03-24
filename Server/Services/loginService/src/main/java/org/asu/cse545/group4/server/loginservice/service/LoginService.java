@@ -12,4 +12,6 @@ public abstract interface LoginService
   //public abstract Map<Integer, Map<String, Boolean>> searchUser(TblUser user);
   
   public abstract Map<String, Object> searchUser(TblUser user);
+
+  public abstract TblUser getUser(TblUser user);
 }

@@ -10,4 +10,6 @@ public abstract interface LoginDAO
   public abstract void insertUser(TblUser paramTblUser);
   
   public abstract List<Object> searchUser(TblUser user);
+
+  public abstract TblUser getUser(TblUser user);
 }
