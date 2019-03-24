@@ -15,6 +15,8 @@ public class UserExclusionStrategy implements ExclusionStrategy{
 	     return ((f.getDeclaringClass() == TblUserProfile.class && f.getName().equals("tblUser"))
 	    		 || (f.getDeclaringClass() == TblAppointment.class && f.getName().equals("tblUserByAssignedToUserId"))
 	    		 || (f.getDeclaringClass() == TblAccount.class && f.getName().equals("tblUser"))
+	    		 || (f.getDeclaringClass() == TblAccount.class && f.getName().equals("tblTransactionsForFromAccount"))
+	    		 || (f.getDeclaringClass() == TblAccount.class && f.getName().equals("tblTransactionsForToAccount"))
 	    		 || (f.getDeclaringClass() == TblTransaction.class && f.getName().equals("tblUser"))
 	    		 || (f.getDeclaringClass() == TblTransaction.class && f.getName().equals("tblAccountByFromAccount"))
 	    		 || (f.getDeclaringClass() == TblTransaction.class && f.getName().equals("tblAccountByToAccount"))

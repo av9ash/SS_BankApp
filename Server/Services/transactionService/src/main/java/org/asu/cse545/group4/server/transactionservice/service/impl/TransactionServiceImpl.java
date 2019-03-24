@@ -5,6 +5,7 @@ import org.asu.cse545.group4.server.transactionservice.service.TransactionServic
 import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
 import org.asu.cse545.group4.server.sharedobjects.TblAccount;
 import org.asu.cse545.group4.server.sharedobjects.TblUserProfile;
+import org.asu.cse545.group4.server.sharedobjects.TblUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,5 +49,11 @@ public class TransactionServiceImpl implements TransactionService {
 	public  List<TblTransaction> getTransactionsForAccount(TblAccount account)
 	{
 		return this.transactionDAO.getTransactionsForAccount(account);
+	}
+
+	@Transactional
+	public  List<TblAccount> getAccountsForUser(TblUser user)
+	{
+		return this.transactionDAO.getAccountsForUser(user);
 	}
 }

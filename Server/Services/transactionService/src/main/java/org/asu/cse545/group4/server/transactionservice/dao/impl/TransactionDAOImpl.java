@@ -284,4 +284,20 @@ public class TransactionDAOImpl implements TransactionDAO {
 		return accountTransactions;
 	}
 
+
+	public List<TblAccount> getAccountsForUser(TblUser user)
+    {
+        TblUser db_user = this.sessionFactory.getCurrentSession().get(TblUser.class, user.getUserId());
+        if (db_user == null) {
+            return null;
+        }
+        final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+        CriteriaQuery<TblAccount> criteriaQuery = builder.createQuery(TblAccount.class);
+        Root<TblAccount> accountQuery = criteriaQuery.from(TblAccount.class);
+        criteriaQuery.where(builder.equal(accountQuery.get("tblUser"), db_user));
+        Query<TblAccount> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
+        final List<TblAccount> userAccounts = query.getResultList();            
+        return userAccounts;
+    }
+
 }

@@ -5,6 +5,7 @@ import org.asu.cse545.group4.server.transactionservice.service.TransactionServic
 import org.asu.cse545.group4.server.transactionservice.service.TransactionJson;
 import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
 import org.asu.cse545.group4.server.sharedobjects.TblAccount;
+import org.asu.cse545.group4.server.sharedobjects.TblUser;
 import org.asu.cse545.group4.server.sharedobjects.TblUserProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -90,5 +91,13 @@ public class TransactionRestService
 	  		List<TblTransaction> transactions = this.transactionService.getTransactionsForAccount(account);
 	  		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
 			return gson.toJson(transactions);
-	 }
+	  }
+
+	  @PostMapping(value="/userAccounts",consumes="application/json", produces="application/json")
+	  public @ResponseBody String userAccounts(@RequestBody TblUser user)
+	  {
+	  		List<TblAccount> accounts = this.transactionService.getAccountsForUser(user);
+	  		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
+			return gson.toJson(accounts);
+	  }
 }
