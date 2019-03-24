@@ -1,5 +1,6 @@
 package org.asu.cse545.group4.server.appointmentService.service.impl;
 
+import java.util.*;
 import org.asu.cse545.group4.server.appointmentService.dao.AppointmentDAO;
 import org.asu.cse545.group4.server.appointmentService.service.AppointmentService;
 import org.asu.cse545.group4.server.sharedobjects.TblAppointment;
@@ -15,5 +16,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 	@Transactional
 	public void insertAppointment(TblAppointment paramTblAppointment) {
 		this.appointmentDAO.insertAppointment(paramTblAppointment);
+	}
+	
+	@Transactional
+	public  List<TblAppointment> searchAppointments(TblAppointment paramTblAppointment)
+	{
+		return this.appointmentDAO.searchAppointments(paramTblAppointment);
 	}
 }
