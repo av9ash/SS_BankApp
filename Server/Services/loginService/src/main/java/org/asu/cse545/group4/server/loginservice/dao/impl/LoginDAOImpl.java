@@ -26,6 +26,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class LoginDAOImpl implements LoginDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+
 
 	public void insertUser(TblUser user) {
 		Session session = this.sessionFactory.getCurrentSession();
@@ -34,9 +36,11 @@ public class LoginDAOImpl implements LoginDAO {
 		user.setModifiedDate(date);
 		//encrypting password
 		String userPass =  user.getPassword();
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(14);
 		String hashedPassword = passwordEncoder.encode(userPass);
 		user.setPassword(hashedPassword);	
+		user.setStatus(1);
+		user.setIncorrectAttempts(0);
 		this.sessionFactory.getCurrentSession().save(user);
 		TblUserProfile userProfile = user.getTblUserProfile();
 		userProfile.setTblUser(user);
@@ -55,37 +59,42 @@ public class LoginDAOImpl implements LoginDAO {
         	criteriaQuery.where(builder.equal(userQuery.get("username"),user.getUsername()));
         }
         
-       /* if(user.getPassword() != null)
-        {
-        	criteriaQuery.where(builder.equal(userQuery.get("password"),user.getPassword()));
-        }*/
-        
-       /* if(user.getIsExternalUser() != null)
-        {
-        	criteriaQuery.where(builder.equal(userQuery.get("isExternalUser"),user.getIsExternalUser()));
-        }*/
-        
         Query<TblUser> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
         final List<TblUser> results = query.getResultList();
         if(!results.isEmpty())
         {
         	TblUser returnedUser = results.get(0);
-        	String encryptedPass = returnedUser.getPassword();
-        	String rawPass = user.getPassword();
-        	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
-        	if(passwordEncoder.matches(rawPass, encryptedPass)) {
-        		Hibernate.initialize(returnedUser);
-        		int userId = returnedUser.getIsExternalUser();
-        		List<TblCatalog> user1 = getUserFromCatalog(userId);
-        		List<Object> resultUser = new ArrayList<>();
-        		resultUser.add(returnedUser.getUserId());
-        		resultUser.add(user1.get(0));
-        		
-        		//return json object
-            	return resultUser;
-            	
-        	}else {
+        	
+        	if(returnedUser.getStatus()!=1) {
         		return null;
+        	}else {
+        		String encryptedPass = returnedUser.getPassword();
+            	String rawPass = user.getPassword();
+            	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(14);
+            	if(passwordEncoder.matches(rawPass, encryptedPass)) {
+            		Hibernate.initialize(returnedUser);
+            		int userId = returnedUser.getIsExternalUser();
+            		List<TblCatalog> user1 = getUserFromCatalog(userId);
+            		List<Object> resultUser = new ArrayList<>();
+            		resultUser.add(returnedUser.getUserId());
+            		resultUser.add(user1.get(0));
+            		//return json object
+            		
+            		// jwt token - pass it to client call
+            		
+                	return resultUser;
+                	
+            	}else {
+            		int incorrectAttempts = returnedUser.getIncorrectAttempts();
+            		if(incorrectAttempts>=3) {
+            			returnedUser.setStatus(2);
+            		}else {
+            			returnedUser.setIncorrectAttempts(incorrectAttempts+1);
+            		}
+            		sessionFactory.getCurrentSession().save(returnedUser);
+            		return null;
+            	}
+        		
         	}
         	
         }
