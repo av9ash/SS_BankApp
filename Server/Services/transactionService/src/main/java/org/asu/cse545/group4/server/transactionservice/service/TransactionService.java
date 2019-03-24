@@ -2,7 +2,8 @@ package org.asu.cse545.group4.server.transactionservice.service;
 
 import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
 import org.asu.cse545.group4.server.sharedobjects.TblUserProfile;
-
+import org.asu.cse545.group4.server.sharedobjects.TblAccount;
+import java.util.List;
 public abstract interface TransactionService
 {
   public abstract String addTransaction(TblTransaction paramTransaction, int userId);
@@ -13,4 +14,7 @@ public abstract interface TransactionService
 
   public abstract String searchAccount(TblUserProfile userProfile);
   
+  public abstract TblTransaction getTransaction(TblTransaction transaction);
+
+  public abstract List<TblTransaction> getTransactionsForAccount(TblAccount account);
 }

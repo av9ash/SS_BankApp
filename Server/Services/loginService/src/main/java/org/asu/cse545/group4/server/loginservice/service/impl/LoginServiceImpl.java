@@ -24,19 +24,20 @@ public class LoginServiceImpl implements LoginService {
 	public void insertUser(TblUser user) {
 		this.loginDAO.insertUser(user);
 	}
-	
+
 	@Transactional
-	public Map<Integer, Map<String, Boolean>> searchUser(TblUser user)
+	//public Map<Integer, Map<String, Boolean>> searchUser(TblUser user)
+	public Map<String, Object> searchUser(TblUser user)
 	{
 		List<Object> returnedUser = this.loginDAO.searchUser(user);
-		
+
 		if(returnedUser!=null) {
-			Map<Integer,Map<String,Boolean>> returnedModuleList = new HashMap<>();
-			
+			//Map<Integer,Map<String,Boolean>> returnedModuleList = new HashMap<>();
+
 			String catalogDesc = ((TblCatalog) returnedUser.get(1)).getCatalogCategoryDescription();
-		
+
 			String[] allDesc = catalogDesc.split(",");
-			
+
 			Map<String,Boolean> moduleList = new HashMap<>();
 			moduleList.put("AccountTransactionModule", false);
 			moduleList.put("EmailPhoneTransactionModule", false);
@@ -47,22 +48,26 @@ public class LoginServiceImpl implements LoginService {
 			moduleList.put("ViewLogFile", false);
 			moduleList.put("BankingStatementModule", false);
 			moduleList.put("OpenAccount", false);
-			
-		
+
+
+			Map<String,Object> returnedModuleList = new HashMap<>();
+
+
 			for(String moduleName : allDesc) {
 				if(moduleList.containsKey(moduleName)){
 					moduleList.put(moduleName, true);
 				}
 			}
-			
-			returnedModuleList.put((Integer)returnedUser.get(0), moduleList);
 
-			
+
+			//returnedModuleList.put((Integer)returnedUser.get(0), moduleList);
+			returnedModuleList.put("userId",(Integer)returnedUser.get(0));
+			returnedModuleList.put("moduleMap", moduleList);
+
 			return returnedModuleList;
-			
 		}else {
 			return null;
 		}
-		
+
 	}
 }

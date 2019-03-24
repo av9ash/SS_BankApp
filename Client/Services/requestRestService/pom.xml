@@ -9,10 +9,10 @@
     <relativePath>../../../parent-project</relativePath>
   </parent>
   <groupId>org.asu.cse545.group4.client</groupId>
-  <artifactId>transactionRestService</artifactId>
+  <artifactId>requestRestService</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>transactionRestService</name>
+  <name>requestRestService</name>
   <url>http://maven.apache.org</url>
   <dependencies>
           <dependency>
@@ -22,7 +22,7 @@
           </dependency>
           <dependency>
             <groupId>org.asu.cse545.group4.server</groupId>
-            <artifactId>transactionService</artifactId>
+            <artifactId>requestService</artifactId>
             <version>1.0-SNAPSHOT</version>
           </dependency>
           <dependency>

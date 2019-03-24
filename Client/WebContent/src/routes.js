@@ -10,6 +10,9 @@ import SettingView from './components/views/Setting.vue'
 import AccessView from './components/views/Access.vue'
 import ServerView from './components/views/Server.vue'
 import ReposView from './components/views/Repos.vue'
+import createAppointmentView from './components/views/createAppointment'
+import accountCreationView from './components/views/accountCreation'
+import updateInformationView from './components/views/updateInformation'
 
 // Routes
 const routes = [
@@ -70,6 +73,21 @@ const routes = [
         component: ReposView,
         name: 'Repository',
         meta: {description: 'List of popular javascript repos'}
+      }, {
+        path: 'createAppointment',
+        component: createAppointmentView,
+        name: 'Create Appointment',
+        meta: {description: 'Creation of an appointment'}
+      }, {
+        path: 'accountCreation',
+        component: accountCreationView,
+        name: 'Account Creation',
+        meta: {description: 'Creation of an account'}
+      }, {
+        path: 'updateInformation',
+        component: updateInformationView,
+        name: 'Update Information',
+        meta: {description: 'Updating Information'}
       }
     ]
   }, {

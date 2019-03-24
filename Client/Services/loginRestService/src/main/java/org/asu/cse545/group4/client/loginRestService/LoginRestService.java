@@ -48,7 +48,7 @@ public class LoginRestService
 	public @ResponseBody String search(@RequestBody TblUser user)
 	{
 		System.out.println("inside search");
-		Map<Integer, Map<String, Boolean>> returnedUser = loginService.searchUser(user);
+		Map<String, Object> returnedUser = loginService.searchUser(user);
 		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
 		//Map<String,Object> returnMap = new HashMap<String, Object> ();
 		//returnMap

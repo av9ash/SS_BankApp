@@ -1,6 +1,6 @@
 package org.asu.cse545.group4.server.sharedobjects;
 
-import java.io.Serializable;
+import java.io.Serializable; 
 
 public class ModuleList implements Serializable{
 	

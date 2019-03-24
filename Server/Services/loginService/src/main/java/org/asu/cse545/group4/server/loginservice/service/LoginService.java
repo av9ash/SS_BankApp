@@ -9,5 +9,7 @@ public abstract interface LoginService
 {
   public abstract void insertUser(TblUser paramTblUser);
   
-  public abstract Map<Integer, Map<String, Boolean>> searchUser(TblUser user);
+  //public abstract Map<Integer, Map<String, Boolean>> searchUser(TblUser user);
+  
+  public abstract Map<String, Object> searchUser(TblUser user);
 }
