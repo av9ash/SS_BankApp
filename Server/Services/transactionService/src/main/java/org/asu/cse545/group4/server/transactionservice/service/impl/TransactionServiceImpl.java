@@ -39,6 +39,10 @@ public class TransactionServiceImpl implements TransactionService {
 	@Transactional
 	public String approveTransaction(int transactionId, int approverId)
 	{
+		TblTransaction transaction = new TblTransaction(transactionId);
+		TblRequest request = reqService.getRequest(transaction);
+		request.setTblUserByRequestAssignedTo(new TblUser(approverId));
+		reqService.assignTo(request);
 		return this.transactionDAO.approveTransaction(transactionId,approverId);
 	}
 

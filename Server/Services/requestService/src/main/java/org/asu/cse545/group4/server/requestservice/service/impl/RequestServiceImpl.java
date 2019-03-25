@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.asu.cse545.group4.server.sharedobjects.TblRequest;
+import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
 import java.util.List;
 @Service("requestService")
 public class RequestServiceImpl implements RequestService {
@@ -33,5 +34,11 @@ public class RequestServiceImpl implements RequestService {
 	public  List<TblRequest> getPendingRequests()
 	{
 		return this.requestDAO.getPendingRequests();
+	}
+
+	@Transactional
+	public  TblRequest getRequest(TblTransaction transaction)
+	{
+		return this.requestDAO.getRequest(transaction);
 	}
 }

@@ -18,6 +18,7 @@ import org.json.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.asu.cse545.group4.server.sharedobjects.TblRequest;
 import org.asu.cse545.group4.server.sharedobjects.TblUser;
+import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
 import org.hibernate.Criteria;
 
 @Repository
@@ -53,5 +54,19 @@ public class RequestDAOImpl implements RequestDAO {
 		Query<TblRequest> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
 		final List<TblRequest> requests = query.getResultList();
 		return requests;
+	}
+
+	public  TblRequest getRequest(TblTransaction transaction)
+	{
+		final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<TblRequest> criteriaQuery = builder.createQuery(TblRequest.class);
+		Root<TblRequest> requestQuery = criteriaQuery.from(TblRequest.class);
+		criteriaQuery.where(builder.equal(requestQuery.get("tblTransaction") , transaction));
+		Query<TblRequest> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
+		final List<TblRequest> requests = query.getResultList();
+		if (requests != null && !requests.isEmpty()) {
+			return requests.get(0);
+		}
+		return null;
 	}
 }
