@@ -68,7 +68,8 @@ export default {
     this.resetResponse()
 		const { username, password } = this
       this.errors = []
-
+	  
+	  //console.log("in login");
       if (!this.username) {
         this.errors.push('Username required.')
       }
@@ -88,17 +89,19 @@ export default {
         .request('post', './rest/loginUser', { username, password })
          .then(response => {
 		 var data = response.data
-		 if(data === undefined)
+		 if(data == undefined)
 		 {
 			this.response = "Invalid Credentials"
 		 }
 		 else
 		 {
 			console.log("data"+data);
-			this.$store.commit('SET_USER', data.userId)
-			this.$store.commit('SET_MODULE_MAP',data.moduleMap)
-			this.$emit('authenticated', true)
-			this.$router.replace({ name: 'Dashboard' })
+			
+				this.$store.commit('SET_USER', data.userId)
+				this.$store.commit('SET_MODULE_MAP',data.moduleMap)
+				this.$emit('authenticated', true)
+				this.$router.replace({ name: 'Dashboard' })
+			
 		 }
 		 })
 		 .catch(error => {

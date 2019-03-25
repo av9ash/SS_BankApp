@@ -15,6 +15,9 @@ import { domain, count, prettyDate, pluralize } from './filters'
 // Import Views - Top level
 import AppView from './components/App.vue'
 
+//import { Alert } from 'bootstrap-vue'
+//Vue.use(Alert)
+
 // Import Install and register helper items
 Vue.filter('count', count)
 Vue.filter('domain', domain)
@@ -22,6 +25,7 @@ Vue.filter('prettyDate', prettyDate)
 Vue.filter('pluralize', pluralize)
 
 Vue.use(VueRouter)
+
 
 // Routing logic
 var router = new VueRouter({
@@ -36,21 +40,21 @@ var router = new VueRouter({
 // Some middleware to help us ensure the user is authenticated.
 router.beforeEach((to, from, next) => {
   
-  console.log("token::"+router.app.$store.state.token)
+  //console.log("token::"+router.app.$store.state.token)
   if (
     to.matched.some(record => record.meta.requiresAuth) &&
     (!router.app.$store.state.token || router.app.$store.state.token === 'null')
   ) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    console.log('inside if')
+    //console.log('inside if')
     window.console.log('Not authenticated')
     next({
       path: '/login',
       query: { redirect: to.fullPath }
     })
   } else {
-	console.log('inside else')
+	//console.log('inside else')
     next()
   }
 })
