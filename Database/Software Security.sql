@@ -5,8 +5,8 @@ use softwareSecurity;
 CREATE TABLE `tbl_user` 
 (
 	`user_id` int NOT NULL AUTO_INCREMENT,
-	`username` varchar(255),
-	`password` varchar(255),
+	`username` varchar(255) UNIQUE,
+	`password` varchar(60),
 	`status` int,
 	`incorrect_attempts` int,
 	`created_date` datetime,
@@ -118,6 +118,10 @@ ALTER TABLE `tbl_appointment` ADD FOREIGN KEY (`appointment_user_id`) REFERENCES
 
 ALTER TABLE `tbl_appointment` ADD FOREIGN KEY (`assigned_to_user_id`) REFERENCES `tbl_user` (`user_id`);
 
+ALTER TABLE tbl_request ADD transaction_id int;
+
+ALTER TABLE `tbl_request` ADD FOREIGN KEY (`transaction_id`) REFERENCES `tbl_transaction` (`transaction_id`);
+
 
 
 insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(100,1,"Tier 1 Employee");
@@ -132,3 +136,16 @@ insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_catego
 insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(102,1,"Transaction In Progress");
 insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(102,2,"Transaction Completed");
 insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(102,3,"Transaction Declined");
+
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(103,1,"Appointment Created");
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(103,2,"Appointment Serviced");
+
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(104,1,"Request Created");
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(104,2,"Request Approved");
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(104,1,"Request Declined");
+
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(105,1,"RequestModule,ViewAccountModule");
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(105,2,"RequestModule,ViewAccountModule");
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(105,3,"RequestModule,ViewAccountModule,ViewAndModifyModule,ViewLogFile");
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(105,4,"AccountTransactionModule,EmailPhoneTransactionModule,AppointmentModule,OpenAccount,BankingStatementModule");
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(105,5,"AccountTransactionModule,EmailPhoneTransactionModule,AppointmentModule,OpenAccount,BankingStatementModule");

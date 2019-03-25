@@ -19,13 +19,13 @@ public class TblTransaction implements Serializable {
 	@Id
 	@Column(name = "transaction_id", unique = true, nullable = false)
 	private int transactionId;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "from_account")
 	private TblAccount tblAccountByFromAccount;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "to_account")
 	private TblAccount tblAccountByToAccount;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "transaction_approved_by")
 	private TblUser tblUser;
 	@Column(name = "transaction_type")

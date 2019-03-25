@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,14 +17,17 @@ public class TblRequest implements Serializable {
 	@Id
 	@Column(name = "request_id", unique = true, nullable = false)
 	private int requestId;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "request_assigned_to")
 	private TblUser tblUserByRequestAssignedTo;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "requested_by")
 	private TblUser tblUserByRequestedBy;
 	@Column(name = "type_of_request")
 	private Integer typeOfRequest;
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "transaction_id")
+	private TblTransaction tblTransaction;
 
 	public TblRequest() {
 	}
@@ -33,11 +37,12 @@ public class TblRequest implements Serializable {
 	}
 
 	public TblRequest(int requestId, TblUser tblUserByRequestAssignedTo, TblUser tblUserByRequestedBy,
-			Integer typeOfRequest) {
+			Integer typeOfRequest, TblTransaction tblTransaction) {
 		this.requestId = requestId;
 		this.tblUserByRequestAssignedTo = tblUserByRequestAssignedTo;
 		this.tblUserByRequestedBy = tblUserByRequestedBy;
 		this.typeOfRequest = typeOfRequest;
+		this.tblTransaction = tblTransaction;
 	}
 
 	public int getRequestId() {
@@ -70,5 +75,13 @@ public class TblRequest implements Serializable {
 
 	public void setTypeOfRequest(Integer typeOfRequest) {
 		this.typeOfRequest = typeOfRequest;
+	}
+	
+	public TblTransaction getTblTransaction() {
+		return this.tblTransaction;
+	}
+
+	public void setTblTransaction(TblTransaction tblTransaction) {
+		this.tblTransaction = tblTransaction;
 	}
 }

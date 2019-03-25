@@ -41,7 +41,26 @@
 			<artifactId>appointmentRestService</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.asu.cse545.group4.server</groupId>
+			<artifactId>transactionService</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.asu.cse545.group4.client</groupId>
+			<artifactId>transactionRestService</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.asu.cse545.group4.server</groupId>
+			<artifactId>requestService</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.asu.cse545.group4.client</groupId>
+			<artifactId>requestRestService</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -49,19 +68,25 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>3.2.2</version>
-				<configuration>
-					<webResources>
+				 <configuration>
+					<!-- <webResources>
 							<resource>
-								<directory>../Client/WebContent/</directory>
+								<directory>../Client/WebContent/dist</directory>
 							</resource>
 							
-					</webResources>
-      				<warSourceDirectory>../Client/WebContent/</warSourceDirectory>
+					</webResources> -->
+      				<warSourceDirectory>../Client/WebContent/dist</warSourceDirectory>
 				</configuration>
+				
 				<dependencies>
 					<dependency>
 						<groupId>org.asu.cse545.group4.server.sharedObjects</groupId>
 						<artifactId>sharedObjects</artifactId>
+						<version>1.0-SNAPSHOT</version>
+					</dependency>
+					<dependency>
+						<groupId>org.asu.cse545.group4.server</groupId>
+						<artifactId>eventService</artifactId>
 						<version>1.0-SNAPSHOT</version>
 					</dependency>
 					<dependency>
@@ -81,9 +106,39 @@
 					</dependency>
 					<dependency>
 						<groupId>org.asu.cse545.group4.client</groupId>
+						<artifactId>utils</artifactId>
+						<version>1.0-SNAPSHOT</version>
+					</dependency>
+					<dependency>
+						<groupId>org.asu.cse545.group4.server</groupId>
+						<artifactId>transactionService</artifactId>
+						<version>1.0-SNAPSHOT</version>
+					</dependency>
+					<dependency>						
+						<groupId>org.asu.cse545.group4.client</groupId>
 						<artifactId>appointmentRestService</artifactId>
 						<version>1.0-SNAPSHOT</version>
 					</dependency>
+					<dependency>
+						<groupId>org.asu.cse545.group4.client</groupId>
+						<artifactId>transactionRestService</artifactId>
+						<version>1.0-SNAPSHOT</version>
+					</dependency>
+					<dependency>
+						<groupId>org.asu.cse545.group4.server</groupId>
+						<artifactId>requestService</artifactId>
+						<version>1.0-SNAPSHOT</version>
+					</dependency>
+					<dependency>
+						<groupId>org.asu.cse545.group4.client</groupId>
+						<artifactId>requestRestService</artifactId>
+						<version>1.0-SNAPSHOT</version>
+					</dependency>
+					<dependency>
+                                                <groupId>org.asu.cse545.group4.server</groupId>
+                                                <artifactId>otpservice</artifactId>
+                                                <version>0.0.1-SNAPSHOT</version>
+                                        </dependency>
 				</dependencies>
 			</plugin>
 		</plugins>

@@ -19,10 +19,10 @@ public class TblAppointment implements Serializable {
 	@Id
 	@Column(name = "appointment_id", unique = true, nullable = false)
 	private int appointmentId;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "assigned_to_user_id")
 	private TblUser tblUserByAssignedToUserId;
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "appointment_user_id")
 	private TblUser tblUserByAppointmentUserId;
 	@Temporal(TemporalType.TIMESTAMP)

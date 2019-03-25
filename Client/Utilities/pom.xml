@@ -15,7 +15,7 @@
   <name>utils</name>
   <url>http://maven.apache.org</url>
   <dependencies>
-  <dependency>
+					  <dependency>
 						<groupId>org.asu.cse545.group4.server.sharedObjects</groupId>
 						<artifactId>sharedObjects</artifactId>
 						<version>1.0-SNAPSHOT</version>

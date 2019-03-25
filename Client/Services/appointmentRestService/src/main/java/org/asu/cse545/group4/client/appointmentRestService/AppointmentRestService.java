@@ -1,11 +1,15 @@
 package org.asu.cse545.group4.client.appointmentRestService;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.asu.cse545.group4.server.appointmentService.service.AppointmentService;
 import org.asu.cse545.group4.server.sharedobjects.TblAppointment;
+import org.asu.cse545.group4.server.sharedobjects.TblUser;
+import org.asu.cse545.group4.server.sharedobjects.AppointmentUserInfo;
 import org.asu.cse545.group4.client.utils.UserExclusionStrategy;
+import org.asu.cse545.group4.client.utils.UserExclusionStrategyAppointment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,12 +33,19 @@ public class AppointmentRestService
 	  }
 	
 	@PostMapping(value="/searchAppointments", consumes="application/json" , produces = "application/json")
-	  public @ResponseBody String search(@RequestBody TblAppointment paramTblAppointment)
+	  public @ResponseBody String search(@RequestBody TblUser paramTblUser)
 	  {
-			Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
-			//Map<String,Object> returnMap = new HashMap<String, Object> ();
+			List<AppointmentUserInfo> result = appointmentService.searchAppointments(paramTblUser);
+			Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategyAppointment()).create();								
+			return gson.toJson(result);
 			
-			
-			return "hello";
 	  }
 }
+
+
+
+
+
+
+
+
