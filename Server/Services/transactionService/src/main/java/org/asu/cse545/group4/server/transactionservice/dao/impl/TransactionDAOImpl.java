@@ -64,7 +64,11 @@ public class TransactionDAOImpl implements TransactionDAO {
 			}
 			this.sessionFactory.getCurrentSession().save(transaction);
 		}
-		return status.name();
+		TblTransaction last = lastAddedTransaction();
+		if (last == null) {
+			return status.name();
+		}
+		return status.name()+":"+last.getTransactionId();
 	}
 
 
@@ -298,6 +302,19 @@ public class TransactionDAOImpl implements TransactionDAO {
         Query<TblAccount> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
         final List<TblAccount> userAccounts = query.getResultList();            
         return userAccounts;
+    }
+
+    public TblTransaction lastAddedTransaction()
+    {
+    	final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+        CriteriaQuery<TblTransaction> criteriaQuery = builder.createQuery(TblTransaction.class);
+        Root<TblTransaction> transQuery = criteriaQuery.from(TblTransaction.class);
+        criteriaQuery.orderBy(builder.desc(transQuery.get("transactionId")));
+        Query<TblTransaction> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery).setFirstResult(0).setMaxResults(1);
+        final List<TblTransaction> ans = query.getResultList();
+        if(!ans.isEmpty())
+        	return ans.get(0);
+        return null;
     }
 
 }
