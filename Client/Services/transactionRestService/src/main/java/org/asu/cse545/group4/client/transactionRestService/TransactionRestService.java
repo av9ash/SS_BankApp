@@ -5,6 +5,7 @@ import org.asu.cse545.group4.server.transactionservice.service.TransactionServic
 import org.asu.cse545.group4.server.transactionservice.service.TransactionJson;
 import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
 import org.asu.cse545.group4.server.sharedobjects.TblAccount;
+import org.asu.cse545.group4.server.sharedobjects.TblEventLog;
 import org.asu.cse545.group4.server.sharedobjects.TblUser;
 import org.asu.cse545.group4.server.sharedobjects.TblUserProfile;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,34 @@ import com.google.gson.GsonBuilder;
 import org.asu.cse545.group4.client.utils.UserExclusionStrategy;
 import java.io.IOException;
 import java.util.List;
+import org.asu.cse545.group4.server.eventservice.service.EventService;
 @Controller
 public class TransactionRestService
 {	
 
 	@Autowired
 	private TransactionService transactionService;
+	@Autowired
+	private EventService eventService;
+	private final static String TRANSACTION_ADDED = "New Transaction by User: ";
+	private final static String TRANSACTION_APPROVED = "Transaction approval by User: ";
+	private final static String TRANSACTION_DECLINED = "Transaction decline by User: ";
+	private final static int NEW_TRANSACTION = 2;
+	private final static int APPROVE_TRANSACTION = 3;
+	private final static int DECLINE_TRANSACTION = 4;
 
+
+	private void logEvent(String message, int userId, String response, int eventType)
+	{
+		TblEventLog event = new TblEventLog();
+		event.setEventType(eventType);
+		StringBuilder sb = new StringBuilder();
+		sb.append(message);
+		sb.append(userId);
+		sb.append(":").append(response);
+		event.setEventName(sb.toString());
+		eventService.logEvent(event);
+	}
 
 	@PostMapping(value="/getTransaction",consumes="application/json",produces="application/json")
 	public @ResponseBody String getTransaction(@RequestBody TransactionJson newTransaction) throws IOException
@@ -48,6 +70,7 @@ public class TransactionRestService
 	  		// TODO
 	  		// check for User authorization
 			String response = this.transactionService.addTransaction(transaction , newTransaction.getUserId());
+			logEvent(TRANSACTION_ADDED, newTransaction.getUserId() , response, NEW_TRANSACTION);
 			return response;
 		}
 		catch(Exception e)
@@ -65,7 +88,9 @@ public class TransactionRestService
 	  		if (!request.has("transaction_id") || !request.has("approved_by")) {
 	  			return "INVALID_REQUEST";
 	  		}
-	  		return this.transactionService.approveTransaction(request.getInt("transaction_id") , request.getInt("approved_by"));
+	  		String response = this.transactionService.approveTransaction(request.getInt("transaction_id") , request.getInt("approved_by"));
+	  		logEvent(TRANSACTION_APPROVED,request.getInt("approved_by") , response , APPROVE_TRANSACTION);
+	  		return response;
 	  }
 
 
@@ -76,7 +101,9 @@ public class TransactionRestService
 	  		if (!request.has("transaction_id") || !request.has("declined_by")) {
 	  			return "INVALID_REQUEST";
 	  		}
-	  		return this.transactionService.declineTransaction(request.getInt("transaction_id") , request.getInt("declined_by"));
+	  		String response = this.transactionService.declineTransaction(request.getInt("transaction_id") , request.getInt("declined_by"));
+	  		logEvent(TRANSACTION_DECLINED, request.getInt("declined_by") , response, DECLINE_TRANSACTION);
+	  		return response;
 	  }
 
 	  @PostMapping(value="/searchAccount", consumes="application/json" , produces = "application/json")
