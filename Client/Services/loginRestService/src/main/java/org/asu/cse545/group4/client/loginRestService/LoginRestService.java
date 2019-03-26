@@ -75,4 +75,13 @@ public class LoginRestService
 		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
 		return gson.toJson(db_user);
 	}
+
+	@PostMapping(value = "/updateUser" , consumes="application/json" , produces = "application/json")
+	public @ResponseBody String updateUser(@RequestBody TblUser user)
+	{
+		loginService.updateUser(user);
+		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
+		return gson.toJson(user);
+	}
+
 }

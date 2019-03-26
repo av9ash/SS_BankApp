@@ -12,4 +12,6 @@ public abstract interface LoginDAO
   public abstract List<Object> searchUser(TblUser user);
 
   public abstract TblUser getUser(TblUser user);
+
+  public abstract void updateUser(TblUser user);
 }
