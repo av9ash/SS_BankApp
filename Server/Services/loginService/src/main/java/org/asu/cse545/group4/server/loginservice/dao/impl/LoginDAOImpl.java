@@ -142,6 +142,10 @@ public class LoginDAOImpl implements LoginDAO {
         Session session = this.sessionFactory.getCurrentSession();
         TblUser dbUser = session.get(TblUser.class, user.getUserId());
 
+        if (dbUser == null) {
+            return;
+        }
+
         Date date = new Date();
         dbUser.setModifiedDate(date);
         if(user.getPassword() != null)

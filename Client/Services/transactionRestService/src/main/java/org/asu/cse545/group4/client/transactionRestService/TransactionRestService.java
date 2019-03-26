@@ -127,4 +127,13 @@ public class TransactionRestService
 	  		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
 			return gson.toJson(accounts);
 	  }
+
+
+	  @PostMapping(value="/updateAccount",consumes="application/json", produces="application/json")
+	  public @ResponseBody String updateAccount(@RequestBody TblAccount account)
+	  {
+	  		this.transactionService.updateAccount(account);
+	  		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
+			return gson.toJson(account);
+	  }
 }

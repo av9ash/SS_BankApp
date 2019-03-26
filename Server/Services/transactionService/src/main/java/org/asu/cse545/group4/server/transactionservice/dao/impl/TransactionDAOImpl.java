@@ -317,4 +317,21 @@ public class TransactionDAOImpl implements TransactionDAO {
         return null;
     }
 
+
+    public TblAccount updateAccount(TblAccount account)
+    {
+    	if (account == null) {
+    		return null;
+    	}
+    	TblAccount dbAccount = sessionFactory.getCurrentSession().get(TblAccount.class , account.getAccountId());
+    	if (dbAccount == null) {
+    		return null;
+    	}
+    	if (account.getAccountType() != 0) { 
+    		dbAccount.setAccountType(account.getAccountType());
+    	}
+    	sessionFactory.getCurrentSession().saveOrUpdate(dbAccount);
+    	return dbAccount;
+    }
+
 }

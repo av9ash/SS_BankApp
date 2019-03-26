@@ -27,4 +27,6 @@ public abstract interface TransactionDAO
   public abstract List<TblAccount> getAccountsForUser(TblUser user);
 
   public abstract TblTransaction lastAddedTransaction();
+
+  public abstract TblAccount updateAccount(TblAccount account);
 }

@@ -75,4 +75,10 @@ public class TransactionServiceImpl implements TransactionService {
 	{
 		return this.transactionDAO.getAccountsForUser(user);
 	}
+
+	@Transactional
+	public  TblAccount updateAccount(TblAccount account)
+	{
+		return this.transactionDAO.updateAccount(account);
+	}
 }
