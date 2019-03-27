@@ -26,7 +26,7 @@
 						<label for="Debit" class="radio-inline"><input type="radio" id="Debit" value="2" v-model="typeOfTransaction" required />Debit</label>
 						</div>
 					  </div>
-					  
+
 					  <div class="row">
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<label>Enter Amount<span style="color:red">*</span></label>
@@ -34,13 +34,15 @@
 						<span class="input-group-addon">
 						  <i class="fa fa-fw fa-usd" aria-hidden="true"></i>
 						</span>
-						
+
 						<input class="form-control" v-model="amount" type="number" min="0.01" step="0.01" max="100000" oninput="validity.valid||(value='');" required />
 					  </div>
 				  </div>
 					  <div>
-					  
+
 				</div>
+            </div>
+        </div>
 				</form>
 			</div>
 			<div class="row">
@@ -71,7 +73,7 @@ export default {
     }
   },
   methods: {
-	submit() 
+	submit()
 	{
 		var validateValue = this.validate();
 		if(validateValue == false)
@@ -85,7 +87,7 @@ export default {
 		const transaction_amount = this.amount;
 		const type = this.typeOfTransaction;
 		const user_id = store.state.user
-		
+
 		api
         .request('post', './rest/transaction', {transaction_amount, from_account, to_account, type, user_id  })
 		.then(response => {
@@ -100,14 +102,14 @@ export default {
 			{
 				alert("Transaction Declined! Insufficient Balance");
 			}
-		
+
 		})
 		.catch(error => {
            console.log("error");
 		   alert("Error in Transaction! Please contact administrator");
          })
 	},
-	
+
 	validate()
 	{
 		var validateValue = true;
@@ -122,12 +124,12 @@ export default {
 		if(this.account == undefined)
 		{
 			return false;
-		}	
-		
+		}
+
 		return validateValue;
 	}
   },
-  
+
   created() {
 	console.log("inside created");
 	const userId = store.state.user
