@@ -11,5 +11,6 @@ public abstract interface AppointmentDAO
 {
   public abstract void insertAppointment(TblAppointment paramTblAppointment);
   public abstract List<AppointmentUserInfo>  searchAppointments(TblUser paramTblUser);
-
+  public abstract List<TblUser>  getEmployees();
+  
 }

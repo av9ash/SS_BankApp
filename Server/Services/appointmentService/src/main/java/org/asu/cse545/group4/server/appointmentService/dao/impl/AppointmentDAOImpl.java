@@ -1,8 +1,6 @@
 package org.asu.cse545.group4.server.appointmentService.dao.impl;
 
 import java.util.*;
-import java.util.Date;
-import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Root;
@@ -37,10 +35,7 @@ public class AppointmentDAOImpl implements AppointmentDAO {
 		tblAppointmentsForAppointmentUserId.add(paramTblAppointment);
 		user.setTblAppointmentsForAppointmentUserId(tblAppointmentsForAppointmentUserId);
 		
-		user = paramTblAppointment.getTblUserByAssignedToUserId();
-		Set<TblAppointment> tblAppointmentsForAssignedToUserId =  user.getTblAppointmentsForAssignedToUserId();
-		tblAppointmentsForAssignedToUserId.add(paramTblAppointment);
-		user.setTblAppointmentsForAssignedToUserId(tblAppointmentsForAssignedToUserId);
+		
 		
 		session.saveOrUpdate(user);
 
@@ -82,6 +77,21 @@ public class AppointmentDAOImpl implements AppointmentDAO {
 			//return e.getMessage();
 		}
 	}
+	
+	  public List<TblUser>  getEmployees() {
+		  final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+			CriteriaQuery<TblUser> criteriaQuery = builder.createQuery(TblUser.class);
+	        Root<TblUser> userQuery = criteriaQuery.from(TblUser.class);
+
+	        criteriaQuery.where(builder.lessThan(userQuery.get("isExternalUser"), 3));
+        	Query<TblUser> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
+            final List<TblUser> results = query.getResultList();
+            
+            return results;
+            
+	        
+	  }
+
 	
 	
 }

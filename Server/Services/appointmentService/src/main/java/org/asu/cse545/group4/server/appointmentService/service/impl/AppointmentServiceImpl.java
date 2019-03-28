@@ -26,4 +26,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 	{
 		return this.appointmentDAO.searchAppointments(paramTblUser);
 	}
+	
+	@Transactional
+	 public List<TblUser> getEmployees() {
+		return this.appointmentDAO.getEmployees();
+	}
+
+	
 }
