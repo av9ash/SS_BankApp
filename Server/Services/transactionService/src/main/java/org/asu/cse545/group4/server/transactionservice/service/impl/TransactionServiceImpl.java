@@ -76,6 +76,7 @@ public class TransactionServiceImpl implements TransactionService {
 		return this.transactionDAO.getAccountsForUser(user);
 	}
 
+
 	@Transactional
 	public  TblAccount updateAccount(TblAccount account)
 	{
@@ -123,4 +124,11 @@ public class TransactionServiceImpl implements TransactionService {
   {
   	return this.transactionDAO.isMerchant(user);
   }
+
+	
+	@Transactional
+	public  List<TblAccount> searchAccountByAccountParams(TblAccount account)
+	{
+		return this.transactionDAO.searchAccountByAccountParams(account);
+	}
 }

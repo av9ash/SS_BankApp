@@ -16,4 +16,8 @@ public abstract interface LoginService
   public abstract TblUser getUser(TblUser user);
 
   public abstract void updateUser(TblUser user);
+  
+  public abstract TblUser loadUserByUserName(String userName);
+  
+  public abstract void updateUserForAuth(TblUser user);
 }

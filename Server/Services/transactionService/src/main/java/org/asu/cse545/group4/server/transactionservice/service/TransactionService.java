@@ -15,6 +15,7 @@ public abstract interface TransactionService
 
   public abstract String searchAccount(TblUserProfile userProfile);
   
+  
   public abstract TblTransaction getTransaction(TblTransaction transaction);
 
   public abstract List<TblTransaction> getTransactionsForAccount(TblAccount account);
@@ -37,4 +38,6 @@ public abstract interface TransactionService
   public abstract boolean isCustomer(TblUser user);
 
   public abstract boolean isMerchant(TblUser user);
+  
+  public abstract List<TblAccount> searchAccountByAccountParams(TblAccount account);
 }

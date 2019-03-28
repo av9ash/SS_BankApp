@@ -19,6 +19,8 @@ import org.json.*;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import org.asu.cse545.group4.client.utils.AccountAppointmentStrategy;
 import org.asu.cse545.group4.client.utils.UserExclusionStrategy;
 import java.io.IOException;
 import java.util.List;
@@ -144,5 +146,13 @@ public class TransactionRestService
 	  		// authorize check
 	  		this.transactionService.deleteAccount(account);
 	  		return "OK";
+	  }
+	  
+	  @PostMapping(value="/accountByAccountParams",consumes="application/json", produces="application/json")
+	  public @ResponseBody String userAccounts(@RequestBody TblAccount account)
+	  {
+	  		List<TblAccount> accounts = this.transactionService.searchAccountByAccountParams(account);
+	  		Gson gson = new GsonBuilder().setExclusionStrategies(new AccountAppointmentStrategy()).create();
+			return gson.toJson(accounts);
 	  }
 }

@@ -77,9 +77,19 @@ public class LoginServiceImpl implements LoginService {
 		TblUser db_user = this.loginDAO.getUser(user);
 		return db_user;
 	}
+	
+	@Transactional
+	public TblUser loadUserByUserName(String userName) {
+		return this.loginDAO.getUserByUserName(userName);
+	}
 
 	@Transactional
 	public void updateUser(TblUser user) {
 		this.loginDAO.updateUser(user);
+	}
+	
+	@Transactional
+	public void updateUserForAuth(TblUser user) {
+		this.loginDAO.updateUserForAuth(user);
 	}
 }

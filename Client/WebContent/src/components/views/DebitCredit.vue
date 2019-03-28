@@ -86,8 +86,8 @@ export default {
 		const to_account = this.account;
 		const transaction_amount = this.amount;
 		const type = this.typeOfTransaction;
-		const user_id = store.state.user
-
+		const user_id = store.state.user;
+		
 		api
         .request('post', './rest/transaction', {transaction_amount, from_account, to_account, type, user_id  })
 		.then(response => {
@@ -133,8 +133,21 @@ export default {
   created() {
 	console.log("inside created");
 	const userId = store.state.user
+	const token = store.state.token;
+	console.log("token:::"+token);
+	let tok = token.split(' ')[1]
+	console.log("tok:::"+tok)
+	//const head = Authorization: `Bearer ${tok}`;
+	//console.log("head::"+head);
+		
+		const header = {
+			headers: {
+				'Authorization' : token,
+				'Content-Type' : 'application/json'
+			}
+		}
 	api
-        .request('post', './rest/userAccounts', {userId})
+        .request('post', './rest/userAccounts',{userId})
 		.then(response => {
 			var response = response.data;
 			this.accountList = response;

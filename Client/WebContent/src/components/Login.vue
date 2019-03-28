@@ -36,6 +36,7 @@
 <script>
 import api from '../api'
 import store from '../store'
+import axios from 'axios'
 
 export default {
   name: 'Login',
@@ -77,17 +78,11 @@ export default {
         this.errors.push('Password required.')
       }
       if (this.username !== '' && this.password !== '') {
-        /*if (this.username === 'sberad' && this.password === 'password') {
-          this.$emit('authenticated', true)
-          this.$router.replace({ name: 'Dashboard' })
-        } else {
-          this.errors.push('The login and / or password is incorrect')
-        }
-		
-		*/
+        
 		api
         .request('post', './rest/loginUser', { username, password })
          .then(response => {
+		 var header = response.headers;
 		 var data = response.data
 		 if(data == undefined)
 		 {
@@ -95,10 +90,13 @@ export default {
 		 }
 		 else
 		 {
-			console.log("data"+data);
+			//console.log("data"+data);
 			
 				this.$store.commit('SET_USER', data.userId)
 				this.$store.commit('SET_MODULE_MAP',data.moduleMap)
+				console.log("auth::"+header.authorization);
+				this.$store.commit('SET_TOKEN',header.authorization)
+				axios.defaults.headers.common['Authorization'] = header.authorization;
 				this.$emit('authenticated', true)
 				this.$router.replace({ name: 'Dashboard' })
 			
@@ -107,8 +105,14 @@ export default {
 		 .catch(error => {
            this.$store.commit('TOGGLE_LOADING')
            console.log(error)
-    
-           this.response = 'Server appears to be offline'
+			
+		   if(error == 'User Account Locked' || error == 'Invalid Credentials' || error == 'Invalid UserName')
+		   {
+				this.response = error
+		   }
+		   else{
+			this.response = "Server is Offline"
+		   }
            //this.toggleLoading()
          })
       }

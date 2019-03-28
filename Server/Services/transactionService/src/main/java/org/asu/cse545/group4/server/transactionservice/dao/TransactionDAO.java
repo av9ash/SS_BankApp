@@ -43,5 +43,6 @@ public abstract interface TransactionDAO
   public abstract boolean isCustomer(TblUser user);
 
   public abstract boolean isMerchant(TblUser user);
-
+  
+  public abstract List<TblAccount> searchAccountByAccountParams(TblAccount account);
 }

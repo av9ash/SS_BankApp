@@ -68,10 +68,10 @@ public class LoginDAOImpl implements LoginDAO {
         	if(returnedUser.getStatus()!=1) {
         		return null;
         	}else {
-        		String encryptedPass = returnedUser.getPassword();
-            	String rawPass = user.getPassword();
-            	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(14);
-            	if(passwordEncoder.matches(rawPass, encryptedPass)) {
+        		//String encryptedPass = returnedUser.getPassword();
+            	//String rawPass = user.getPassword();
+            	//BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(14);
+            	//if(passwordEncoder.matches(rawPass, encryptedPass)) {
             		Hibernate.initialize(returnedUser);
             		int userId = returnedUser.getIsExternalUser();
             		List<TblCatalog> user1 = getUserFromCatalog(userId);
@@ -84,7 +84,7 @@ public class LoginDAOImpl implements LoginDAO {
             		
                 	return resultUser;
                 	
-            	}else {
+            	/*}else {
             		int incorrectAttempts = returnedUser.getIncorrectAttempts();
             		if(incorrectAttempts>=3) {
             			returnedUser.setStatus(2);
@@ -93,7 +93,7 @@ public class LoginDAOImpl implements LoginDAO {
             		}
             		sessionFactory.getCurrentSession().save(returnedUser);
             		return null;
-            	}
+            	}*/
         		
         	}
         	
@@ -185,4 +185,33 @@ public class LoginDAOImpl implements LoginDAO {
             session.saveOrUpdate(dbUserProfile);
         }
     }
+    
+    public TblUser getUserByUserName(String userName)
+    {
+    	final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<TblUser> criteriaQuery = builder.createQuery(TblUser.class);
+        Root<TblUser> userQuery = criteriaQuery.from(TblUser.class);
+        
+        if(userName != null)
+        {
+        	criteriaQuery.where(builder.equal(userQuery.get("username"),userName));
+        }
+        
+        Query<TblUser> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
+        final List<TblUser> results = query.getResultList();
+        if(!results.isEmpty())
+        {
+        	TblUser returnedUser = results.get(0);
+        	return returnedUser;
+        }else {
+        	return null;
+        }	
+    	
+    }
+
+	
+	public void updateUserForAuth(TblUser user) {
+		this.sessionFactory.getCurrentSession().saveOrUpdate(user);
+	}
+
 }

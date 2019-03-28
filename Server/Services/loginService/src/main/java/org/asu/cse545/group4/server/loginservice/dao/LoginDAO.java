@@ -14,4 +14,8 @@ public abstract interface LoginDAO
   public abstract TblUser getUser(TblUser user);
 
   public abstract void updateUser(TblUser user);
+  
+  public  abstract TblUser getUserByUserName(String userName);
+  
+  public abstract void updateUserForAuth(TblUser user);
 }
