@@ -150,7 +150,7 @@
     <module>../Server/Services/requestService</module>
 	  <module>../Client/Utilities</module>
     <module>../Client/Services/loginRestService</module>
-    <module>../Client/Services/OtpRestService</module>
+    <module>../Client/Services/otpRestService</module>
     <module>../Client/Services/appointmentRestService</module>    
     <module>../Client/Services/transactionRestService</module>
     <module>../Client/Services/requestRestService</module>
