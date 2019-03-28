@@ -136,4 +136,13 @@ public class TransactionRestService
 	  		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
 			return gson.toJson(account);
 	  }
+
+	  @PostMapping(value="/deleteAccount",consumes="application/json", produces="application/json")
+	  public @ResponseBody String deleteAccount(@RequestBody TblAccount account)
+	  {
+	  		// TODO 
+	  		// authorize check
+	  		this.transactionService.deleteAccount(account);
+	  		return "OK";
+	  }
 }

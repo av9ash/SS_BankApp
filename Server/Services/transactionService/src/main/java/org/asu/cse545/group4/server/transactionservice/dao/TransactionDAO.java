@@ -29,4 +29,6 @@ public abstract interface TransactionDAO
   public abstract TblTransaction lastAddedTransaction();
 
   public abstract TblAccount updateAccount(TblAccount account);
+
+  public abstract void deleteAccount(TblAccount account);
 }

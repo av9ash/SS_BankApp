@@ -81,4 +81,10 @@ public class TransactionServiceImpl implements TransactionService {
 	{
 		return this.transactionDAO.updateAccount(account);
 	}
+
+	@Transactional
+	public void deleteAccount(TblAccount account)
+	{
+		this.transactionDAO.deleteAccount(account);
+	}
 }

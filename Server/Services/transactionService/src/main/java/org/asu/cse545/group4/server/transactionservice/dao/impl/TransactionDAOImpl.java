@@ -35,6 +35,7 @@ enum Action
 	DEBIT;
 }
 
+
 @Repository
 public class TransactionDAOImpl implements TransactionDAO {
 	@Autowired
@@ -43,6 +44,10 @@ public class TransactionDAOImpl implements TransactionDAO {
 	private static final int DEBIT=2;
 	private static final int TRANSFER=3;
 	private static final int CRITICAL_TRANSACTION_AMOUNT = 1000;
+
+	private static final int OPEN_ACCOUNT = 1;
+	private static final int CLOSE_ACCOUNT = 2;
+	private static final int DELETE_ACCOUNT = 3;
 
 	public String addTransaction(TblTransaction transaction , int userId)
 	{
@@ -201,12 +206,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 			if (ans == null) {
 				return returnObj.toString();
 			}
-			final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
-			CriteriaQuery<TblAccount> criteriaQuery = builder.createQuery(TblAccount.class);
-			Root<TblAccount> accQuery = criteriaQuery.from(TblAccount.class);
-			criteriaQuery.where(builder.equal(accQuery.get("tblUser") , ans.getTblUser()));
-			Query<TblAccount> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
-			final List<TblAccount> accounts = query.getResultList();			
+			final List<TblAccount> accounts = getAccountsForUser(ans.getTblUser());
 
 			JSONArray jsonArray = new JSONArray();
 			if (accounts != null && !accounts.isEmpty()) 
@@ -299,6 +299,7 @@ public class TransactionDAOImpl implements TransactionDAO {
         CriteriaQuery<TblAccount> criteriaQuery = builder.createQuery(TblAccount.class);
         Root<TblAccount> accountQuery = criteriaQuery.from(TblAccount.class);
         criteriaQuery.where(builder.equal(accountQuery.get("tblUser"), db_user));
+        criteriaQuery.where(builder.equal(accountQuery.get("status"), OPEN_ACCOUNT));
         Query<TblAccount> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
         final List<TblAccount> userAccounts = query.getResultList();            
         return userAccounts;
@@ -333,5 +334,18 @@ public class TransactionDAOImpl implements TransactionDAO {
     	sessionFactory.getCurrentSession().saveOrUpdate(dbAccount);
     	return dbAccount;
     }
+
+    public void deleteAccount(TblAccount account)
+    {
+    	TblAccount dbAccount = sessionFactory.getCurrentSession().get(TblAccount.class , account.getAccountId());
+    	if (dbAccount == null) 
+    	{
+    		return ;
+    	}
+    	dbAccount.setStatus(DELETE_ACCOUNT);
+    	sessionFactory.getCurrentSession().saveOrUpdate(dbAccount);	
+    }
+
+
 
 }

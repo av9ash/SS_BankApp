@@ -22,4 +22,6 @@ public abstract interface TransactionService
   public abstract List<TblAccount> getAccountsForUser(TblUser user);
 
   public abstract TblAccount updateAccount(TblAccount account);
+
+  public abstract void deleteAccount(TblAccount account);
 }
