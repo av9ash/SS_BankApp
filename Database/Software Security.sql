@@ -76,6 +76,7 @@ CREATE TABLE `tbl_account`
 	`account_type` int,
 	`current_amount` bigint,
 	`created_date` datetime,
+	`status` int,
 	
 	PRIMARY KEY (`account_id`)
 );

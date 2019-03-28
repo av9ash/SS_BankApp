@@ -49,6 +49,14 @@ public class TransactionDAOImpl implements TransactionDAO {
 	private static final int CLOSE_ACCOUNT = 2;
 	private static final int DELETE_ACCOUNT = 3;
 
+	private static final int TIER_1 = 1;
+	private static final int TIER_2 = 2;
+	private static final int TIER_3 = 3;
+	private static final int ADMIN = 4;
+	private static final int CUSTOMER = 5;
+	private static final int MERCHANT = 6;
+
+
 	public String addTransaction(TblTransaction transaction , int userId)
 	{
 		TransactionStatus status = validateTransaction(transaction , userId);
@@ -346,6 +354,41 @@ public class TransactionDAOImpl implements TransactionDAO {
     	sessionFactory.getCurrentSession().saveOrUpdate(dbAccount);	
     }
 
+    public boolean isTierOneEmployee(TblUser user)
+    {
+    	TblUser dbUser = sessionFactory.getCurrentSession().get(TblUser.class , user.getUserId());
+    	return dbUser.getIsExternalUser() == TIER_1;
+    }
+
+    public boolean isTierTwoEmployee(TblUser user)
+    {
+    	TblUser dbUser = sessionFactory.getCurrentSession().get(TblUser.class , user.getUserId());
+    	return dbUser.getIsExternalUser() == TIER_2;    	
+    }
+
+    public boolean isTierThreeEmployee(TblUser user)
+    {
+    	TblUser dbUser = sessionFactory.getCurrentSession().get(TblUser.class , user.getUserId());
+    	return dbUser.getIsExternalUser() == TIER_3;    	
+    }
 
 
+    public boolean isAdmin(TblUser user)
+    {
+    	TblUser dbUser = sessionFactory.getCurrentSession().get(TblUser.class , user.getUserId());
+    	return dbUser.getIsExternalUser() == ADMIN;    	
+    }
+
+	
+	public boolean isCustomer(TblUser user)
+    {
+    	TblUser dbUser = sessionFactory.getCurrentSession().get(TblUser.class , user.getUserId());
+    	return dbUser.getIsExternalUser() == CUSTOMER;    	
+    }    
+
+	public boolean isMerchant(TblUser user)
+    {
+    	TblUser dbUser = sessionFactory.getCurrentSession().get(TblUser.class , user.getUserId());
+    	return dbUser.getIsExternalUser() == MERCHANT; 
+    }    
 }
