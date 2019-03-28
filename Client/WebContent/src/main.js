@@ -3,7 +3,9 @@ import 'es6-promise/auto'
 
 // Import System requirements
 import Vue from 'vue'
+import IdleVue from 'idle-vue'
 import VueRouter from 'vue-router'
+import Vuex from 'vuex'
 
 import { sync } from 'vuex-router-sync'
 import routes from './routes'
@@ -19,6 +21,13 @@ import AppView from './components/App.vue'
 //Vue.use(Alert)
 
 // Import Install and register helper items
+
+const eventsHub = new Vue()
+
+const stores = new Vuex.Store({
+  // ...
+})
+
 Vue.filter('count', count)
 Vue.filter('domain', domain)
 Vue.filter('prettyDate', prettyDate)
@@ -26,8 +35,13 @@ Vue.filter('pluralize', pluralize)
 
 Vue.use(VueRouter)
 
+// Vue.use(IdleVue, { eventEmitter: eventsHub, stores })
 
-// Routing logic
+Vue.use(IdleVue, {
+  eventEmitter: eventsHub,
+  idleTime: 300000
+})
+
 var router = new VueRouter({
   routes: routes,
   base: __dirname,
@@ -37,9 +51,23 @@ var router = new VueRouter({
   }
 })
 
+const vm = new Vue({
+  onIdle() {
+    console.log("idle");
+    self.location = '#/login';
+  },
+  onActive() {
+    console.log("active");
+  }
+})
+
+
+// Routing logic
+
+
 // Some middleware to help us ensure the user is authenticated.
 router.beforeEach((to, from, next) => {
-  
+
   //console.log("token::"+router.app.$store.state.token)
   if (
     to.matched.some(record => record.meta.requiresAuth) &&
