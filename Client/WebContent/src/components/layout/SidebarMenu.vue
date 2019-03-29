@@ -63,7 +63,7 @@
         <i class="fa fa-circle-o text-red"></i>
         <span class="page">View</span>
       </a>
-    </router-link>
+    </router-link>z
 
     <li class="header" v-if="moduleMap.ViewAccountModule">Troubleshoot</li>
     <router-link tag="li" class="pageLink" v-if="moduleMap.ViewAccountModule" to="/viewAccount">
@@ -72,7 +72,7 @@
         <span class="page">View Accounts</span>
       </a>
     </router-link>
-	
+
 	<li class="header" v-if="moduleMap.ViewLogFile">System Logs</li>
     <router-link tag="li" v-if="moduleMap.ViewLogFile" class="pageLink" to="/viewLogs">
       <a>

@@ -16,6 +16,7 @@ import ReposView from './components/views/Repos.vue'
 import createAppointmentView from './components/views/createAppointment'
 import accountCreationView from './components/views/accountCreation'
 import updateInformationView from './components/views/updateInformation'
+import viewAppointmentView from './components/views/showAppointment'
 
 // Routes
 const routes = [
@@ -106,6 +107,12 @@ const routes = [
         component: EmailPhoneTransfer,
         name: 'EmailPhoneTransfer',
         meta: {description: 'Email/Phone Operation'}
+      },
+      {
+        path: 'viewAppointment',
+        component: viewAppointmentView,
+        name: 'View Appointment',
+        meta: {description: 'View Appointments'}
       }
     ]
   }, {
