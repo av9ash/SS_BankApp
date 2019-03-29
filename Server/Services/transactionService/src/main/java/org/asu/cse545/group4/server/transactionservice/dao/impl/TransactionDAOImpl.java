@@ -14,6 +14,7 @@ import static java.lang.Math.toIntExact;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.hibernate.query.Query;
 import java.util.List;
@@ -306,8 +307,8 @@ public class TransactionDAOImpl implements TransactionDAO {
         final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
         CriteriaQuery<TblAccount> criteriaQuery = builder.createQuery(TblAccount.class);
         Root<TblAccount> accountQuery = criteriaQuery.from(TblAccount.class);
-        criteriaQuery.where(builder.equal(accountQuery.get("tblUser"), db_user));
-        criteriaQuery.where(builder.equal(accountQuery.get("status"), OPEN_ACCOUNT));
+        Predicate pred = builder.and(builder.equal(accountQuery.get("tblUser"), db_user),builder.equal(accountQuery.get("status"), OPEN_ACCOUNT));
+      	criteriaQuery.where(pred);
         Query<TblAccount> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
         final List<TblAccount> userAccounts = query.getResultList();            
         return userAccounts;
