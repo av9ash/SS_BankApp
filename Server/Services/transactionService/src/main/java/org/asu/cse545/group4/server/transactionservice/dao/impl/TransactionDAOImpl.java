@@ -247,12 +247,17 @@ public class TransactionDAOImpl implements TransactionDAO {
 		{
 			final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
 	        CriteriaQuery<TblUserProfile> criteriaQuery = builder.createQuery(TblUserProfile.class);
-	       Root<TblUserProfile> userQuery = criteriaQuery.from(TblUserProfile.class);       
-	        if(userProfile.getEmail() != null)
+	       Root<TblUserProfile> userQuery = criteriaQuery.from(TblUserProfile.class);  
+	       if(userProfile.getEmail() != null && userProfile.getPhone() != null)
+	       {
+	       		Predicate pred = builder.and(builder.equal(userQuery.get("email"),userProfile.getEmail()),builder.equal(userQuery.get("phone"),userProfile.getPhone()));
+      			criteriaQuery.where(pred);
+	       }     
+	        else if(userProfile.getEmail() != null)
 	       {
 	           criteriaQuery.where(builder.equal(userQuery.get("email"),userProfile.getEmail()));
 	       }        
-	       if(userProfile.getPhone() != null)
+	       else if(userProfile.getPhone() != null)
 	       {
 	           criteriaQuery.where(builder.equal(userQuery.get("phone"),userProfile.getPhone()));
 	       }        
