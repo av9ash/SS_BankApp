@@ -30,6 +30,8 @@ public class TblAppointment implements Serializable {
 	private Date createdDate;
 	@Column(name = "appointment_status")
 	private Integer appointmentStatus;
+	@Column(name = "descript")
+	private String descript;
 
 	public TblAppointment() {
 	}
@@ -39,12 +41,13 @@ public class TblAppointment implements Serializable {
 	}
 
 	public TblAppointment(int appointmentId, TblUser tblUserByAssignedToUserId, TblUser tblUserByAppointmentUserId,
-			Date createdDate, Integer appointmentStatus) {
+			Date createdDate, Integer appointmentStatus, String dscript) {
 		this.appointmentId = appointmentId;
 		this.tblUserByAssignedToUserId = tblUserByAssignedToUserId;
 		this.tblUserByAppointmentUserId = tblUserByAppointmentUserId;
 		this.createdDate = createdDate;
 		this.appointmentStatus = appointmentStatus;
+		this.descript = dscript;
 	}
 
 	public int getAppointmentId() {
@@ -85,5 +88,12 @@ public class TblAppointment implements Serializable {
 
 	public void setAppointmentStatus(Integer appointmentStatus) {
 		this.appointmentStatus = appointmentStatus;
+	}
+	public String getDescript() {
+		return this.descript;
+	}
+
+	public void setDescript(String descript) {
+		this.descript = descript;
 	}
 }

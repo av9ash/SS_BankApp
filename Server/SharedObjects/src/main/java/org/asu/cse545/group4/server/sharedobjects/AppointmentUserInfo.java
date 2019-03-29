@@ -8,15 +8,17 @@ public class AppointmentUserInfo
 	private String lastName;
 	private String email;
 	private String dateCreated;
+	private String descript;
 	
 
 	public AppointmentUserInfo(String firstName, String lastName, 
-				String email, String dateCreated) 
+				String email, String dateCreated, String descript) 
 	{ 
 		this.firstName = firstName; 
 		this.lastName = lastName; 
 		this.email = email; 
 		this.dateCreated = dateCreated; 
+		this.descript = descript;
 	} 
 
 	public String getFirstName() 
@@ -55,6 +57,15 @@ public class AppointmentUserInfo
 	public void setDate(String dateCreated) 
 	{ 
 		this.dateCreated = dateCreated; 
+	} 
+	public String getDescript() 
+	{ 
+		return this.descript; 
+	} 
+
+	public void setDescript(String descript) 
+	{ 
+		this.descript = descript; 
 	} 
 	
 } 

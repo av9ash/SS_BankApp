@@ -47,12 +47,11 @@ public class AppointmentRestService
 			event.setEventName("Appointment created Successfully");
 			eventService.logEvent(event);
 
-
+			return "success";
 		} 
 		
-		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategyAppointment()).create();
 		
-		return gson.toJson(paramTblAppointment);
+		return "No employees exists";
 	  }
 	
 	@PostMapping(value="/searchAppointments", consumes="application/json" , produces = "application/json")

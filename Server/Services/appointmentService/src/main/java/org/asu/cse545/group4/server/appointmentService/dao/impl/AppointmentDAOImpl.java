@@ -63,8 +63,9 @@ public class AppointmentDAOImpl implements AppointmentDAO {
             	String lname = userObj.getTblUserProfile().getLastName();
             	String email = userObj.getTblUserProfile().getEmail();
             	String dateCreated = results.get(i).getCreatedDate().toString();
+            	String descript = results.get(i).getDescript();
 
-            	appointmentInfoObj = new AppointmentUserInfo(fname, lname, email, dateCreated);
+            	appointmentInfoObj = new AppointmentUserInfo(fname, lname, email, dateCreated, descript);
             	finalResult.add(appointmentInfoObj);
             }
             
