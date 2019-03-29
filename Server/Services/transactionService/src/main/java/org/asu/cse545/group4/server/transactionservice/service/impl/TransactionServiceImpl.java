@@ -89,42 +89,6 @@ public class TransactionServiceImpl implements TransactionService {
 		this.transactionDAO.deleteAccount(account);
 	}
 
-	@Transactional
-	public  boolean isTierOneEmployee(TblUser user)
-	{
-		return this.transactionDAO.isTierOneEmployee(user);
-	}
-
-	@Transactional
-  	public  boolean isTierTwoEmployee(TblUser user)
-  	{
-  		return this.transactionDAO.isTierTwoEmployee(user);
-  	}
-
-  @Transactional	
-  public  boolean isTierThreeEmployee(TblUser user)
-  {
-  	return this.transactionDAO.isTierThreeEmployee(user);
-  }
-
-  @Transactional
-  public  boolean isAdmin(TblUser user)
-  {
-  		return this.transactionDAO.isAdmin(user);
-  }
-
-  @Transactional
-  public  boolean isCustomer(TblUser user)
-  {
-  	return this.transactionDAO.isCustomer(user);
-  }
-
-  @Transactional
-  public boolean isMerchant(TblUser user)
-  {
-  	return this.transactionDAO.isMerchant(user);
-  }
-
 	
 	@Transactional
 	public  List<TblAccount> searchAccountByAccountParams(TblAccount account)

@@ -25,19 +25,6 @@ public abstract interface TransactionService
   public abstract TblAccount updateAccount(TblAccount account);
 
   public abstract void deleteAccount(TblAccount account);
-
-
-  public abstract boolean isTierOneEmployee(TblUser user);
-
-  public abstract boolean isTierTwoEmployee(TblUser user);
-
-  public abstract boolean isTierThreeEmployee(TblUser user);
-
-  public abstract boolean isAdmin(TblUser user);
-
-  public abstract boolean isCustomer(TblUser user);
-
-  public abstract boolean isMerchant(TblUser user);
   
   public abstract List<TblAccount> searchAccountByAccountParams(TblAccount account);
 }

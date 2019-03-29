@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.asu.cse545.group4.client.utils.UserExclusionStrategy;
 import org.asu.cse545.group4.server.sharedobjects.TblRequest;
+import org.asu.cse545.group4.server.sharedobjects.TblUser;
 import java.util.List;
 @Controller
 public class RequestRestService
@@ -45,10 +46,11 @@ public class RequestRestService
 
 
 	@GetMapping(value="/pendingRequests" ,  produces = "application/json")
-	public @ResponseBody String getPendingRequests()
+	public @ResponseBody String getPendingRequests(@RequestBody TblUser user)
 	{
-		List<TblRequest> requests = this.requestService.getPendingRequests();
+		List<TblRequest> requests = this.requestService.getPendingRequests(user);
 		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
 		return gson.toJson(requests);
+		
 	}
 }
