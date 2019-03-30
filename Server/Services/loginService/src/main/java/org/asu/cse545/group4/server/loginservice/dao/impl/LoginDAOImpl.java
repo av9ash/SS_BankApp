@@ -27,8 +27,6 @@ public class LoginDAOImpl implements LoginDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-
-
 	public void insertUser(TblUser user) {
 		Session session = this.sessionFactory.getCurrentSession();
 		Date date = new Date();
@@ -41,6 +39,7 @@ public class LoginDAOImpl implements LoginDAO {
 		user.setPassword(hashedPassword);	
 		user.setStatus(1);
 		user.setIncorrectAttempts(0);
+		System.out.println("is_external_user : "+ user.getIsExternalUser());
 		this.sessionFactory.getCurrentSession().save(user);
 		TblUserProfile userProfile = user.getTblUserProfile();
 		userProfile.setTblUser(user);
@@ -77,6 +76,7 @@ public class LoginDAOImpl implements LoginDAO {
             		List<TblCatalog> user1 = getUserFromCatalog(userId);
             		List<Object> resultUser = new ArrayList<>();
             		resultUser.add(returnedUser.getUserId());
+            		resultUser.add(returnedUser.getUsername());
             		resultUser.add(user1.get(0));
             		//return json object
             		
@@ -137,6 +137,7 @@ public class LoginDAOImpl implements LoginDAO {
         return dbUser;
     }
 
+
     public void updateUser(TblUser user)
     {
         Session session = this.sessionFactory.getCurrentSession();
@@ -185,6 +186,7 @@ public class LoginDAOImpl implements LoginDAO {
             session.saveOrUpdate(dbUserProfile);
         }
     }
+
     
     public TblUser getUserByUserName(String userName)
     {
@@ -208,10 +210,41 @@ public class LoginDAOImpl implements LoginDAO {
         }	
     	
     }
-
 	
+	public void unlockUser(TblUser user) {
+
+    	final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<TblUser> criteriaQuery = builder.createQuery(TblUser.class);
+        Root<TblUser> userQuery = criteriaQuery.from(TblUser.class);
+        
+        if(user.getUsername() != null)
+        {
+        	criteriaQuery.where(builder.equal(userQuery.get("username"),user.getUsername()));
+        }
+        
+        Query<TblUser> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
+        final List<TblUser> results = query.getResultList();
+        System.out.println("Inside : unlockUser "+ results.size());
+        if(!results.isEmpty())
+        {
+        	TblUser returnedUser = results.get(0);
+        	if(returnedUser.getStatus()==2) {
+        		returnedUser.setStatus(1);
+        		returnedUser.setIncorrectAttempts(0);
+        		this.sessionFactory.getCurrentSession().saveOrUpdate(returnedUser);
+        		System.out.println("Inside : unlockUser "+returnedUser.getUsername()+" successfully.");
+        	}else {
+        		System.out.println("Inside : unlockUser "+returnedUser.getUsername()+" is already unlocked.");
+        	}
+        	
+        }else {
+        	System.out.println("Requested user not found to update.");
+        }	
+    	
+  
+	}
+
 	public void updateUserForAuth(TblUser user) {
 		this.sessionFactory.getCurrentSession().saveOrUpdate(user);
 	}
-
 }

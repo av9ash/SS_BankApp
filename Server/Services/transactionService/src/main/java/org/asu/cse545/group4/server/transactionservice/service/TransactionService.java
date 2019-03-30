@@ -4,6 +4,7 @@ import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
 import org.asu.cse545.group4.server.sharedobjects.TblUserProfile;
 import org.asu.cse545.group4.server.sharedobjects.TblAccount;
 import org.asu.cse545.group4.server.sharedobjects.TblUser;
+import org.asu.cse545.group4.server.sharedobjects.TblRequest;
 import java.util.List;
 public abstract interface TransactionService
 {
@@ -29,4 +30,6 @@ public abstract interface TransactionService
   public abstract List<TblAccount> searchAccountByAccountParams(TblAccount account);
 
   public abstract boolean isThisUserAccount(TblAccount account, TblUser user);
+
+  public abstract TblAccount createAccount( TblRequest  request  , TblUser approver);
 }

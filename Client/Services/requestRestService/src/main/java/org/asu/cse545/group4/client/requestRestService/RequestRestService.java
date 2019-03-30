@@ -22,11 +22,6 @@ public class RequestRestService
 	@Autowired
 	private RequestService requestService;
 
-	@PostMapping(value="/test" , consumes = "application/json" , produces = "application/json")
-	public @ResponseBody String test(@RequestBody String request)
-	{
-		return this.requestService.test(request);
-	}
 
 	@PostMapping(value="/request" , consumes = "application/json" , produces = "application/json")
 	public @ResponseBody String request(@RequestBody TblRequest request)
@@ -45,12 +40,19 @@ public class RequestRestService
 	}
 
 
-	@GetMapping(value="/pendingRequests" ,  produces = "application/json")
+	@PostMapping(value="/pendingRequests" ,  produces = "application/json")
 	public @ResponseBody String getPendingRequests(@RequestBody TblUser user)
 	{
-		List<TblRequest> requests = this.requestService.getPendingRequests(user);
-		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
-		return gson.toJson(requests);
+		if(requestService.isTierTwoEmployee(user) || requestService.isAdmin(user) || requestService.isTierOneEmployee(user))
+		{
+			List<TblRequest> requests = this.requestService.getPendingRequests(user);
+			Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
+			return gson.toJson(requests);
+		}	
+		else
+		{
+			return "INSUFFICIENT_PRIVILIGES";
+		}
 		
 	}
 }

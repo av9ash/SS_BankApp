@@ -4,6 +4,7 @@ import java.security.Principal;
 import org.asu.cse545.group4.server.transactionservice.service.TransactionService;
 import org.asu.cse545.group4.server.transactionservice.service.TransactionJson;
 import org.asu.cse545.group4.server.transactionservice.service.AccountUser;
+import org.asu.cse545.group4.server.transactionservice.service.RequestUser;
 import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
 import org.asu.cse545.group4.server.sharedobjects.TblAccount;
 import org.asu.cse545.group4.server.sharedobjects.TblEventLog;
@@ -172,13 +173,15 @@ public class TransactionRestService
 
 
 	  @PostMapping(value="/account",consumes="application/json",produces="application/json")
-	  public @ResponseBody String account(@RequestBody TblUser user) 
+	  public @ResponseBody String account(@RequestBody RequestUser reqUser) 
 	  {
 	  	try
 	  	{
+	  		TblUser user = reqUser.getUser();
 	  		TblRequest request = new TblRequest(); 
 	  		request.setTblUserByRequestedBy(user);
 	  		request.setTypeOfRequest(NEW_ACCOUNT);
+	  		request.setTypeOfAccount(reqUser.getRequest().getTypeOfAccount());
 	  		reqService.addRequest(request);
 			logEvent(NEW_ACCOUNT_REQUEST, user.getUserId() , "OK", NEW_ACCOUNT);
 			return "OK";
@@ -187,6 +190,27 @@ public class TransactionRestService
 		{
 			// handle 
 			return e.toString();
+		}
+	  }
+
+	  @PostMapping(value="/approveNewAccount",consumes="application/json",produces="application/json")
+	  public @ResponseBody String approveAccountCreate(@RequestBody RequestUser reqUser)
+	  {
+	  	try
+	  	{
+	  		// return ""+reqUser.getRequest().getRequestId() + reqUser.getApprover().getUserId() ;
+	  		TblAccount account = this.transactionService.createAccount( reqUser.getRequest() , reqUser.getUser() );
+	  		if (account == null) {
+	  			return "ERROR";
+	  		}
+	  		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
+			return gson.toJson(account);
+		}
+		catch(Exception e)
+		{
+			// handle 
+			throw e;
+
 		}
 	  }
 }

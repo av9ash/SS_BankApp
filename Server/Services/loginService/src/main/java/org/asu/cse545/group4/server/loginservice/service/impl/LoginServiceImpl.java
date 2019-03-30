@@ -3,11 +3,9 @@ package org.asu.cse545.group4.server.loginservice.service.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.asu.cse545.group4.server.loginservice.dao.LoginDAO;
 import org.asu.cse545.group4.server.loginservice.service.LoginService;
-import org.asu.cse545.group4.server.sharedobjects.ModuleList;
 import org.asu.cse545.group4.server.sharedobjects.TblCatalog;
 import org.asu.cse545.group4.server.sharedobjects.TblUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +24,6 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Transactional
-	//public Map<Integer, Map<String, Boolean>> searchUser(TblUser user)
 	public Map<String, Object> searchUser(TblUser user)
 	{
 		List<Object> returnedUser = this.loginDAO.searchUser(user);
@@ -34,7 +31,7 @@ public class LoginServiceImpl implements LoginService {
 		if(returnedUser!=null) {
 			//Map<Integer,Map<String,Boolean>> returnedModuleList = new HashMap<>();
 
-			String catalogDesc = ((TblCatalog) returnedUser.get(1)).getCatalogCategoryDescription();
+			String catalogDesc = ((TblCatalog) returnedUser.get(2)).getCatalogCategoryDescription();
 
 			String[] allDesc = catalogDesc.split(",");
 
@@ -62,6 +59,7 @@ public class LoginServiceImpl implements LoginService {
 
 			//returnedModuleList.put((Integer)returnedUser.get(0), moduleList);
 			returnedModuleList.put("userId",(Integer)returnedUser.get(0));
+			returnedModuleList.put("userName", returnedUser.get(1));
 			returnedModuleList.put("moduleMap", moduleList);
 
 			return returnedModuleList;
@@ -87,9 +85,16 @@ public class LoginServiceImpl implements LoginService {
 	public void updateUser(TblUser user) {
 		this.loginDAO.updateUser(user);
 	}
+
+	@Transactional
+	public void unlockUser(TblUser user) {
+		this.loginDAO.unlockUser(user);
+	}
+	
 	
 	@Transactional
 	public void updateUserForAuth(TblUser user) {
 		this.loginDAO.updateUserForAuth(user);
+
 	}
 }
