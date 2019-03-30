@@ -166,8 +166,9 @@ export default {
 		api.request('post','./rest/generateOtp',{userId})
 			.then(response => {
 				console.log("succes");
+				alert("Enter OTP");
 				this.showOTPBox = true
-				console.log("true");
+				//console.log("true");
 				
 			})
 			.catch(error => {
@@ -215,7 +216,7 @@ export default {
 							{
 								console.log("good");
 								alert("Transaction Submitted!");
-								this.otpValue = undefined
+								//this.otpValue = undefined
 								this.showOTPBox = false
 							}
 							else if(response === "")
@@ -245,6 +246,7 @@ export default {
 					})
 				
 		this.showOTPBox = false
+		this.otpValue = undefined
 	
 	},
 	

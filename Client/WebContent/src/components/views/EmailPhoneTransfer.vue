@@ -84,7 +84,7 @@
 				</div>
 			</div>
 			<div class="text-right">
-		  <button type="submit" class="btn btn-primary" v-on:click = "enableOtpBox()">Submit</button>
+		  <button type="submit" class="btn btn-primary" v-on:click="enableOtpBox()">Submit</button>
 		  </div>
 			</div>
 		<div v-if="showOTPBox">
@@ -127,8 +127,9 @@ export default {
 	  displayedEmail: undefined,
 	  displayedPhone: undefined,
 	  selectedAccount: undefined,
-	  accounts: [],
-	  account: undefined
+	  account: undefined,
+	  otpValue: undefined,
+	  showOTPBox: false
     }
   },
   methods: {
@@ -144,7 +145,7 @@ export default {
 		
 		if(this.email == '')
 		{
-			this.email = undefined
+			this.email = undefined;
 		}
 		if(this.phone == '')
 		{
@@ -174,9 +175,10 @@ export default {
 		const userId = store.state.user
 		api.request('post','./rest/generateOtp',{userId})
 			.then(response => {
+				alert("Enter OTP");
 				console.log("succes");
 				this.showOTPBox = true
-				console.log("true");
+				//console.log("true");
 				
 			})
 			.catch(error => {
@@ -196,6 +198,7 @@ export default {
 		{
 			return false;
 		}
+		return validateValue
 	},
 	accountFilter(account) {
 			console.log("in select");
@@ -211,32 +214,60 @@ export default {
 				alert("Enter all required values");
 				return;
 			}
-			const from_account = this.account;
+		const from_account = this.account;
 		const to_account = this.selectedAccount.account_id;
 		const transaction_amount = this.amount;
 		const type = 3;
 		const user_id = store.state.user
 		
-		api
-        .request('post', './rest/transaction', {transaction_amount, from_account, to_account, type, user_id  })
-		.then(response => {
-			var response = response.data;
-			console.log("response");
-			if(response === 'OK')
-			{
-				console.log("good");
-				alert("Transaction Submitted!");
-			}
-			else if(response === "")
-			{
-				alert("Transaction Declined! Insufficient Balance");
-			}
-		
-		})
-		.catch(error => {
-           console.log("error");
-		   alert("Error in Transaction! Please contact administrator");
-         })
+					const otpValue = this.otpValue;
+					api.
+					request('post','./rest/validateOtp',{otpValue})
+					.then(response =>
+					{
+						//console.log("response::"+JSON.stringify(response))
+						if(response.data === "SUCCESS")
+						{
+
+
+						api
+				        .request('post', './rest/transaction', {transaction_amount, from_account, to_account, type, user_id  })
+						.then(response => {
+							var response = response.data;
+							console.log("response"+response);
+							if(response === 'OK')
+							{
+								console.log("good");
+								alert("Transaction Submitted!");
+							}
+							else if(response === "")
+							{
+								alert("Transaction Declined! Insufficient Balance");
+							}
+						
+						})
+						.catch(error => {
+				           console.log("error");
+						   alert("Error in Transaction! Please contact administrator");
+				         })
+				        }
+				        else
+						{
+							alert("invalid otp");
+							this.showOTPBox = false
+							return;
+						}
+					})
+					.catch(error => {
+							alert("error in validating otp");
+							this.showOTPBox = true
+							this.showOTPBox = false
+							return;
+					})
+				
+		this.showOTPBox = false
+		this.otpValue = undefined
+
 		},
 		
 		

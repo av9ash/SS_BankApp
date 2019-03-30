@@ -24,20 +24,7 @@
                   number="$236.61"></info-box>
       </div>
       <!-- /.col -->
-      <div class="col-md-4 col-sm-6 col-xs-12">
-        <info-box color-class="bg-green"
-                  :icon-classes="['ion', 'ion-card']"
-                  text="Deposits"
-                  number="+$64.00"></info-box>
-      </div>
-      <!-- /.col -->
-
-      <div class="col-md-4 col-sm-6 col-xs-12">
-        <info-box color-class="bg-red"
-                  :icon-classes="['ion', 'ion-card']"
-                  text="Withdrawals"
-                  number="-$588.75"></info-box>
-      </div>
+      
       <!-- /.col -->
 
     </div>

@@ -6,16 +6,13 @@
 
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
-        <div class="pull-left image">
+        <!--<div class="pull-left image">
           <img :src="user.avatar" />
-        </div>
+        </div>-->
         <div class="pull-left info">
           <div>
             <p class="white">{{user.displayName}}</p>
           </div>
-          <a href="javascript:;">
-            <i class="fa fa-circle text-success"></i> Online
-          </a>
         </div>
       </div>
 

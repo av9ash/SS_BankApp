@@ -1,5 +1,5 @@
 <template>
-  <div :class="['wrapper', classes]">
+  <div :class="['wrapper', classes]" style="height:inherit">
 
     <!-- Horizontal bar at top. Contains messages, notifications, tasks and user menu -->
     <dash-header :user="user"></dash-header>

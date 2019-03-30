@@ -30,11 +30,17 @@
         <span class="page">Email/Phone</span>
       </a>
     </router-link>
-    <li class="header" v-if="moduleMap.RequestModule">View Transactions </li>
+    <li class="header" v-if="moduleMap.RequestModule">Authorize</li>
     <router-link tag="li" class="pageLink" v-if="moduleMap.RequestModule" to="/approvedecline">
       <a>
         <i class="fa fa-tasks"></i>
-        <span class="page">Approve/Decline</span>
+        <span class="page">Approve/Decline Transactions</span>
+      </a>
+    </router-link>
+	<router-link tag="li" class="pageLink" v-if="moduleMap.RequestModule" to="/accountApproval">
+      <a>
+        <i class="fa fa-tasks"></i>
+        <span class="page">Approve/Decline Accounts</span>
       </a>
     </router-link>
 
@@ -63,7 +69,7 @@
         <i class="fa fa-circle-o text-red"></i>
         <span class="page">View</span>
       </a>
-    </router-link>z
+    </router-link>
 
     <li class="header" v-if="moduleMap.ViewAccountModule">Troubleshoot</li>
     <router-link tag="li" class="pageLink" v-if="moduleMap.ViewAccountModule" to="/viewAccount">

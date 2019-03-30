@@ -18,6 +18,8 @@ import accountCreationView from './components/views/accountCreation'
 import updateInformationView from './components/views/updateInformation'
 import viewAppointmentView from './components/views/showAppointment'
 import RequestProcessing from './components/views/RequestProcessing'
+import createAccount from './components/views/createAccount'
+import AccountApproval from './components/views/AccountApproval'
 
 // Routes
 const routes = [
@@ -85,7 +87,7 @@ const routes = [
         meta: {description: 'Creation of an appointment'}
       }, {
         path: 'accountCreation',
-        component: accountCreationView,
+        component: createAccount,
         name: 'Account Creation',
         meta: {description: 'Creation of an account'}
       }, {
@@ -120,6 +122,12 @@ const routes = [
         component: RequestProcessing,
         name: 'Request Processing',
         meta: {description: 'Request Processing'}
+      },
+      {
+        path: 'accountApproval',
+        component: AccountApproval,
+        name: 'Account Approval',
+        meta: {description: 'Account Approval'}
       }
     ]
   }, {
