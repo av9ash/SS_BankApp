@@ -45,12 +45,19 @@ public class RequestRestService
 	}
 
 
-	@GetMapping(value="/pendingRequests" ,  produces = "application/json")
+	@PostMapping(value="/pendingRequests" ,  produces = "application/json")
 	public @ResponseBody String getPendingRequests(@RequestBody TblUser user)
 	{
-		List<TblRequest> requests = this.requestService.getPendingRequests(user);
-		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
-		return gson.toJson(requests);
+		if(requestService.isTierTwoEmployee(user) || requestService.isAdmin(user) || requestService.isTierOneEmployee(user))
+		{
+			List<TblRequest> requests = this.requestService.getPendingRequests(user);
+			Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
+			return gson.toJson(requests);
+		}	
+		else
+		{
+			return "INSUFFICIENT_PRIVILIGES";
+		}
 		
 	}
 }
