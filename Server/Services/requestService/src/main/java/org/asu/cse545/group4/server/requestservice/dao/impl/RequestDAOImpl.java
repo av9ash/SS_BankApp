@@ -30,9 +30,9 @@ public class RequestDAOImpl implements RequestDAO {
 	private static final int TIER_1 = 1;
 	private static final int TIER_2 = 2;
 	private static final int TIER_3 = 3;
-	private static final int ADMIN = 4;
-	private static final int CUSTOMER = 5;
-	private static final int MERCHANT = 6;
+	private static final int ADMIN = 3;
+	private static final int CUSTOMER = 4;
+	private static final int MERCHANT = 5;
 
 
 	public String test(String req)

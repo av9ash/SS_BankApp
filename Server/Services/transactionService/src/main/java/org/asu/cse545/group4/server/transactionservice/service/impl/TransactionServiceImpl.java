@@ -63,6 +63,10 @@ public class TransactionServiceImpl implements TransactionService {
 		TblUser decliner = new TblUser(declinerId);
 		if (reqService.isTierTwoEmployee(decliner) || reqService.isAdmin(decliner) || reqService.isTierOneEmployee(decliner)) 
 		{
+			TblTransaction transaction = new TblTransaction(transactionId);
+			TblRequest request = reqService.getRequest(transaction);
+			request.setTblUserByRequestAssignedTo(decliner);
+			reqService.assignTo(request);
 			return this.transactionDAO.declineTransaction(transactionId,declinerId);
 		}
 		else
