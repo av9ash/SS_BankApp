@@ -38,4 +38,6 @@ public abstract interface TransactionDAO
   public abstract boolean isThisUserAccount(TblAccount account, TblUser user);
 
   public abstract TblAccount createAccount(TblRequest  request  , TblUser approver);
+
+  public abstract TblUser getUser(TblUser user);
 }

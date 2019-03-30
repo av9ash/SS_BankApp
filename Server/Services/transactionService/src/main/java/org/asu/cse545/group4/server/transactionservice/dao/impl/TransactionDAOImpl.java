@@ -398,4 +398,10 @@ public class TransactionDAOImpl implements TransactionDAO {
     	this.sessionFactory.getCurrentSession().saveOrUpdate(dbRequest);
     	return newAccount;
     }
+
+    public  TblUser getUser(TblUser user)
+    {
+    	TblUser dbUser = this.sessionFactory.getCurrentSession().get(TblUser.class, user.getUserId());
+    	return dbUser;
+    }
 }
