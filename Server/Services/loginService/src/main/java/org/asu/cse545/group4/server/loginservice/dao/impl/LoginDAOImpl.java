@@ -148,14 +148,14 @@ public class LoginDAOImpl implements LoginDAO {
 
         Date date = new Date();
         dbUser.setModifiedDate(date);
-        if(user.getPassword() != null)
-        {
-            //encrypting password
-            String userPass =  user.getPassword();
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(14);
-            String hashedPassword = passwordEncoder.encode(userPass);
-            dbUser.setPassword(hashedPassword);   
-        }
+        // if(user.getPassword() != null)
+        // {
+        //     //encrypting password
+        //     String userPass =  user.getPassword();
+        //     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(14);
+        //     String hashedPassword = passwordEncoder.encode(userPass);
+        //     dbUser.setPassword(hashedPassword);   
+        // }
         session.saveOrUpdate(dbUser);
         TblUserProfile userProfile = user.getTblUserProfile();
         if(userProfile != null)
