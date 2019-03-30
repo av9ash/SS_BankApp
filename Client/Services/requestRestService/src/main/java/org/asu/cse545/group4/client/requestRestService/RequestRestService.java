@@ -62,7 +62,7 @@ public class RequestRestService
 		
 	}
 	
-	@GetMapping(value="/searchEvent" ,  produces = "application/json")
+	@PostMapping(value="/searchEvent" , consumes = "application/json" , produces = "application/json")
 	public @ResponseBody String searchEvent(@RequestBody TblUser user)
 	{
 		System.out.println("inside search Event");
