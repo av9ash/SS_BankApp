@@ -65,7 +65,7 @@ CREATE TABLE `tbl_request`
 	`requested_by` int,
 	`type_of_request` int,
 	`request_assigned_to` int,
-	
+	`type_of_account` int,
 	PRIMARY KEY (`request_id`)
 );
 
