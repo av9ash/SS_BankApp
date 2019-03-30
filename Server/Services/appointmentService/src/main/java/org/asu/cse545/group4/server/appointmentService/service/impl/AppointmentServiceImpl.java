@@ -18,11 +18,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 	@Transactional
 	public void insertAppointment(TblAppointment paramTblAppointment) {
-		this.appointmentDAO.insertAppointment(paramTblAppointment);
+		 this.appointmentDAO.insertAppointment(paramTblAppointment);
 	}
 	
 	@Transactional
-	public  List<AppointmentUserInfo>  searchAppointments(TblUser paramTblUser)
+	public List<AppointmentUserInfo>  searchAppointments(TblUser paramTblUser)
 	{
 		return this.appointmentDAO.searchAppointments(paramTblUser);
 	}

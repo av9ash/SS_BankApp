@@ -9,7 +9,7 @@
               <h3 class="box-title">Enter the following: </h3>
             </div>
             <!-- Input Addons -->
-            <form method="POST" action="">
+            
             <div class="box-body">
 
               <!-- calendar group -->
@@ -21,12 +21,13 @@
 
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-file-text"></i></span>
-                <input class="form-control" placeholder="Description" required>
+                <input class="form-control" placeholder="Description" required id="description_value"/>
               </div>
               <br>
             </div>
-              <button type="submit" class="'btn btn-primary btn-lg '">Submit</button>
-            </form>
+              <button type="submit" class="'btn btn-primary btn-lg '" v-on:click="submit()">Submit</button>
+
+            
             <br>
             <br>
             <br>
@@ -50,6 +51,8 @@
   </div>
 </template>
 <script>
+import api from '../../api'
+import store from '../../store'
   require('moment');
 
   export default {
@@ -63,7 +66,39 @@
     methods: {
       clearInput (vueModel) {
         vueModel = ''
-      }
+      },
+    
+      submit()
+	{
+        console.log("enter submit()");
+        const user_id = store.state.user;
+        console.log("user_Id", user_id);
+        const obj = {"userId":user_id};
+        const tblUserByAppointmentUserId = obj;
+        const descript = document.getElementById("description_value").value;        
+        
+        api
+        .request('post','./rest/createAppointment',{tblUserByAppointmentUserId, descript})
+        .then(response => {
+            var response = response.data;
+            console.log("response");
+            if(response === 'success')
+			{
+				console.log("good");
+				alert("Appointment Created!");
+			}
+			else if(response === "FAIL")
+			{
+				alert("Unable to create appointment");
+			}
+            
+        })
+        .catch(error => {
+           console.log("error");
+		   alert("Error in Appointment creation! Please contact administrator");
+         })
+        
+	}
     }
   }
 

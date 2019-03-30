@@ -6,7 +6,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.CriteriaQuery;
 
-
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.asu.cse545.group4.server.appointmentService.dao.AppointmentDAO;
 import org.asu.cse545.group4.server.sharedobjects.TblAppointment;
 import org.asu.cse545.group4.server.sharedobjects.TblUser;
@@ -24,21 +24,23 @@ public class AppointmentDAOImpl implements AppointmentDAO {
 	private SessionFactory sessionFactory;
 
 	public void insertAppointment(TblAppointment paramTblAppointment) {
-		Session session = this.sessionFactory.getCurrentSession();
-		Date date = new Date();
-		paramTblAppointment.setCreatedDate(date);
-		//paramTblAppointment.setAppointmentStatus();
-		this.sessionFactory.getCurrentSession().save(paramTblAppointment);
 		
-		TblUser user = paramTblAppointment.getTblUserByAppointmentUserId();
-		Set<TblAppointment> tblAppointmentsForAppointmentUserId =  user.getTblAppointmentsForAppointmentUserId();
-		tblAppointmentsForAppointmentUserId.add(paramTblAppointment);
-		user.setTblAppointmentsForAppointmentUserId(tblAppointmentsForAppointmentUserId);
-		
-		
-		
-		session.saveOrUpdate(user);
 
+			Session session = this.sessionFactory.getCurrentSession();
+			Date date = new Date();
+			paramTblAppointment.setCreatedDate(date);
+			//paramTblAppointment.setAppointmentStatus();
+			
+			this.sessionFactory.getCurrentSession().save(paramTblAppointment);
+
+			
+			TblUser user = paramTblAppointment.getTblUserByAppointmentUserId();
+			Set<TblAppointment> tblAppointmentsForAppointmentUserId =  user.getTblAppointmentsForAppointmentUserId();
+			tblAppointmentsForAppointmentUserId.add(paramTblAppointment);
+			user.setTblAppointmentsForAppointmentUserId(tblAppointmentsForAppointmentUserId);
+			
+			session.saveOrUpdate(user);
+			
 	}
 
 	@Override
