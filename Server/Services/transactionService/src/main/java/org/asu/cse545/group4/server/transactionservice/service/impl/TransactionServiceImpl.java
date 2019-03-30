@@ -20,8 +20,9 @@ public class TransactionServiceImpl implements TransactionService {
 	@Autowired
 	private RequestService reqService;
 
+
 	@Transactional
-	public String addTransaction(TblTransaction transaction, int userId) {
+	public String addTransaction(TblTransaction transaction, int userId, int type) {
 		String status = this.transactionDAO.addTransaction(transaction,userId);
 		String[] responses = status.split(":");
 		if (responses[0].equals("OK")) {
@@ -31,6 +32,7 @@ public class TransactionServiceImpl implements TransactionService {
 		 	TblRequest newReq = new TblRequest();
 		 	newReq.setTblUserByRequestedBy(user);
 		 	newReq.setTblTransaction(thisTrans);
+		 	newReq.setTypeOfRequest(type);
 		 	reqService.addRequest(newReq);
 		 }		 
 		 return responses[0];		 
