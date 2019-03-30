@@ -1,6 +1,8 @@
 package org.asu.cse545.group4.client.loginRestService;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -36,6 +38,14 @@ public class LoginRestService
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	@PostMapping(value="/getAllLockedUsers",consumes="application/json",produces="application/json")
+	public @ResponseBody String getAllLockedUsers() {
+		List<TblUser> lockedUsers = loginService.getAllLockedUsers();
+		Map<String, Object> lockedUserResult = new HashMap<>();
+		lockedUserResult.put("users", lockedUsers);
+		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
+		return gson.toJson(lockedUserResult);
+	}
 
 	@PostMapping(value="/insertUser",consumes="application/json",produces="application/json")
 	public @ResponseBody String verify(@RequestBody TblUser newUser) {
