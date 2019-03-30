@@ -22,11 +22,6 @@ public class RequestRestService
 	@Autowired
 	private RequestService requestService;
 
-	@PostMapping(value="/test" , consumes = "application/json" , produces = "application/json")
-	public @ResponseBody String test(@RequestBody String request)
-	{
-		return this.requestService.test(request);
-	}
 
 	@PostMapping(value="/request" , consumes = "application/json" , produces = "application/json")
 	public @ResponseBody String request(@RequestBody TblRequest request)
