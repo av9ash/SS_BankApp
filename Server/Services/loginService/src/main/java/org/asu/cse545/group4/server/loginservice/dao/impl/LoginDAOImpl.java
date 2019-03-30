@@ -149,27 +149,19 @@ public class LoginDAOImpl implements LoginDAO {
 
         Date date = new Date();
         dbUser.setModifiedDate(date);
-        // if(user.getPassword() != null)
-        // {
-        //     //encrypting password
-        //     String userPass =  user.getPassword();
-        //     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(14);
-        //     String hashedPassword = passwordEncoder.encode(userPass);
-        //     dbUser.setPassword(hashedPassword);   
-        // }
-        session.saveOrUpdate(dbUser);
+        
         TblUserProfile userProfile = user.getTblUserProfile();
         if(userProfile != null)
         {        
             TblUserProfile dbUserProfile = dbUser.getTblUserProfile();
-            if(userProfile.getFirstName() != null)
+           /* if(userProfile.getFirstName() != null)
                 dbUserProfile.setFirstName(userProfile.getFirstName());
             if(userProfile.getMiddleName() != null)
                 dbUserProfile.setMiddleName(userProfile.getMiddleName());
             if(userProfile.getLastName() != null) 
                 dbUserProfile.setLastName(userProfile.getLastName());
             if(userProfile.getEmail() != null) 
-                dbUserProfile.setEmail(userProfile.getEmail());
+                dbUserProfile.setEmail(userProfile.getEmail()); */
             if(userProfile.getPhone() != null) 
                 dbUserProfile.setPhone(userProfile.getPhone());
             if(userProfile.getAddress1() != null) 
@@ -184,7 +176,9 @@ public class LoginDAOImpl implements LoginDAO {
                 dbUserProfile.setZip(userProfile.getZip());
             dbUserProfile.setTblUser(dbUser);        
             session.saveOrUpdate(dbUserProfile);
+            dbUser.setTblUserProfile(dbUserProfile);
         }
+        session.saveOrUpdate(dbUser);
     }
 
     
