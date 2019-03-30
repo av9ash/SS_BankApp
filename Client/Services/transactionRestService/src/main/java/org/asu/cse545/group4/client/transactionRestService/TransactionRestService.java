@@ -44,9 +44,19 @@ public class TransactionRestService
 	private final static String TRANSACTION_APPROVED = "Transaction approval by User: ";
 	private final static String TRANSACTION_DECLINED = "Transaction decline by User: ";
 	private final static String NEW_ACCOUNT_REQUEST = "Request for new account ";
+	private final static String EVENT_ACCOUNT_UPDATED_STR = "Account updated by User: ";
+	private final static String EVENT_ACCOUNT_DELETED_STR = "Account deleted by User: ";
+	private final static String EVENT_ACCOUNT_NEW_REQ_STR = "New Account requested by User: ";
+	private final static String EVENT_ACCOUNT_NEW_APPROVED_STR = "New Account approved by User: ";
+
+
 	private final static int NEW_TRANSACTION = 2;
 	private final static int APPROVE_TRANSACTION = 3;
 	private final static int DECLINE_TRANSACTION = 4;
+	private final static int EVENT_UPDATE_ACCOUNT = 5;
+	private final static int EVENT_DELETE_ACCOUNT = 6;
+	private final static int EVENT_CREATE_ACCOUNT_REQUEST = 7;
+	private final static int EVENT_CREATE_ACCOUNT_APPROVED = 8;
 
 
 	private static final int FINANCE = 1;
@@ -55,11 +65,19 @@ public class TransactionRestService
 
 	private void logEvent(String message, int userId, String response, int eventType)
 	{
+		TblUser dbUser = transactionService.getUser(new TblUser(userId));
+		if (dbUser == null) {
+			return;
+		}
+		TblUserProfile profile = dbUser.getTblUserProfile();
 		TblEventLog event = new TblEventLog();
 		event.setEventType(eventType);
 		StringBuilder sb = new StringBuilder();
 		sb.append(message);
-		sb.append(userId);
+		sb.append(" ");
+		sb.append(profile.getFirstName());
+		sb.append(" ");
+		sb.append(profile.getLastName());
 		sb.append(":").append(response);
 		event.setEventName(sb.toString());
 		eventService.logEvent(event);
@@ -148,7 +166,10 @@ public class TransactionRestService
 	  public @ResponseBody String updateAccount(@RequestBody AccountUser accUser)
 	  {
 	  		TblAccount account = accUser.getAccount();
-	  		this.transactionService.updateAccount( account , accUser.getUser());
+	  		account = this.transactionService.updateAccount( account , accUser.getUser());
+	  		if (account != null) {
+	  			logEvent(EVENT_ACCOUNT_UPDATED_STR, accUser.getUser().getUserId() , "OK", EVENT_UPDATE_ACCOUNT);
+	  		}
 	  		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
 			return gson.toJson(account);
 	  }
@@ -159,8 +180,11 @@ public class TransactionRestService
 	  		// TODO 
 	  		// authorize check
 	  		TblAccount account = accUser.getAccount();
-	  		return this.transactionService.deleteAccount(account, accUser.getUser());
-	  		
+	  		String resp = this.transactionService.deleteAccount(account, accUser.getUser());
+	  		if (resp.equals("SUCCESS")) {
+	  			logEvent(EVENT_ACCOUNT_DELETED_STR, accUser.getUser().getUserId() , "OK", EVENT_DELETE_ACCOUNT);
+	  		}
+	  		return resp;	  		
 	  }
 	  
 	  @PostMapping(value="/accountByAccountParams",consumes="application/json", produces="application/json")
@@ -184,7 +208,7 @@ public class TransactionRestService
 	  		request.setTypeOfRequest(NEW_ACCOUNT);
 	  		request.setTypeOfAccount(reqUser.getRequest().getTypeOfAccount());
 	  		reqService.addRequest(request);
-			logEvent(NEW_ACCOUNT_REQUEST, user.getUserId() , "OK", NEW_ACCOUNT);
+			logEvent(EVENT_ACCOUNT_NEW_REQ_STR, user.getUserId() , "OK", NEW_ACCOUNT);
 			return "OK";
 		}
 		catch(Exception e)
@@ -201,6 +225,9 @@ public class TransactionRestService
 	  	{
 	  		// return ""+reqUser.getRequest().getRequestId() + reqUser.getApprover().getUserId() ;
 	  		TblAccount account = this.transactionService.createAccount( reqUser.getRequest() , reqUser.getUser() );
+	  		if (account != null) {
+	  			logEvent(EVENT_ACCOUNT_NEW_APPROVED_STR , reqUser.getUser().getUserId() , "OK" , EVENT_CREATE_ACCOUNT_APPROVED);
+	  		}
 	  		if (account == null) {
 	  			return "ERROR";
 	  		}

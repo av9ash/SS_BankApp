@@ -149,4 +149,10 @@ public class TransactionServiceImpl implements TransactionService {
 			return null;
 		}
 	}
+
+	@Transactional
+	public  TblUser getUser(TblUser user)
+	{
+		return this.transactionDAO.getUser(user);
+	}
 }
