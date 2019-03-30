@@ -317,7 +317,8 @@ public class TransactionDAOImpl implements TransactionDAO {
 		final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
 		CriteriaQuery<TblAccount> criteriaQuery = builder.createQuery(TblAccount.class);
         Root<TblAccount> accountQuery = criteriaQuery.from(TblAccount.class);
-        criteriaQuery.where(builder.equal(accountQuery.get("accountId"), account.getAccountId()));
+        Predicate pred = builder.and( builder.equal(accountQuery.get("accountId"), account.getAccountId()) ,builder.equal(accountQuery.get("status"), OPEN_ACCOUNT));
+        criteriaQuery.where(pred);
         Query<TblAccount> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
         final List<TblAccount> accounts = query.getResultList();
         if(accounts.isEmpty())
@@ -342,7 +343,7 @@ public class TransactionDAOImpl implements TransactionDAO {
     }
 
 
-    public TblAccount updateAccount(TblAccount account)
+    public TblAccount updateAccount(TblAccount account, TblUser user)
     {
     	if (account == null) {
     		return null;
@@ -358,7 +359,7 @@ public class TransactionDAOImpl implements TransactionDAO {
     	return dbAccount;
     }
 
-    public void deleteAccount(TblAccount account)
+    public void deleteAccount(TblAccount account, TblUser user)
     {
     	TblAccount dbAccount = sessionFactory.getCurrentSession().get(TblAccount.class , account.getAccountId());
     	if (dbAccount == null) 
@@ -369,5 +370,10 @@ public class TransactionDAOImpl implements TransactionDAO {
     	sessionFactory.getCurrentSession().saveOrUpdate(dbAccount);	
     }
 
+    public boolean isThisUserAccount(TblAccount account, TblUser user)
+    {
+    	TblAccount dbAccount = this.sessionFactory.getCurrentSession().get(TblAccount.class , account.getAccountId());
+    	return dbAccount.getTblUser().getUserId() == user.getUserId();
+    }
         
 }

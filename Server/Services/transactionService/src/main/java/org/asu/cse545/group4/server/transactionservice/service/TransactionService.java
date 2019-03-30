@@ -22,9 +22,11 @@ public abstract interface TransactionService
 
   public abstract List<TblAccount> getAccountsForUser(TblUser user);
 
-  public abstract TblAccount updateAccount(TblAccount account);
+  public abstract TblAccount updateAccount(TblAccount account, TblUser user);
 
-  public abstract void deleteAccount(TblAccount account);
+  public abstract String deleteAccount(TblAccount account, TblUser user);
   
   public abstract List<TblAccount> searchAccountByAccountParams(TblAccount account);
+
+  public abstract boolean isThisUserAccount(TblAccount account, TblUser user);
 }

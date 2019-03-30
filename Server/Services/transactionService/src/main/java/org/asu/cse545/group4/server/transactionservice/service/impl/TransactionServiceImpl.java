@@ -78,15 +78,27 @@ public class TransactionServiceImpl implements TransactionService {
 
 
 	@Transactional
-	public  TblAccount updateAccount(TblAccount account)
+	public  TblAccount updateAccount(TblAccount account, TblUser user)
 	{
-		return this.transactionDAO.updateAccount(account);
+		if ( isThisUserAccount(account,user) || reqService.isTierTwoEmployee(user) || reqService.isAdmin(user))
+		{
+			return this.transactionDAO.updateAccount(account,user);
+		}
+		return null;		
 	}
 
 	@Transactional
-	public void deleteAccount(TblAccount account)
+	public String deleteAccount(TblAccount account, TblUser user)
 	{
-		this.transactionDAO.deleteAccount(account);
+		if ( reqService.isTierTwoEmployee(user) || reqService.isAdmin(user))
+		{
+			this.transactionDAO.deleteAccount(account,user);
+			return "SUCCESS";
+		}
+		else
+		{
+			return "INSUFFICIENT_PRIVILIGES";
+		}
 	}
 
 	
@@ -94,5 +106,11 @@ public class TransactionServiceImpl implements TransactionService {
 	public  List<TblAccount> searchAccountByAccountParams(TblAccount account)
 	{
 		return this.transactionDAO.searchAccountByAccountParams(account);
+	}
+
+	@Transactional
+	public  boolean isThisUserAccount(TblAccount account, TblUser user)
+	{
+		return this.transactionDAO.isThisUserAccount(account , user);
 	}
 }

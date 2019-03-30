@@ -28,9 +28,11 @@ public abstract interface TransactionDAO
 
   public abstract TblTransaction lastAddedTransaction();
 
-  public abstract TblAccount updateAccount(TblAccount account);
+  public abstract TblAccount updateAccount(TblAccount account, TblUser user);
 
-  public abstract void deleteAccount(TblAccount account);
+  public abstract void deleteAccount(TblAccount account, TblUser user);
 
   public abstract List<TblAccount> searchAccountByAccountParams(TblAccount account);
+
+  public abstract boolean isThisUserAccount(TblAccount account, TblUser user);
 }

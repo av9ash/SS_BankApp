@@ -3,6 +3,7 @@ package org.asu.cse545.group4.client.transactionrestservice;
 import java.security.Principal;
 import org.asu.cse545.group4.server.transactionservice.service.TransactionService;
 import org.asu.cse545.group4.server.transactionservice.service.TransactionJson;
+import org.asu.cse545.group4.server.transactionservice.service.AccountUser;
 import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
 import org.asu.cse545.group4.server.sharedobjects.TblAccount;
 import org.asu.cse545.group4.server.sharedobjects.TblEventLog;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.json.*;
 
 import com.google.gson.Gson;
@@ -132,20 +134,22 @@ public class TransactionRestService
 
 
 	  @PostMapping(value="/updateAccount",consumes="application/json", produces="application/json")
-	  public @ResponseBody String updateAccount(@RequestBody TblAccount account)
+	  public @ResponseBody String updateAccount(@RequestBody AccountUser accUser)
 	  {
-	  		this.transactionService.updateAccount(account);
+	  		TblAccount account = accUser.getAccount();
+	  		this.transactionService.updateAccount( account , accUser.getUser());
 	  		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
 			return gson.toJson(account);
 	  }
 
 	  @PostMapping(value="/deleteAccount",consumes="application/json", produces="application/json")
-	  public @ResponseBody String deleteAccount(@RequestBody TblAccount account)
+	  public @ResponseBody String deleteAccount(@RequestBody  AccountUser accUser)
 	  {
 	  		// TODO 
 	  		// authorize check
-	  		this.transactionService.deleteAccount(account);
-	  		return "OK";
+	  		TblAccount account = accUser.getAccount();
+	  		return this.transactionService.deleteAccount(account, accUser.getUser());
+	  		
 	  }
 	  
 	  @PostMapping(value="/accountByAccountParams",consumes="application/json", produces="application/json")
