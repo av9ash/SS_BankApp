@@ -119,6 +119,13 @@ public class TransactionServiceImpl implements TransactionService {
 	@Transactional
 	public TblAccount createAccount(TblRequest  request  , TblUser approver)
 	{
-		return this.transactionDAO.createAccount(request, approver);
+		if(reqService.isTierTwoEmployee(approver) || reqService.isAdmin(approver))
+		{
+			return this.transactionDAO.createAccount(request, approver);
+		}
+		else
+		{
+			return null;
+		}
 	}
 }
