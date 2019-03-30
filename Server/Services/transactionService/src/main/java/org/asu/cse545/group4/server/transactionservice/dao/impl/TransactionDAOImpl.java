@@ -6,6 +6,7 @@ import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
 import org.asu.cse545.group4.server.sharedobjects.TblAccount;
 import org.asu.cse545.group4.server.sharedobjects.TblUser;
 import org.asu.cse545.group4.server.sharedobjects.TblUserProfile;
+import org.asu.cse545.group4.server.sharedobjects.TblRequest;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -379,8 +380,22 @@ public class TransactionDAOImpl implements TransactionDAO {
     	return dbAccount.getTblUser().getUserId() == user.getUserId();
     }
         
-    public void createAccount(TblAccount account, TblUser user)
+    public TblAccount createAccount(TblRequest  request  , TblUser approver)
     {
-
+    	TblRequest dbRequest = this.sessionFactory.getCurrentSession().get(TblRequest.class , request.getRequestId());
+    	if (dbRequest == null) {
+    		return null;
+    	}
+    	Date date = new Date();
+    	TblAccount newAccount = new TblAccount();
+    	newAccount.setCreatedDate(date);
+    	newAccount.setStatus(OPEN_ACCOUNT);
+    	newAccount.setCurrentAmount(new Long(0));
+    	newAccount.setTblUser(dbRequest.getTblUserByRequestedBy());
+    	newAccount.setAccountType(dbRequest.getTypeOfAccount());
+    	this.sessionFactory.getCurrentSession().save(newAccount);
+    	dbRequest.setTblUserByRequestAssignedTo(approver);
+    	this.sessionFactory.getCurrentSession().saveOrUpdate(dbRequest);
+    	return newAccount;
     }
 }

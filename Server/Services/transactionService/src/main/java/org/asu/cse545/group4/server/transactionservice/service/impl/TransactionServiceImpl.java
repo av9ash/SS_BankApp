@@ -115,4 +115,10 @@ public class TransactionServiceImpl implements TransactionService {
 	{
 		return this.transactionDAO.isThisUserAccount(account , user);
 	}
+
+	@Transactional
+	public TblAccount createAccount(TblRequest  request  , TblUser approver)
+	{
+		return this.transactionDAO.createAccount(request, approver);
+	}
 }

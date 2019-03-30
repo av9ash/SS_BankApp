@@ -28,6 +28,8 @@ public class TblRequest implements Serializable {
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "transaction_id")
 	private TblTransaction tblTransaction;
+	@Column(name = "type_of_account")
+	private Integer typeOfAccount;
 
 	public TblRequest() {
 	}
@@ -83,5 +85,15 @@ public class TblRequest implements Serializable {
 
 	public void setTblTransaction(TblTransaction tblTransaction) {
 		this.tblTransaction = tblTransaction;
+	}
+
+	public void setTypeOfAccount(int param)
+	{
+		this.typeOfAccount = param;
+	}
+
+	public int getTypeOfAccount()
+	{
+		return this.typeOfAccount;
 	}
 }
