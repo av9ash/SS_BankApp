@@ -128,7 +128,7 @@ public class LoginRestService
 			if(userProfile.getZip()!=null && userProfile.getZip()>0) {
 				int zip = userProfile.getZip();
 				
-				if(Integer.toString(zip).length()!=6) {
+				if(Integer.toString(zip).length()>5) {
 					return "FAIL";
 				}else {
 					userProfile.setZip(zip);
