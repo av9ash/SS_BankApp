@@ -170,4 +170,6 @@ public class RequestDAOImpl implements RequestDAO {
     	}
     	return dbUser.getIsExternalUser() == MERCHANT; 
     }
+	
+	
 }

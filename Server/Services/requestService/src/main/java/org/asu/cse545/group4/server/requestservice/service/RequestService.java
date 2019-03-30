@@ -3,6 +3,7 @@ import org.asu.cse545.group4.server.sharedobjects.TblRequest;
 import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
 import org.asu.cse545.group4.server.sharedobjects.TblUser;
 import java.util.List;
+import java.util.Map;
 public abstract interface RequestService
 {
   public abstract String test(String req);
@@ -21,4 +22,6 @@ public abstract interface RequestService
   public abstract boolean isCustomer(TblUser user);
 
   public abstract boolean isMerchant(TblUser user);
+  
+
 }

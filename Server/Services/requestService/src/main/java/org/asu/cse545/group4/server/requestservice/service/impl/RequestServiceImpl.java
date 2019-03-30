@@ -9,6 +9,7 @@ import org.asu.cse545.group4.server.sharedobjects.TblRequest;
 import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
 import org.asu.cse545.group4.server.sharedobjects.TblUser;
 import java.util.List;
+import java.util.Map;
 @Service("requestService")
 public class RequestServiceImpl implements RequestService {
 	@Autowired
@@ -80,4 +81,5 @@ public class RequestServiceImpl implements RequestService {
 	  	return this.requestDAO.isMerchant(user);
 	  }
 
+	  
 }
