@@ -125,6 +125,8 @@ ALTER TABLE `tbl_request` ADD FOREIGN KEY (`transaction_id`) REFERENCES `tbl_tra
 
 ALTER TABLE tbl_appointment ADD descript varchar(100);
 
+ALTER TABLE tbl_account add status int;
+
 insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(100,1,"Tier 1 Employee");
 insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(100,2,"Tier 2 Employee");
 insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(100,3,"Tier 3 Employee");
