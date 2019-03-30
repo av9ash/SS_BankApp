@@ -166,7 +166,7 @@ import Chart from 'chart.js'
 import Alert from '../widgets/Alert'
 import InfoBox from '../widgets/InfoBox'
 import ProcessInfoBox from '../widgets/ProcessInfoBox'
-import api from '../..api'
+import api from '../../api'
 import store from '../../store'
 
 export default {
@@ -184,8 +184,8 @@ export default {
           a.push(Math.floor(Math.random() * (max - min + 1)) + max)
         }
         return a
-      }
-      amount: undefined,
+      },
+    amount: undefined,
     typeOfTransaction: undefined,
     account: undefined,
     showDismissibleAlert: false,
