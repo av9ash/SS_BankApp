@@ -41,17 +41,34 @@ public class TransactionServiceImpl implements TransactionService {
 	@Transactional
 	public String approveTransaction(int transactionId, int approverId)
 	{
-		TblTransaction transaction = new TblTransaction(transactionId);
-		TblRequest request = reqService.getRequest(transaction);
-		request.setTblUserByRequestAssignedTo(new TblUser(approverId));
-		reqService.assignTo(request);
-		return this.transactionDAO.approveTransaction(transactionId,approverId);
+		TblUser approver = new TblUser(approverId);
+		if (reqService.isTierTwoEmployee(approver) || reqService.isAdmin(approver) || reqService.isTierOneEmployee(approver)) 
+		{
+			TblTransaction transaction = new TblTransaction(transactionId);
+			TblRequest request = reqService.getRequest(transaction);
+			request.setTblUserByRequestAssignedTo(approver);
+			reqService.assignTo(request);
+			return this.transactionDAO.approveTransaction(transactionId,approverId);
+		}
+		else
+		{
+			return "INSUFFICIENT_PRIVILIGES";
+		}
+		
 	}
 
 	@Transactional
 	public String declineTransaction(int transactionId, int declinerId)
 	{
-		return this.transactionDAO.declineTransaction(transactionId,declinerId);
+		TblUser decliner = new TblUser(declinerId);
+		if (reqService.isTierTwoEmployee(decliner) || reqService.isAdmin(decliner) || reqService.isTierOneEmployee(decliner)) 
+		{
+			return this.transactionDAO.declineTransaction(transactionId,declinerId);
+		}
+		else
+		{
+			return "INSUFFICIENT_PRIVILIGES";
+		}
 	}
 
 	@Transactional

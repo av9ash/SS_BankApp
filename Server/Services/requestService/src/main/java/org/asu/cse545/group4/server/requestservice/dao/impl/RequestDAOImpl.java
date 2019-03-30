@@ -102,10 +102,11 @@ public class RequestDAOImpl implements RequestDAO {
 
 	public  TblRequest getRequest(TblTransaction transaction)
 	{
+		TblTransaction dbTrans = this.sessionFactory.getCurrentSession().get(TblTransaction.class , transaction.getTransactionId());
 		final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
 		CriteriaQuery<TblRequest> criteriaQuery = builder.createQuery(TblRequest.class);
 		Root<TblRequest> requestQuery = criteriaQuery.from(TblRequest.class);
-		criteriaQuery.where(builder.equal(requestQuery.get("tblTransaction") , transaction));
+		criteriaQuery.where(builder.equal(requestQuery.get("tblTransaction") , dbTrans));
 		Query<TblRequest> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
 		final List<TblRequest> requests = query.getResultList();
 		if (requests != null && !requests.isEmpty()) {
