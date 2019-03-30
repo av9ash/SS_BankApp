@@ -67,7 +67,7 @@
     <router-link tag="li" class="pageLink" v-if="moduleMap.RequestModule" to="/viewAppointment">
       <a>
         <i class="fa fa-circle-o text-red"></i>
-        <span class="page">View</span>
+        <span class="page">View Appointments</span>
       </a>
     </router-link>
 
