@@ -58,7 +58,6 @@ public class TransactionDAOImpl implements TransactionDAO {
 		TransactionStatus status = validateTransaction(transaction , userId);
 		if( status == TransactionStatus.OK)
 		{
-			Session session = this.sessionFactory.getCurrentSession();
 			Date date = new Date();
 			transaction.setTransactionCreatedDate(date);
 			transaction.setTransactionUpdatedDate(date);
@@ -90,12 +89,11 @@ public class TransactionDAOImpl implements TransactionDAO {
 		int transType = transaction.getTransactionType();
 		if(transType == NEW_ACCOUNT_CREATION)
 			return TransactionStatus.OK;
-		if( ( transType == DEBIT || transType == TRANSFER) &&  transaction.getTransactionAmount() > toIntExact(fromAccount.getCurrentAmount()))
-		{
+		if (transType == TRANSFER && transaction.getTblAccountByFromAccount().getAccountId()== transaction.getTblAccountByToAccount().getAccountId()) {
+			status = TransactionStatus.ERROR;
+		}else if( ( transType == DEBIT || transType == TRANSFER) &&  transaction.getTransactionAmount() > toIntExact(fromAccount.getCurrentAmount())){
 			status = TransactionStatus.INSUFFICIENT_BALANCE;
-		}
-		else
-		{
+		}else{
 			status = TransactionStatus.OK;
 		}
 		return status;
@@ -243,39 +241,39 @@ public class TransactionDAOImpl implements TransactionDAO {
 		try
 		{
 			final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
-	        CriteriaQuery<TblUserProfile> criteriaQuery = builder.createQuery(TblUserProfile.class);
-	       Root<TblUserProfile> userQuery = criteriaQuery.from(TblUserProfile.class);  
-	       if(userProfile.getEmail() != null && userProfile.getPhone() != null)
-	       {
-	       		Predicate pred = builder.and(builder.equal(userQuery.get("email"),userProfile.getEmail()),builder.equal(userQuery.get("phone"),userProfile.getPhone()));
-      			criteriaQuery.where(pred);
-	       }     
-	        else if(userProfile.getEmail() != null)
-	       {
-	           criteriaQuery.where(builder.equal(userQuery.get("email"),userProfile.getEmail()));
-	       }        
-	       else if(userProfile.getPhone() != null)
-	       {
-	           criteriaQuery.where(builder.equal(userQuery.get("phone"),userProfile.getPhone()));
-	       }        
-	       Query<TblUserProfile> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
-	       final List<TblUserProfile> results = query.getResultList();
-	        if(!results.isEmpty())
-	       {
-	           TblUserProfile returnedUser = results.get(0);
-	           return returnedUser;
-	       }
-	       else
-	       {
-	           return null;
-	       }
+			CriteriaQuery<TblUserProfile> criteriaQuery = builder.createQuery(TblUserProfile.class);
+			Root<TblUserProfile> userQuery = criteriaQuery.from(TblUserProfile.class);  
+			if(userProfile.getEmail() != null && userProfile.getPhone() != null)
+			{
+				Predicate pred = builder.and(builder.equal(userQuery.get("email"),userProfile.getEmail()),builder.equal(userQuery.get("phone"),userProfile.getPhone()));
+				criteriaQuery.where(pred);
+			}     
+			else if(userProfile.getEmail() != null)
+			{
+				criteriaQuery.where(builder.equal(userQuery.get("email"),userProfile.getEmail()));
+			}        
+			else if(userProfile.getPhone() != null)
+			{
+				criteriaQuery.where(builder.equal(userQuery.get("phone"),userProfile.getPhone()));
+			}        
+			Query<TblUserProfile> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
+			final List<TblUserProfile> results = query.getResultList();
+			if(!results.isEmpty())
+			{
+				TblUserProfile returnedUser = results.get(0);
+				return returnedUser;
+			}
+			else
+			{
+				return null;
+			}
 		}
 		catch(Exception e)
 		{
 			return null;
 		}
 	}
-	
+
 	public TblTransaction getTransaction(TblTransaction transaction)
 	{
 		TblTransaction found = this.sessionFactory.getCurrentSession().get(TblTransaction.class , transaction.getTransactionId());	
@@ -301,107 +299,107 @@ public class TransactionDAOImpl implements TransactionDAO {
 
 
 	public List<TblAccount> getAccountsForUser(TblUser user)
-    {
-        TblUser db_user = this.sessionFactory.getCurrentSession().get(TblUser.class, user.getUserId());
-        if (db_user == null) {
-            return null;
-        }
-        final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
-        CriteriaQuery<TblAccount> criteriaQuery = builder.createQuery(TblAccount.class);
-        Root<TblAccount> accountQuery = criteriaQuery.from(TblAccount.class);
-        Predicate pred = builder.and(builder.equal(accountQuery.get("tblUser"), db_user),builder.equal(accountQuery.get("status"), OPEN_ACCOUNT));
-      	criteriaQuery.where(pred);
-        Query<TblAccount> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
-        final List<TblAccount> userAccounts = query.getResultList();            
-        return userAccounts;
-    }
-	
+	{
+		TblUser db_user = this.sessionFactory.getCurrentSession().get(TblUser.class, user.getUserId());
+		if (db_user == null) {
+			return null;
+		}
+		final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<TblAccount> criteriaQuery = builder.createQuery(TblAccount.class);
+		Root<TblAccount> accountQuery = criteriaQuery.from(TblAccount.class);
+		Predicate pred = builder.and(builder.equal(accountQuery.get("tblUser"), db_user),builder.equal(accountQuery.get("status"), OPEN_ACCOUNT));
+		criteriaQuery.where(pred);
+		Query<TblAccount> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
+		final List<TblAccount> userAccounts = query.getResultList();            
+		return userAccounts;
+	}
+
 	public List<TblAccount> searchAccountByAccountParams(TblAccount account)
 	{
 		final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
 		CriteriaQuery<TblAccount> criteriaQuery = builder.createQuery(TblAccount.class);
-        Root<TblAccount> accountQuery = criteriaQuery.from(TblAccount.class);
-        Predicate pred = builder.and( builder.equal(accountQuery.get("accountId"), account.getAccountId()) ,builder.equal(accountQuery.get("status"), OPEN_ACCOUNT));
-        criteriaQuery.where(pred);
-        Query<TblAccount> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
-        final List<TblAccount> accounts = query.getResultList();
-        if(accounts.isEmpty())
-        {
-        	return null;
-        }
-        return accounts;
-        
+		Root<TblAccount> accountQuery = criteriaQuery.from(TblAccount.class);
+		Predicate pred = builder.and( builder.equal(accountQuery.get("accountId"), account.getAccountId()) ,builder.equal(accountQuery.get("status"), OPEN_ACCOUNT));
+		criteriaQuery.where(pred);
+		Query<TblAccount> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
+		final List<TblAccount> accounts = query.getResultList();
+		if(accounts.isEmpty())
+		{
+			return null;
+		}
+		return accounts;
+
 	}
 
-    public TblTransaction lastAddedTransaction()
-    {
-    	final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
-        CriteriaQuery<TblTransaction> criteriaQuery = builder.createQuery(TblTransaction.class);
-        Root<TblTransaction> transQuery = criteriaQuery.from(TblTransaction.class);
-        criteriaQuery.orderBy(builder.desc(transQuery.get("transactionId")));
-        Query<TblTransaction> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery).setFirstResult(0).setMaxResults(1);
-        final List<TblTransaction> ans = query.getResultList();
-        if(!ans.isEmpty())
-        	return ans.get(0);
-        return null;
-    }
+	public TblTransaction lastAddedTransaction()
+	{
+		final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<TblTransaction> criteriaQuery = builder.createQuery(TblTransaction.class);
+		Root<TblTransaction> transQuery = criteriaQuery.from(TblTransaction.class);
+		criteriaQuery.orderBy(builder.desc(transQuery.get("transactionId")));
+		Query<TblTransaction> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery).setFirstResult(0).setMaxResults(1);
+		final List<TblTransaction> ans = query.getResultList();
+		if(!ans.isEmpty())
+			return ans.get(0);
+		return null;
+	}
 
 
-    public TblAccount updateAccount(TblAccount account, TblUser user)
-    {
-    	if (account == null) {
-    		return null;
-    	}
-    	TblAccount dbAccount = sessionFactory.getCurrentSession().get(TblAccount.class , account.getAccountId());
-    	if (dbAccount == null) {
-    		return null;
-    	}
-    	if (account.getAccountType() != 0) { 
-    		dbAccount.setAccountType(account.getAccountType());
-    	}
-    	sessionFactory.getCurrentSession().saveOrUpdate(dbAccount);
-    	return dbAccount;
-    }
+	public TblAccount updateAccount(TblAccount account, TblUser user)
+	{
+		if (account == null) {
+			return null;
+		}
+		TblAccount dbAccount = sessionFactory.getCurrentSession().get(TblAccount.class , account.getAccountId());
+		if (dbAccount == null) {
+			return null;
+		}
+		if (account.getAccountType() != 0) { 
+			dbAccount.setAccountType(account.getAccountType());
+		}
+		sessionFactory.getCurrentSession().saveOrUpdate(dbAccount);
+		return dbAccount;
+	}
 
-    public void deleteAccount(TblAccount account, TblUser user)
-    {
-    	TblAccount dbAccount = sessionFactory.getCurrentSession().get(TblAccount.class , account.getAccountId());
-    	if (dbAccount == null) 
-    	{
-    		return ;
-    	}
-    	dbAccount.setStatus(DELETE_ACCOUNT);
-    	sessionFactory.getCurrentSession().saveOrUpdate(dbAccount);	
-    }
+	public void deleteAccount(TblAccount account, TblUser user)
+	{
+		TblAccount dbAccount = sessionFactory.getCurrentSession().get(TblAccount.class , account.getAccountId());
+		if (dbAccount == null) 
+		{
+			return ;
+		}
+		dbAccount.setStatus(DELETE_ACCOUNT);
+		sessionFactory.getCurrentSession().saveOrUpdate(dbAccount);	
+	}
 
-    public boolean isThisUserAccount(TblAccount account, TblUser user)
-    {
-    	TblAccount dbAccount = this.sessionFactory.getCurrentSession().get(TblAccount.class , account.getAccountId());
-    	return dbAccount.getTblUser().getUserId() == user.getUserId();
-    }
-        
-    public TblAccount createAccount(TblRequest  request  , TblUser approver)
-    {
-    	TblRequest dbRequest = this.sessionFactory.getCurrentSession().get(TblRequest.class , request.getRequestId());
-    	if (dbRequest == null) {
-    		return null;
-    	}
-    	Date date = new Date();
-    	TblAccount newAccount = new TblAccount();
-    	newAccount.setCreatedDate(date);
-    	newAccount.setStatus(OPEN_ACCOUNT);
-    	newAccount.setCurrentAmount(new Long(0));
-    	newAccount.setTblUser(dbRequest.getTblUserByRequestedBy());
-    	newAccount.setAccountType(dbRequest.getTypeOfAccount());
-    	this.sessionFactory.getCurrentSession().save(newAccount);
-    	dbRequest.setTblUserByRequestAssignedTo(approver);
-    	this.sessionFactory.getCurrentSession().saveOrUpdate(dbRequest);
-    	return newAccount;
-    }
+	public boolean isThisUserAccount(TblAccount account, TblUser user)
+	{
+		TblAccount dbAccount = this.sessionFactory.getCurrentSession().get(TblAccount.class , account.getAccountId());
+		return dbAccount.getTblUser().getUserId() == user.getUserId();
+	}
 
-    public  TblUser getUser(TblUser user)
-    {
-    	TblUser dbUser = this.sessionFactory.getCurrentSession().get(TblUser.class, user.getUserId());
-    	return dbUser;
-    }
+	public TblAccount createAccount(TblRequest  request  , TblUser approver)
+	{
+		TblRequest dbRequest = this.sessionFactory.getCurrentSession().get(TblRequest.class , request.getRequestId());
+		if (dbRequest == null) {
+			return null;
+		}
+		Date date = new Date();
+		TblAccount newAccount = new TblAccount();
+		newAccount.setCreatedDate(date);
+		newAccount.setStatus(OPEN_ACCOUNT);
+		newAccount.setCurrentAmount(new Long(0));
+		newAccount.setTblUser(dbRequest.getTblUserByRequestedBy());
+		newAccount.setAccountType(dbRequest.getTypeOfAccount());
+		this.sessionFactory.getCurrentSession().save(newAccount);
+		dbRequest.setTblUserByRequestAssignedTo(approver);
+		this.sessionFactory.getCurrentSession().saveOrUpdate(dbRequest);
+		return newAccount;
+	}
+
+	public  TblUser getUser(TblUser user)
+	{
+		TblUser dbUser = this.sessionFactory.getCurrentSession().get(TblUser.class, user.getUserId());
+		return dbUser;
+	}
 }
