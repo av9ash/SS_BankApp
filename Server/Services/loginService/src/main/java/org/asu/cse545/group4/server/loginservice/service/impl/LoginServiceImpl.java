@@ -3,11 +3,9 @@ package org.asu.cse545.group4.server.loginservice.service.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.asu.cse545.group4.server.loginservice.dao.LoginDAO;
 import org.asu.cse545.group4.server.loginservice.service.LoginService;
-import org.asu.cse545.group4.server.sharedobjects.ModuleList;
 import org.asu.cse545.group4.server.sharedobjects.TblCatalog;
 import org.asu.cse545.group4.server.sharedobjects.TblUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +67,23 @@ public class LoginServiceImpl implements LoginService {
 			return null;
 		}
 
+	}
+
+	@Transactional
+	@Override
+	public TblUser loadUserByUserName(String userName) {
+		return this.loginDAO.getUserByUserName(userName);
+	}
+
+	@Transactional
+	@Override
+	public void updateUser(TblUser user) {
+		this.loginDAO.updateUser(user);
+	}
+
+	@Transactional
+	@Override
+	public void unlockUser(TblUser user) {
+		this.loginDAO.unlockUser(user);
 	}
 }

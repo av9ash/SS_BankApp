@@ -27,8 +27,6 @@ public class LoginDAOImpl implements LoginDAO {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-
-
 	public void insertUser(TblUser user) {
 		Session session = this.sessionFactory.getCurrentSession();
 		Date date = new Date();
@@ -68,10 +66,10 @@ public class LoginDAOImpl implements LoginDAO {
         	if(returnedUser.getStatus()!=1) {
         		return null;
         	}else {
-        		String encryptedPass = returnedUser.getPassword();
-            	String rawPass = user.getPassword();
-            	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(14);
-            	if(passwordEncoder.matches(rawPass, encryptedPass)) {
+        		//String encryptedPass = returnedUser.getPassword();
+            	//String rawPass = user.getPassword();
+            	//BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(14);
+            	//if(passwordEncoder.matches(rawPass, encryptedPass)) {
             		Hibernate.initialize(returnedUser);
             		int userId = returnedUser.getIsExternalUser();
             		List<TblCatalog> user1 = getUserFromCatalog(userId);
@@ -84,7 +82,7 @@ public class LoginDAOImpl implements LoginDAO {
             		
                 	return resultUser;
                 	
-            	}else {
+            	/*}else {
             		int incorrectAttempts = returnedUser.getIncorrectAttempts();
             		if(incorrectAttempts>=3) {
             			returnedUser.setStatus(2);
@@ -93,7 +91,7 @@ public class LoginDAOImpl implements LoginDAO {
             		}
             		sessionFactory.getCurrentSession().save(returnedUser);
             		return null;
-            	}
+            	}*/
         		
         	}
         	
@@ -129,5 +127,73 @@ public class LoginDAOImpl implements LoginDAO {
         	return null;
         }
 		
+	}
+
+    public  TblUser getUser(TblUser user)
+    {
+        TblUser dbUser = this.sessionFactory.getCurrentSession().get(TblUser.class , user.getUserId());
+        return dbUser;
+    }
+    
+    public TblUser getUserByUserName(String userName)
+    {
+    	final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<TblUser> criteriaQuery = builder.createQuery(TblUser.class);
+        Root<TblUser> userQuery = criteriaQuery.from(TblUser.class);
+        
+        if(userName != null)
+        {
+        	criteriaQuery.where(builder.equal(userQuery.get("username"),userName));
+        }
+        
+        Query<TblUser> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
+        final List<TblUser> results = query.getResultList();
+        if(!results.isEmpty())
+        {
+        	TblUser returnedUser = results.get(0);
+        	return returnedUser;
+        }else {
+        	return null;
+        }	
+    	
+    }
+
+	
+	public void updateUser(TblUser user) {
+		this.sessionFactory.getCurrentSession().saveOrUpdate(user);
+	}
+
+	
+	public void unlockUser(TblUser user) {
+
+    	final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<TblUser> criteriaQuery = builder.createQuery(TblUser.class);
+        Root<TblUser> userQuery = criteriaQuery.from(TblUser.class);
+        
+        if(user.getUsername() != null)
+        {
+        	criteriaQuery.where(builder.equal(userQuery.get("username"),user.getUsername()));
+        }
+        
+        Query<TblUser> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
+        final List<TblUser> results = query.getResultList();
+        System.out.println("Inside : unlockUser "+ results.size());
+        if(!results.isEmpty())
+        {
+        	TblUser returnedUser = results.get(0);
+        	if(returnedUser.getStatus()==2) {
+        		returnedUser.setStatus(1);
+        		returnedUser.setIncorrectAttempts(0);
+        		this.sessionFactory.getCurrentSession().saveOrUpdate(returnedUser);
+        		System.out.println("Inside : unlockUser "+returnedUser.getUsername()+" successfully.");
+        	}else {
+        		System.out.println("Inside : unlockUser "+returnedUser.getUsername()+" is already unlocked.");
+        	}
+        	
+        }else {
+        	System.out.println("Requested user not found to update.");
+        }	
+    	
+  
 	}
 }

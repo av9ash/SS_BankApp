@@ -12,4 +12,10 @@ public abstract interface LoginService
   //public abstract Map<Integer, Map<String, Boolean>> searchUser(TblUser user);
   
   public abstract Map<String, Object> searchUser(TblUser user);
+  
+  public abstract TblUser loadUserByUserName(String userName);
+  
+  public abstract void updateUser(TblUser user);
+  
+  public abstract void unlockUser(TblUser user);
 }

@@ -1,27 +1,24 @@
 package org.asu.cse545.group4.client.loginRestService;
 
-import java.security.Principal;
 import java.util.Map;
 
 import org.asu.cse545.group4.client.utils.UserExclusionStrategy;
 import org.asu.cse545.group4.server.eventservice.service.EventService;
 import org.asu.cse545.group4.server.loginservice.service.LoginService;
-import org.asu.cse545.group4.server.sharedobjects.TblCatalog;
-import org.asu.cse545.group4.server.sharedobjects.TblCatalogId;
 import org.asu.cse545.group4.server.sharedobjects.TblEventLog;
 import org.asu.cse545.group4.server.sharedobjects.TblUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 @Controller
+@SessionAttributes({"currentUser"})
 public class LoginRestService
 {
 	@Autowired
@@ -41,6 +38,20 @@ public class LoginRestService
 		event.setEventName("User "+newUser.getUsername()+" created Successfully");
 		eventService.logEvent(event);
 		return gson.toJson(newUser);
+		//return newUser;
+	  }
+	
+	@PostMapping(value="/unlockUser",consumes="application/json",produces="application/json")
+	  public @ResponseBody String unlockUser(@RequestBody TblUser reqUser) {
+	    //model.addAttribute("message", "You are logged in as " + principal.getName());
+		System.out.println("Inside Rest of unlockUser");
+		loginService.unlockUser(reqUser);
+		TblEventLog event = new TblEventLog();
+		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
+		event.setEventType(1);
+		event.setEventName("User "+reqUser.getUsername()+" unlocked Successfully");
+		eventService.logEvent(event);
+		return gson.toJson(reqUser);
 		//return newUser;
 	  }
 	
@@ -67,4 +78,7 @@ public class LoginRestService
 		return gson.toJson(returnedUser);
 		//return returnedUser;
 	}
+	
+
+	
 }
