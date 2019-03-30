@@ -44,6 +44,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 	private static final int CREDIT=1;
 	private static final int DEBIT=2;
 	private static final int TRANSFER=3;
+	private static final int NEW_ACCOUNT_CREATION=4;
 	private static final int CRITICAL_TRANSACTION_AMOUNT = 1000;
 
 	private static final int OPEN_ACCOUNT = 1;
@@ -86,6 +87,8 @@ public class TransactionDAOImpl implements TransactionDAO {
 		//TODO
 		// authorize check for userId
 		int transType = transaction.getTransactionType();
+		if(transType == NEW_ACCOUNT_CREATION)
+			return TransactionStatus.OK;
 		if( ( transType == DEBIT || transType == TRANSFER) &&  transaction.getTransactionAmount() > toIntExact(fromAccount.getCurrentAmount()))
 		{
 			status = TransactionStatus.INSUFFICIENT_BALANCE;
@@ -376,4 +379,8 @@ public class TransactionDAOImpl implements TransactionDAO {
     	return dbAccount.getTblUser().getUserId() == user.getUserId();
     }
         
+    public void createAccount(TblAccount account, TblUser user)
+    {
+
+    }
 }

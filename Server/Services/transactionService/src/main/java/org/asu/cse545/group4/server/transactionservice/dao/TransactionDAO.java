@@ -35,4 +35,6 @@ public abstract interface TransactionDAO
   public abstract List<TblAccount> searchAccountByAccountParams(TblAccount account);
 
   public abstract boolean isThisUserAccount(TblAccount account, TblUser user);
+
+  public abstract void createAccount(TblAccount account, TblUser user);
 }

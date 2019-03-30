@@ -8,6 +8,7 @@ import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
 import org.asu.cse545.group4.server.sharedobjects.TblAccount;
 import org.asu.cse545.group4.server.sharedobjects.TblEventLog;
 import org.asu.cse545.group4.server.sharedobjects.TblUser;
+import org.asu.cse545.group4.server.sharedobjects.TblRequest;
 import org.asu.cse545.group4.server.sharedobjects.TblUserProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,7 @@ import org.asu.cse545.group4.client.utils.UserExclusionStrategy;
 import java.io.IOException;
 import java.util.List;
 import org.asu.cse545.group4.server.eventservice.service.EventService;
+import org.asu.cse545.group4.server.requestservice.service.RequestService;
 @Controller
 public class TransactionRestService
 {	
@@ -35,12 +37,19 @@ public class TransactionRestService
 	private TransactionService transactionService;
 	@Autowired
 	private EventService eventService;
+	@Autowired
+	private RequestService reqService;
 	private final static String TRANSACTION_ADDED = "New Transaction by User: ";
 	private final static String TRANSACTION_APPROVED = "Transaction approval by User: ";
 	private final static String TRANSACTION_DECLINED = "Transaction decline by User: ";
+	private final static String NEW_ACCOUNT_REQUEST = "Request for new account ";
 	private final static int NEW_TRANSACTION = 2;
 	private final static int APPROVE_TRANSACTION = 3;
 	private final static int DECLINE_TRANSACTION = 4;
+
+
+	private static final int FINANCE = 1;
+	private static final int NEW_ACCOUNT =5;
 
 
 	private void logEvent(String message, int userId, String response, int eventType)
@@ -73,7 +82,7 @@ public class TransactionRestService
 	  		transaction = newTransaction.getTransactionObj();	  		
 	  		// TODO
 	  		// check for User authorization
-			String response = this.transactionService.addTransaction(transaction , newTransaction.getUserId());
+			String response = this.transactionService.addTransaction(transaction , newTransaction.getUserId() , FINANCE);
 			logEvent(TRANSACTION_ADDED, newTransaction.getUserId() , response, NEW_TRANSACTION);
 			return response;
 		}
@@ -158,5 +167,26 @@ public class TransactionRestService
 	  		List<TblAccount> accounts = this.transactionService.searchAccountByAccountParams(account);
 	  		Gson gson = new GsonBuilder().setExclusionStrategies(new AccountAppointmentStrategy()).create();
 			return gson.toJson(accounts);
+	  }
+
+
+
+	  @PostMapping(value="/account",consumes="application/json",produces="application/json")
+	  public @ResponseBody String account(@RequestBody TblUser user) 
+	  {
+	  	try
+	  	{
+	  		TblRequest request = new TblRequest(); 
+	  		request.setTblUserByRequestedBy(user);
+	  		request.setTypeOfRequest(NEW_ACCOUNT);
+	  		reqService.addRequest(request);
+			logEvent(NEW_ACCOUNT_REQUEST, user.getUserId() , "OK", NEW_ACCOUNT);
+			return "OK";
+		}
+		catch(Exception e)
+		{
+			// handle 
+			return e.toString();
+		}
 	  }
 }
