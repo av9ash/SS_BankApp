@@ -84,9 +84,28 @@
 				</div>
 			</div>
 			<div class="text-right">
-		  <button type="submit" class="btn btn-primary" v-on:click = "submit()">Submit</button>
+		  <button type="submit" class="btn btn-primary" v-on:click = "enableOtpBox()">Submit</button>
 		  </div>
 			</div>
+		<div v-if="showOTPBox">
+			<div class="box box-info">
+				<div class="box-header with-border">
+				  <h3 class="box-title">OTP Value</h3>
+				</div>
+				<div class="box-body">
+					  <div class="row">
+						  <div class="col-xs-12">
+							<div class="input-group">
+								<input class="form-control" v-model="otpValue" type="number" min="0" step="1" max="999999" oninput="validity.valid||(value='');" required />
+							</div>
+						  </div>
+					  </div>
+				</div>
+			</div>
+			<div class="text-right">
+		  <button type="submit" class="btn btn-primary" v-on:click="submit()">Validate</button>
+		  </div>
+		</div>
 	  </section>
   </div>
 </template>
@@ -151,12 +170,27 @@ export default {
 		
 	},
 	
+	enableOtpBox() {
+		const userId = store.state.user
+		api.request('post','./rest/generateOtp',{userId})
+			.then(response => {
+				console.log("succes");
+				this.showOTPBox = true
+				console.log("true");
+				
+			})
+			.catch(error => {
+				alert("Error in generating otp:::"+error)
+				this.showOTPBox = false
+				return;
+			})
+	},
+	
 	validate() {
 		var validateValue = true;
 		console.log("this.phone:::"+this.phone);
 		console.log(this.phone == '');
 		console.log(this.phone == undefined);
-		console.log("this.email:::"+this.email);
 		if((this.email == undefined && this.phone == undefined) || (this.email == '' && this.phone == '')
 		|| (this.email == '' && this.phone == undefined) || (this.email == undefined && this.phone == ''))
 		{

@@ -17,6 +17,7 @@ import createAppointmentView from './components/views/createAppointment'
 import accountCreationView from './components/views/accountCreation'
 import updateInformationView from './components/views/updateInformation'
 import viewAppointmentView from './components/views/showAppointment'
+import RequestProcessing from './components/views/RequestProcessing'
 
 // Routes
 const routes = [
@@ -113,6 +114,12 @@ const routes = [
         component: viewAppointmentView,
         name: 'View Appointment',
         meta: {description: 'View Appointments'}
+      },
+      {
+        path: 'approvedecline',
+        component: RequestProcessing,
+        name: 'Request Processing',
+        meta: {description: 'Request Processing'}
       }
     ]
   }, {

@@ -145,7 +145,7 @@ insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_catego
 
 insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(104,1,"Request Created");
 insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(104,2,"Request Approved");
-insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(104,1,"Request Declined");
+insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(104,3,"Request Declined");
 
 insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(105,1,"RequestModule,ViewAccountModule");
 insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(105,2,"RequestModule,ViewAccountModule");

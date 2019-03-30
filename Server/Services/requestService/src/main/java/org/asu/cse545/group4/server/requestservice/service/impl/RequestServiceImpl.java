@@ -45,7 +45,7 @@ public class RequestServiceImpl implements RequestService {
 		return this.requestDAO.getRequest(transaction);
 	}
 
-		@Transactional
+	@Transactional
 	public  boolean isTierOneEmployee(TblUser user)
 	{
 		return this.requestDAO.isTierOneEmployee(user);

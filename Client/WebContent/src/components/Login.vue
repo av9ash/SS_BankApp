@@ -94,7 +94,6 @@ export default {
 			
 				this.$store.commit('SET_USER', data.userId)
 				this.$store.commit('SET_MODULE_MAP',data.moduleMap)
-				console.log("auth::"+header.authorization);
 				this.$store.commit('SET_TOKEN',header.authorization)
 				axios.defaults.headers.common['Authorization'] = header.authorization;
 				this.$emit('authenticated', true)
