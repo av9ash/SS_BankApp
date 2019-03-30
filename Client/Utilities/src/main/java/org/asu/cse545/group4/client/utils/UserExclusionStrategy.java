@@ -15,10 +15,20 @@ public class UserExclusionStrategy implements ExclusionStrategy{
 	     return ((f.getDeclaringClass() == TblUserProfile.class && f.getName().equals("tblUser"))
 	    		 || (f.getDeclaringClass() == TblAppointment.class && f.getName().equals("tblUserByAssignedToUserId"))
 	    		 || (f.getDeclaringClass() == TblAccount.class && f.getName().equals("tblUser"))
+	    		 || (f.getDeclaringClass() == TblAccount.class && f.getName().equals("tblTransactionsForFromAccount"))
+	    		 || (f.getDeclaringClass() == TblAccount.class && f.getName().equals("tblTransactionsForToAccount"))
 	    		 || (f.getDeclaringClass() == TblTransaction.class && f.getName().equals("tblUser"))
 	    		 || (f.getDeclaringClass() == TblTransaction.class && f.getName().equals("tblAccountByFromAccount"))
 	    		 || (f.getDeclaringClass() == TblTransaction.class && f.getName().equals("tblAccountByToAccount"))
 	    		 || (f.getDeclaringClass() == TblRequest.class && f.getName().equals("tblUserByRequestAssignedTo"))
-	    		 || (f.getDeclaringClass() == TblRequest.class && f.getName().equals("tblUserByRequestedBy"))) ;  
+	    		 || (f.getDeclaringClass() == TblUser.class && f.getName().equals("password"))
+	    		 || (f.getDeclaringClass() == TblUser.class && f.getName().equals("incorrectAttempts"))
+	    		 || (f.getDeclaringClass() == TblUser.class && f.getName().equals("tblAppointmentsForAssignedToUserId"))
+	    		 || (f.getDeclaringClass() == TblUser.class && f.getName().equals("tblRequestsForRequestAssignedTo"))
+	    		 || (f.getDeclaringClass() == TblUser.class && f.getName().equals("tblAppointmentsForAppointmentUserId"))
+	    		 || (f.getDeclaringClass() == TblUser.class && f.getName().equals("tblAccounts"))
+	    		 || (f.getDeclaringClass() == TblUser.class && f.getName().equals("tblTransactions"))
+	    		 || (f.getDeclaringClass() == TblUser.class && f.getName().equals("tblRequestsForRequestedBy"))
+	    		 || (f.getDeclaringClass() == TblRequest.class && f.getName().equals("tblRequestsForRequestedBy")));  
 	}
 }

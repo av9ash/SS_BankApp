@@ -76,6 +76,7 @@ CREATE TABLE `tbl_account`
 	`account_type` int,
 	`current_amount` bigint,
 	`created_date` datetime,
+	`status` int,
 	
 	PRIMARY KEY (`account_id`)
 );
@@ -122,7 +123,7 @@ ALTER TABLE tbl_request ADD transaction_id int;
 
 ALTER TABLE `tbl_request` ADD FOREIGN KEY (`transaction_id`) REFERENCES `tbl_transaction` (`transaction_id`);
 
-
+ALTER TABLE tbl_appointment ADD descript varchar(100);
 
 insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(100,1,"Tier 1 Employee");
 insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(100,2,"Tier 2 Employee");

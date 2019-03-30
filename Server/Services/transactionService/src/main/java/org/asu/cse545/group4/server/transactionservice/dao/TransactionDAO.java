@@ -3,6 +3,7 @@ package org.asu.cse545.group4.server.transactionservice.dao;
 import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
 import org.asu.cse545.group4.server.sharedobjects.TblUserProfile;
 import org.asu.cse545.group4.server.sharedobjects.TblAccount;
+import org.asu.cse545.group4.server.sharedobjects.TblUser;
 import java.util.List;
 
 public abstract interface TransactionDAO
@@ -22,4 +23,18 @@ public abstract interface TransactionDAO
   public abstract TblTransaction getTransaction(TblTransaction transaction);
 
   public abstract List<TblTransaction> getTransactionsForAccount(TblAccount account);
+
+  public abstract List<TblAccount> getAccountsForUser(TblUser user);
+
+  public abstract TblTransaction lastAddedTransaction();
+
+  public abstract TblAccount updateAccount(TblAccount account, TblUser user);
+
+  public abstract void deleteAccount(TblAccount account, TblUser user);
+
+  public abstract List<TblAccount> searchAccountByAccountParams(TblAccount account);
+
+  public abstract boolean isThisUserAccount(TblAccount account, TblUser user);
+
+  public abstract void createAccount(TblAccount account, TblUser user);
 }

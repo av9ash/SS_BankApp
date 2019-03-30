@@ -8,6 +8,9 @@ import org.asu.cse545.group4.server.loginservice.service.LoginService;
 import org.asu.cse545.group4.server.sharedobjects.TblEventLog;
 import org.asu.cse545.group4.server.sharedobjects.TblUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +29,10 @@ public class LoginRestService
 	
 	@Autowired
 	private EventService eventService;
+	
+	@Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 	
 	@PostMapping(value="/insertUser",consumes="application/json",produces="application/json")
 	  public @ResponseBody String verify(@RequestBody TblUser newUser) {
@@ -80,5 +87,47 @@ public class LoginRestService
 	}
 	
 
-	
+	/*@PostMapping(value="/loginUser", consumes="application/json",produces="application/json")
+	public @ResponseBody String search(@RequestBody TblUser user)
+	{
+		Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                		user.getUsername(),
+                		user.getPassword()
+                )
+        );
+
+		System.out.println("auth::"+authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        //String jwt = tokenProvider.generateToken(authentication);
+        //return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+		return "";
+	}
+	*/
+	/*@PostMapping(value="/loginUser", consumes="application/json",produces="application/json")
+    public void signUp(@RequestBody TblUser user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userDetailsDao.save(user);
+    }*/
+
+	@PostMapping(value = "/getUser" , consumes="application/json" , produces = "application/json")
+	public @ResponseBody String getUser(@RequestBody TblUser user)
+	{
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println("auth::"+auth);
+		TblUser db_user = loginService.getUser(user);
+		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
+		return gson.toJson(db_user);
+	}
+
+	@PostMapping(value = "/updateUser" , consumes="application/json" , produces = "application/json")
+	public @ResponseBody String updateUser(@RequestBody TblUser user)
+	{
+		loginService.updateUser(user);
+		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
+		return gson.toJson(user);
+	}
+
+
 }

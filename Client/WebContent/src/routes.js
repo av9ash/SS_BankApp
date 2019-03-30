@@ -7,12 +7,16 @@ import DashboardView from './components/views/Dashboard.vue'
 import TablesView from './components/views/Tables.vue'
 import TasksView from './components/views/Tasks.vue'
 import SettingView from './components/views/Setting.vue'
+import DebitCreditView from './components/views/DebitCredit.vue'
+import EmailPhoneTransfer from './components/views/EmailPhoneTransfer.vue'
+import AccountTransfer from './components/views/AccountTransfer.vue'
 import AccessView from './components/views/Access.vue'
 import ServerView from './components/views/Server.vue'
 import ReposView from './components/views/Repos.vue'
 import createAppointmentView from './components/views/createAppointment'
 import accountCreationView from './components/views/accountCreation'
 import updateInformationView from './components/views/updateInformation'
+import viewAppointmentView from './components/views/showAppointment'
 
 // Routes
 const routes = [
@@ -88,6 +92,27 @@ const routes = [
         component: updateInformationView,
         name: 'Update Information',
         meta: {description: 'Updating Information'}
+	  }, {
+        path: 'creditdebit',
+        component: DebitCreditView,
+        name: 'DebitCredit',
+        meta: {description: 'Debit Credit Operation'}
+      }, {
+        path: 'accountTransfer',
+        component: AccountTransfer,
+        name: 'AccountTransfer',
+        meta: {description: 'Account Transfer Operation'}
+      }, {
+        path: 'emailPhoneTransfer',
+        component: EmailPhoneTransfer,
+        name: 'EmailPhoneTransfer',
+        meta: {description: 'Email/Phone Operation'}
+      },
+      {
+        path: 'viewAppointment',
+        component: viewAppointmentView,
+        name: 'View Appointment',
+        meta: {description: 'View Appointments'}
       }
     ]
   }, {

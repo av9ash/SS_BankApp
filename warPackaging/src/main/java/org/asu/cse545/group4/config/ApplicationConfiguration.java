@@ -11,8 +11,8 @@ public class ApplicationConfiguration extends AbstractAnnotationConfigDispatcher
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-	    //return new Class[] { AppConfig.class, WebSecurityConfig.class };
-		return new Class[] { PersistenceConfiguration.class};
+	    return new Class[] { PersistenceConfiguration.class, WebSecurityConfig.class };
+		//return new Class[] { PersistenceConfiguration.class};
 	  }
 
 	  // Load spring web configuration

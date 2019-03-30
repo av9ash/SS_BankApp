@@ -3,7 +3,9 @@ import 'es6-promise/auto'
 
 // Import System requirements
 import Vue from 'vue'
+import IdleVue from 'idle-vue'
 import VueRouter from 'vue-router'
+import Vuex from 'vuex'
 
 import { sync } from 'vuex-router-sync'
 import routes from './routes'
@@ -15,7 +17,17 @@ import { domain, count, prettyDate, pluralize } from './filters'
 // Import Views - Top level
 import AppView from './components/App.vue'
 
+//import { Alert } from 'bootstrap-vue'
+//Vue.use(Alert)
+
 // Import Install and register helper items
+
+const eventsHub = new Vue()
+
+const stores = new Vuex.Store({
+  // ...
+})
+
 Vue.filter('count', count)
 Vue.filter('domain', domain)
 Vue.filter('prettyDate', prettyDate)
@@ -23,7 +35,13 @@ Vue.filter('pluralize', pluralize)
 
 Vue.use(VueRouter)
 
-// Routing logic
+// Vue.use(IdleVue, { eventEmitter: eventsHub, stores })
+
+Vue.use(IdleVue, {
+  eventEmitter: eventsHub,
+  idleTime: 300000
+})
+
 var router = new VueRouter({
   routes: routes,
   base: __dirname,
@@ -33,24 +51,38 @@ var router = new VueRouter({
   }
 })
 
+const vm = new Vue({
+  onIdle() {
+    console.log("idle");
+    self.location = '#/login';
+  },
+  onActive() {
+    console.log("active");
+  }
+})
+
+
+// Routing logic
+
+
 // Some middleware to help us ensure the user is authenticated.
 router.beforeEach((to, from, next) => {
-  
-  console.log("token::"+router.app.$store.state.token)
+
+  //console.log("token::"+router.app.$store.state.token)
   if (
     to.matched.some(record => record.meta.requiresAuth) &&
     (!router.app.$store.state.token || router.app.$store.state.token === 'null')
   ) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    console.log('inside if')
+    //console.log('inside if')
     window.console.log('Not authenticated')
     next({
       path: '/login',
       query: { redirect: to.fullPath }
     })
   } else {
-	console.log('inside else')
+	//console.log('inside else')
     next()
   }
 })

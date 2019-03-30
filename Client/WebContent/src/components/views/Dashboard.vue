@@ -5,15 +5,11 @@
 
 
     <div class="form-group">
-      <h5><b> Account: </b></h5>
-      <select class="form-control">
-        <option>Account 1</option>
-        <option>Account 2</option>
-        <option>Account 3</option>
-        <option>Account 4</option>
-        <option>Account 5</option>
-      </select>
-    </div>
+			<select class="form-control" v-model="account" required>
+							  <option value='' disabled selected>Select an Account</option>
+							  <option v-for="account in accountList" :value="account.accountId">{{account.accountId}} - {{account.accountType}}</option>
+							</select>
+						  </div>
     <br />
 
 
@@ -170,6 +166,8 @@ import Chart from 'chart.js'
 import Alert from '../widgets/Alert'
 import InfoBox from '../widgets/InfoBox'
 import ProcessInfoBox from '../widgets/ProcessInfoBox'
+import api from '../../api'
+import store from '../../store'
 
 export default {
   name: 'Dashboard',
@@ -178,7 +176,7 @@ export default {
     InfoBox,
     ProcessInfoBox
   },
-  data () {
+  data (router) {
     return {
       generateRandomNumbers (numbers, max, min) {
         var a = [];
@@ -186,7 +184,12 @@ export default {
           a.push(Math.floor(Math.random() * (max - min + 1)) + max)
         }
         return a
-      }
+      },
+    amount: undefined,
+    typeOfTransaction: undefined,
+    account: undefined,
+    showDismissibleAlert: false,
+    accountList: []
     }
   },
   computed: {

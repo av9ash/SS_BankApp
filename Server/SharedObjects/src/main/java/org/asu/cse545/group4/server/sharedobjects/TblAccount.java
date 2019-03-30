@@ -32,6 +32,8 @@ public class TblAccount implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_date", length = 19)
 	private Date createdDate;
+	@Column(name = "status")
+	private Integer status;
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "tblAccountByFromAccount")
 	private Set<TblTransaction> tblTransactionsForFromAccount = new HashSet(0);
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "tblAccountByToAccount")
@@ -109,5 +111,15 @@ public class TblAccount implements Serializable {
 
 	public void setTblTransactionsForToAccount(Set<TblTransaction> tblTransactionsForToAccount) {
 		this.tblTransactionsForToAccount = tblTransactionsForToAccount;
+	}
+
+	public void setStatus(int paramStatus)
+	{
+		this.status = paramStatus;
+	}
+
+	public int getStatus()
+	{
+		return this.status;
 	}
 }

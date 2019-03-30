@@ -13,12 +13,7 @@
             <div class="box-body">
 
               <!-- calendar group -->
-              <div class="input-group">
-                <span class="input-group-addon">
-                  <i class="fa fa-fw fa-calendar"></i>
-                </span>
-                <input id="check_in_date" type="date" name="check_in_date" class="datepicker" required>
-              </div>
+              
               <br />
               <br />
 

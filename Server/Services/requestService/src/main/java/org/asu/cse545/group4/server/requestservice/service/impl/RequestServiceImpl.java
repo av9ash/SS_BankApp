@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.asu.cse545.group4.server.sharedobjects.TblRequest;
+import org.asu.cse545.group4.server.sharedobjects.TblTransaction;
+import org.asu.cse545.group4.server.sharedobjects.TblUser;
 import java.util.List;
 @Service("requestService")
 public class RequestServiceImpl implements RequestService {
@@ -30,8 +32,52 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Transactional
-	public  List<TblRequest> getPendingRequests()
+	public  List<TblRequest> getPendingRequests(TblUser user)
 	{
-		return this.requestDAO.getPendingRequests();
+		
+		return this.requestDAO.getPendingRequests(user);
 	}
+
+	@Transactional
+	public  TblRequest getRequest(TblTransaction transaction)
+	{
+		return this.requestDAO.getRequest(transaction);
+	}
+
+		@Transactional
+	public  boolean isTierOneEmployee(TblUser user)
+	{
+		return this.requestDAO.isTierOneEmployee(user);
+	}
+
+	@Transactional
+  	public  boolean isTierTwoEmployee(TblUser user)
+  	{
+  		return this.requestDAO.isTierTwoEmployee(user);
+  	}
+
+	  @Transactional	
+	  public  boolean isTierThreeEmployee(TblUser user)
+	  {
+	  	return this.requestDAO.isTierThreeEmployee(user);
+	  }
+
+	  @Transactional
+	  public  boolean isAdmin(TblUser user)
+	  {
+	  		return this.requestDAO.isAdmin(user);
+	  }
+
+	  @Transactional
+	  public  boolean isCustomer(TblUser user)
+	  {
+	  	return this.requestDAO.isCustomer(user);
+	  }
+
+	  @Transactional
+	  public boolean isMerchant(TblUser user)
+	  {
+	  	return this.requestDAO.isMerchant(user);
+	  }
+
 }

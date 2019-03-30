@@ -70,20 +70,32 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Transactional
-	@Override
+	public TblUser getUser(TblUser user)
+	{
+		TblUser db_user = this.loginDAO.getUser(user);
+		return db_user;
+	}
+	
+	@Transactional
 	public TblUser loadUserByUserName(String userName) {
 		return this.loginDAO.getUserByUserName(userName);
 	}
 
 	@Transactional
-	@Override
 	public void updateUser(TblUser user) {
 		this.loginDAO.updateUser(user);
 	}
 
 	@Transactional
-	@Override
+
 	public void unlockUser(TblUser user) {
 		this.loginDAO.unlockUser(user);
+	}
+	
+	
+	@Transactional
+	public void updateUserForAuth(TblUser user) {
+		this.loginDAO.updateUserForAuth(user);
+
 	}
 }

@@ -1,6 +1,6 @@
 <template>
   <div :class="['alert', 'alert-' + type, {'alert-dismissible': dismissible}]">
-    <button v-if="dismissible" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <button type="button" class="close" aria-hidden="false">&times;</button>
     <h4>
       <i :class="['icon', iconClasses]"></i>
       <span>{{title}}</span>

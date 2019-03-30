@@ -14,6 +14,7 @@ import static java.lang.Math.toIntExact;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.hibernate.query.Query;
 import java.util.List;
@@ -35,6 +36,7 @@ enum Action
 	DEBIT;
 }
 
+
 @Repository
 public class TransactionDAOImpl implements TransactionDAO {
 	@Autowired
@@ -42,7 +44,13 @@ public class TransactionDAOImpl implements TransactionDAO {
 	private static final int CREDIT=1;
 	private static final int DEBIT=2;
 	private static final int TRANSFER=3;
+	private static final int NEW_ACCOUNT_CREATION=4;
 	private static final int CRITICAL_TRANSACTION_AMOUNT = 1000;
+
+	private static final int OPEN_ACCOUNT = 1;
+	private static final int CLOSE_ACCOUNT = 2;
+	private static final int DELETE_ACCOUNT = 3;
+
 
 	public String addTransaction(TblTransaction transaction , int userId)
 	{
@@ -64,7 +72,11 @@ public class TransactionDAOImpl implements TransactionDAO {
 			}
 			this.sessionFactory.getCurrentSession().save(transaction);
 		}
-		return status.name();
+		TblTransaction last = lastAddedTransaction();
+		if (last == null) {
+			return status.name();
+		}
+		return status.name()+":"+last.getTransactionId();
 	}
 
 
@@ -75,6 +87,8 @@ public class TransactionDAOImpl implements TransactionDAO {
 		//TODO
 		// authorize check for userId
 		int transType = transaction.getTransactionType();
+		if(transType == NEW_ACCOUNT_CREATION)
+			return TransactionStatus.OK;
 		if( ( transType == DEBIT || transType == TRANSFER) &&  transaction.getTransactionAmount() > toIntExact(fromAccount.getCurrentAmount()))
 		{
 			status = TransactionStatus.INSUFFICIENT_BALANCE;
@@ -197,12 +211,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 			if (ans == null) {
 				return returnObj.toString();
 			}
-			final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
-			CriteriaQuery<TblAccount> criteriaQuery = builder.createQuery(TblAccount.class);
-			Root<TblAccount> accQuery = criteriaQuery.from(TblAccount.class);
-			criteriaQuery.where(builder.equal(accQuery.get("tblUser") , ans.getTblUser()));
-			Query<TblAccount> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
-			final List<TblAccount> accounts = query.getResultList();			
+			final List<TblAccount> accounts = getAccountsForUser(ans.getTblUser());
 
 			JSONArray jsonArray = new JSONArray();
 			if (accounts != null && !accounts.isEmpty()) 
@@ -234,12 +243,17 @@ public class TransactionDAOImpl implements TransactionDAO {
 		{
 			final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
 	        CriteriaQuery<TblUserProfile> criteriaQuery = builder.createQuery(TblUserProfile.class);
-	       Root<TblUserProfile> userQuery = criteriaQuery.from(TblUserProfile.class);       
-	        if(userProfile.getEmail() != null)
+	       Root<TblUserProfile> userQuery = criteriaQuery.from(TblUserProfile.class);  
+	       if(userProfile.getEmail() != null && userProfile.getPhone() != null)
+	       {
+	       		Predicate pred = builder.and(builder.equal(userQuery.get("email"),userProfile.getEmail()),builder.equal(userQuery.get("phone"),userProfile.getPhone()));
+      			criteriaQuery.where(pred);
+	       }     
+	        else if(userProfile.getEmail() != null)
 	       {
 	           criteriaQuery.where(builder.equal(userQuery.get("email"),userProfile.getEmail()));
 	       }        
-	       if(userProfile.getPhone() != null)
+	       else if(userProfile.getPhone() != null)
 	       {
 	           criteriaQuery.where(builder.equal(userQuery.get("phone"),userProfile.getPhone()));
 	       }        
@@ -284,4 +298,89 @@ public class TransactionDAOImpl implements TransactionDAO {
 		return accountTransactions;
 	}
 
+
+	public List<TblAccount> getAccountsForUser(TblUser user)
+    {
+        TblUser db_user = this.sessionFactory.getCurrentSession().get(TblUser.class, user.getUserId());
+        if (db_user == null) {
+            return null;
+        }
+        final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+        CriteriaQuery<TblAccount> criteriaQuery = builder.createQuery(TblAccount.class);
+        Root<TblAccount> accountQuery = criteriaQuery.from(TblAccount.class);
+        Predicate pred = builder.and(builder.equal(accountQuery.get("tblUser"), db_user),builder.equal(accountQuery.get("status"), OPEN_ACCOUNT));
+      	criteriaQuery.where(pred);
+        Query<TblAccount> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
+        final List<TblAccount> userAccounts = query.getResultList();            
+        return userAccounts;
+    }
+	
+	public List<TblAccount> searchAccountByAccountParams(TblAccount account)
+	{
+		final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<TblAccount> criteriaQuery = builder.createQuery(TblAccount.class);
+        Root<TblAccount> accountQuery = criteriaQuery.from(TblAccount.class);
+        Predicate pred = builder.and( builder.equal(accountQuery.get("accountId"), account.getAccountId()) ,builder.equal(accountQuery.get("status"), OPEN_ACCOUNT));
+        criteriaQuery.where(pred);
+        Query<TblAccount> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
+        final List<TblAccount> accounts = query.getResultList();
+        if(accounts.isEmpty())
+        {
+        	return null;
+        }
+        return accounts;
+        
+	}
+
+    public TblTransaction lastAddedTransaction()
+    {
+    	final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+        CriteriaQuery<TblTransaction> criteriaQuery = builder.createQuery(TblTransaction.class);
+        Root<TblTransaction> transQuery = criteriaQuery.from(TblTransaction.class);
+        criteriaQuery.orderBy(builder.desc(transQuery.get("transactionId")));
+        Query<TblTransaction> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery).setFirstResult(0).setMaxResults(1);
+        final List<TblTransaction> ans = query.getResultList();
+        if(!ans.isEmpty())
+        	return ans.get(0);
+        return null;
+    }
+
+
+    public TblAccount updateAccount(TblAccount account, TblUser user)
+    {
+    	if (account == null) {
+    		return null;
+    	}
+    	TblAccount dbAccount = sessionFactory.getCurrentSession().get(TblAccount.class , account.getAccountId());
+    	if (dbAccount == null) {
+    		return null;
+    	}
+    	if (account.getAccountType() != 0) { 
+    		dbAccount.setAccountType(account.getAccountType());
+    	}
+    	sessionFactory.getCurrentSession().saveOrUpdate(dbAccount);
+    	return dbAccount;
+    }
+
+    public void deleteAccount(TblAccount account, TblUser user)
+    {
+    	TblAccount dbAccount = sessionFactory.getCurrentSession().get(TblAccount.class , account.getAccountId());
+    	if (dbAccount == null) 
+    	{
+    		return ;
+    	}
+    	dbAccount.setStatus(DELETE_ACCOUNT);
+    	sessionFactory.getCurrentSession().saveOrUpdate(dbAccount);	
+    }
+
+    public boolean isThisUserAccount(TblAccount account, TblUser user)
+    {
+    	TblAccount dbAccount = this.sessionFactory.getCurrentSession().get(TblAccount.class , account.getAccountId());
+    	return dbAccount.getTblUser().getUserId() == user.getUserId();
+    }
+        
+    public void createAccount(TblAccount account, TblUser user)
+    {
+
+    }
 }
