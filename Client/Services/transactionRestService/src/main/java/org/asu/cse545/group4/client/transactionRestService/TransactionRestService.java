@@ -76,7 +76,8 @@ public class TransactionRestService
 	}
 
 	@PostMapping(value="/transaction",consumes="application/json",produces="application/json")
-	  public @ResponseBody String transaction(@RequestBody TransactionJson newTransaction) {
+	  public @ResponseBody String transaction(@RequestBody TransactionJson newTransaction) throws Exception
+	   {
 	  	TblTransaction transaction = null;
 	  	try
 	  	{
@@ -90,7 +91,7 @@ public class TransactionRestService
 		catch(Exception e)
 		{
 			// handle 
-			return e.toString();
+			throw e;
 		}
 	  }
 

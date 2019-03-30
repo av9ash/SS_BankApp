@@ -113,7 +113,7 @@ public class TransactionJson
 
 	public TblTransaction getTransactionObj() throws IOException
 	{
-		/*JSONObject transaction = new JSONObject();
+		JSONObject transaction = new JSONObject();
 		if(this.getTransactionId() != 0){
 			transaction.put("transactionId" , this.getTransactionId());
 		}
@@ -129,10 +129,7 @@ public class TransactionJson
 		}
 		transaction.put("transactionStatus" , this.getTransactionStatus());
   		ObjectMapper objectMapper = new ObjectMapper();
-		TblTransaction transObj = objectMapper.readValue(transaction.toString(), TblTransaction.class);
-		return transObj;*/
-		TblTransaction transObj =  new TblTransaction();
-		transObj.setTransactionType(4);
+		TblTransaction transObj = objectMapper.readValue(transaction.toString(), TblTransaction.class);		
 		return transObj;
 	}
 }
