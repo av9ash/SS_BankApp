@@ -85,6 +85,7 @@ import store from '../../store'
             if(response === 'success')
 			{
 				console.log("good");
+                document.getElementById("description_value").reset();        
 				alert("Appointment Created!");
 			}
 			else if(response === "FAIL")

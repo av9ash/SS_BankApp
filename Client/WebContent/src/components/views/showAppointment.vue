@@ -24,58 +24,25 @@
 
               <div class="row">
                 <div class="col-sm-12 table-responsive">
-                  <table aria-describedby="example1_info" role="grid" id="example1" class="table table-bordered table-striped dataTable">
+                  <table  role="grid"  class="table table-bordered table-striped dataTable">
                     <thead>
                     <tr role="row">
-                      <th aria-label="Rendering engine: activate to sort column descending" aria-sort="ascending" style="width: 167px;" colspan="1" rowspan="1" aria-controls="example1" tabindex="0" class="sorting_asc">Date</th>
-                      <th aria-label="Platform(s): activate to sort column ascending" style="width: 182px;" colspan="1" rowspan="1" aria-controls="example1" tabindex="0" class="sorting">Description</th>
+                      <th style="width: 167px;" colspan="1" rowspan="1" tabindex="0" >Date</th>
+                      <th style="width: 182px;" colspan="1" rowspan="1" tabindex="0" >Description</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="even" role="row">
-                      <td class="sorting_1">03/17/2019</td>
-                      <td>ABC</td>
+                     <tr class="even" role="row" > 
+                         <td class="sorting_1">   </td>
+                         <td class="sorting_1">   </td>
+
                     </tr>
-                    <tr class="odd" role="row">
-                      <td class="sorting_1">03/18/2019</td>
-                      <td>ABC</td>
+                    <tr class="odd" role="row" v-for="appointment in appointment_list"> 
+                      <td class="sorting_1">{{appointment.dateCreated}}</td>
+                      <td >{{appointment.descript}}</td>
+
                     </tr>
-                    <tr class="even" role="row">
-                      <td class="sorting_1">03/19/2019</td>
-                      <td>ABC</td>
-                    </tr>
-                    <tr class="odd" role="row">
-                      <td class="sorting_1">03/20/2019</td>
-                      <td>ABC</td>
-                    </tr>
-                    <tr class="even" role="row">
-                      <td class="sorting_1">03/21/2019</td>
-                      <td>ABC</td>
-                    </tr>
-                    <tr class="odd" role="row">
-                      <td class="sorting_1">03/22/2019</td>
-                      <td>ABC</td>
-                    </tr>
-                    <tr class="even" role="row">
-                      <td class="sorting_1">03/23/2019</td>
-                      <td>ABC</td>
-                    </tr>
-                    <tr class="odd" role="row">
-                      <td class="sorting_1">03/24/2019</td>
-                      <td>ABC</td>
-                    </tr>
-                    <tr class="even" role="row">
-                      <td class="sorting_1">03/25/2019</td>
-                      <td>ABC</td>
-                    </tr>
-                    <tr class="odd" role="row">
-                      <td class="sorting_1">03/26/2019</td>
-                      <td>ABC</td>
-                    </tr>
-                    <tr class="even" role="row">
-                      <td class="sorting_1">03/27/2019</td>
-                      <td>ABC</td>
-                    </tr>
+                    
                     </tbody>
                   </table>
                 </div>
@@ -94,7 +61,8 @@
 
 <script>
 
-
+  import api from '../../api'
+  import store from '../../store'
   import $ from 'jquery'
   // Require needed datatables modules
   require('datatables.net')
@@ -130,7 +98,8 @@
             a.push(Math.floor(Math.random() * (max - min + 1)) + max)
           }
           return a
-        }
+        },
+          appointment_list:[]
       }
     },
     computed: {
@@ -144,6 +113,21 @@
         return (window.innerWidth <= 800 && window.innerHeight <= 600)
       }
     },
+    created() {
+    console.log("enter created()");
+	const userId = store.state.user;
+	api
+        .request('post', './rest/searchAppointments',{userId})
+		.then(response => {
+			var response = response.data;
+			this.appointment_list = response;
+			console.log("on load::"+JSON.stringify(response));
+		})
+		.catch(error => {
+           console.log("error");
+		   //alert("Error in Transaction! Please contact administrator");
+         })
+  },
     mounted () {
       this.$nextTick(() => {
         var ctx = document.getElementById('trafficBar').getContext('2d')
