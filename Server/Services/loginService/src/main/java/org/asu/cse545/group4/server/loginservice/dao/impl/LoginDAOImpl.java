@@ -39,6 +39,7 @@ public class LoginDAOImpl implements LoginDAO {
 		user.setPassword(hashedPassword);	
 		user.setStatus(1);
 		user.setIncorrectAttempts(0);
+		System.out.println("is_external_user : "+ user.getIsExternalUser());
 		this.sessionFactory.getCurrentSession().save(user);
 		TblUserProfile userProfile = user.getTblUserProfile();
 		userProfile.setTblUser(user);
@@ -75,6 +76,7 @@ public class LoginDAOImpl implements LoginDAO {
             		List<TblCatalog> user1 = getUserFromCatalog(userId);
             		List<Object> resultUser = new ArrayList<>();
             		resultUser.add(returnedUser.getUserId());
+            		resultUser.add(returnedUser.getUsername());
             		resultUser.add(user1.get(0));
             		//return json object
             		
