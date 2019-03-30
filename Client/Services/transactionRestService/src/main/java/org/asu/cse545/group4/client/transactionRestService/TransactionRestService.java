@@ -1,4 +1,4 @@
-package org.asu.cse545.group4.client.transactionrestservice;
+package org.asu.cse545.group4.client.transactionRestService;
 
 import java.security.Principal;
 import org.asu.cse545.group4.server.transactionservice.service.TransactionService;

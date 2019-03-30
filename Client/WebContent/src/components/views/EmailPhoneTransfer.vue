@@ -115,7 +115,7 @@ import api from '../../api'
 import store from '../../store'
 
 export default {
-  name: 'AccountTransfer',
+  name: 'EmailPhoneTransfer',
   data(router) {
     return {
       showResult: false,
