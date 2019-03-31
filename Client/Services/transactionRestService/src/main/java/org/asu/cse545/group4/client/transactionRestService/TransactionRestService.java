@@ -117,8 +117,7 @@ public class TransactionRestService
 		public @ResponseBody String getAllAccounts(@RequestBody TblUser user) {
 		System.out.println("inside getAllAccounts");
 		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
-		Boolean isUserAdmin = reqService.isAdmin(user);
-		if (isUserAdmin==false)
+		if (reqService.isCustomer(user) || reqService.isMerchant(user) )
 		{
 			return gson.toJson("fail");
 		}
