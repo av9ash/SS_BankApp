@@ -15,7 +15,6 @@ import org.asu.cse545.group4.server.sharedobjects.TblUserProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,9 +33,6 @@ public class LoginRestService
 
 	@Autowired
 	private EventService eventService;
-
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@PostMapping(value="/getAllLockedUsers",consumes="application/json",produces="application/json")
 	public @ResponseBody String getAllLockedUsers() {
@@ -187,11 +183,11 @@ public class LoginRestService
 		TblEventLog event = new TblEventLog();
 		if(returnedUser != null)
 		{
-			event.setEventName("User Logged In Successfully");
+			event.setEventName("User Logged In Successfully on "+ new Date());
 		}
 		else
 		{
-			event.setEventName("User Logged In Failed");
+			event.setEventName("User Logged In Failed on "+ new Date());
 		}
 		event.setEventType(1);
 		eventService.logEvent(event);
@@ -300,7 +296,11 @@ public class LoginRestService
 
 
 		loginService.updateUser(updatedUser);
+		TblEventLog event = new TblEventLog();
 		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
+		event.setEventType(1);
+		event.setEventName("User "+updatedUser.getUsername()+" updated Successfully on "+new Date());
+		eventService.logEvent(event);
 		return gson.toJson(updatedUser);
 	}
 
