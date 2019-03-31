@@ -123,7 +123,6 @@ public class TransactionRestService
 		}
 		List<TblAccount> allAccounts = this.transactionService.getAllAccounts();
 		String returnResponse=gson.toJson(allAccounts);
-		logEvent("GET all user accounts",user.getUserId() , returnResponse, 9);
 		return returnResponse;
 	}
 
