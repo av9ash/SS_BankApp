@@ -27,6 +27,8 @@
                   <table  role="grid"  class="table table-bordered table-striped dataTable">
                     <thead>
                     <tr role="row">
+                      <th style="width: 167px;" colspan="1" rowspan="1" tabindex="0" >First Name</th>
+                      <th style="width: 182px;" colspan="1" rowspan="1" tabindex="0" >Last Name</th>
                       <th style="width: 167px;" colspan="1" rowspan="1" tabindex="0" >Date</th>
                       <th style="width: 182px;" colspan="1" rowspan="1" tabindex="0" >Description</th>
                     </tr>
@@ -38,7 +40,9 @@
 
                     </tr>
                     <tr class="odd" role="row" v-for="appointment in appointment_list"> 
-                      <td class="sorting_1">{{appointment.dateCreated}}</td>
+                    <td >{{appointment.firstName}}</td>
+                      <td >{{appointment.lastName}}</td>
+                      <td >{{appointment.dateCreated}}</td>
                       <td >{{appointment.descript}}</td>
 
                     </tr>

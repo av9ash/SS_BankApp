@@ -2,16 +2,18 @@
   <!-- Main content -->
   <section class="content">
     <!-- GitHub hint -->
-
-
+      
+<div>
+        <p>Select an Account    (Account types: 1 - Credit , 2- Debit, 3- Transfer)</p>
+</div>
     <div class="form-group">
-			<select class="form-control" v-model="account" required>
+			<select class="form-control" required v-on:change="changeItem(account,$event)">
 							  <option value='' disabled selected>Select an Account</option>
-							  <option v-for="account in accountList" :value="account.accountId">{{account.accountId}} - {{account.accountType}}</option>
+							  <option v-for="account in accountList" :value="account.accountId" >Account number : {{account.accountId}} - Account type : {{account.accountType}}</option>
 							</select>
 						  </div>
     <br />
-
+<!--    <button class="'btn btn-primary btn-lg '" v-on:click="getTransactions()">Submit</button>-->
 
     <div class="row">
 
@@ -34,6 +36,7 @@
 
     <div class="row center-block">
       <h2>Transaction History: </h2>
+        <p>Transaction Status: 1-Pending, 2-Approved, 3-Declined</p>
       <div class="col-md-12">
         <div class="box">
           <div class="box-header">
@@ -51,70 +54,27 @@
 
               <div class="row">
                 <div class="col-sm-12 table-responsive">
-                  <table aria-describedby="example1_info" role="grid" id="example1" class="table table-bordered table-striped dataTable">
+                  <table  role="grid"  class="table table-bordered table-striped dataTable">
                     <thead>
                     <tr role="row">
-                      <th aria-label="Rendering engine: activate to sort column descending" aria-sort="ascending" style="width: 167px;" colspan="1" rowspan="1" aria-controls="example1" tabindex="0" class="sorting_asc">Date</th>
-                      <th aria-label="Platform(s): activate to sort column ascending" style="width: 182px;" colspan="1" rowspan="1" aria-controls="example1" tabindex="0" class="sorting">Description</th>
-                      <th aria-label="Engine version: activate to sort column ascending" style="width: 142px;" colspan="1" rowspan="1" aria-controls="example1" tabindex="0" class="sorting">Amount ($)</th>
+                      <th style="width: 167px;" colspan="1" rowspan="1"  tabindex="0" >transaction Created Date</th>
+                      <th style="width: 182px;" colspan="1" rowspan="1"  tabindex="0" >transaction Status</th>
+                      <th style="width: 142px;" colspan="1" rowspan="1"  tabindex="0">transaction Amount ($)</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="even" role="row">
-                      <td class="sorting_1">03/17/2019</td>
-                      <td>ABC</td>
-                      <td>54</td>
+                     <tr class="even" role="row" > 
+                         <td class="sorting_1">   </td>
+                         <td class="sorting_1">   </td>
+                        <td class="sorting_1">   </td>
+                        </tr>
+                        <tr class="odd" role="row" v-for="transaction in transactionList"> 
+                    <td >{{transaction.transactionCreatedDate}}</td>
+                      <td >{{transaction.transactionStatus}}</td>
+                      <td >{{transaction.transactionAmount}}</td>
+
                     </tr>
-                    <tr class="odd" role="row">
-                      <td class="sorting_1">03/18/2019</td>
-                      <td>ABC</td>
-                      <td>100</td>
-                    </tr>
-                    <tr class="even" role="row">
-                      <td class="sorting_1">03/19/2019</td>
-                      <td>ABC</td>
-                      <td>18</td>
-                    </tr>
-                    <tr class="odd" role="row">
-                      <td class="sorting_1">03/20/2019</td>
-                      <td>ABC</td>
-                      <td>180</td>
-                    </tr>
-                    <tr class="even" role="row">
-                      <td class="sorting_1">03/21/2019</td>
-                      <td>ABC</td>
-                      <td>19</td>
-                    </tr>
-                    <tr class="odd" role="row">
-                      <td class="sorting_1">03/22/2019</td>
-                      <td>ABC</td>
-                      <td>1</td>
-                    </tr>
-                    <tr class="even" role="row">
-                      <td class="sorting_1">03/23/2019</td>
-                      <td>ABC</td>
-                      <td>1.8</td>
-                    </tr>
-                    <tr class="odd" role="row">
-                      <td class="sorting_1">03/24/2019</td>
-                      <td>ABC</td>
-                      <td>17</td>
-                    </tr>
-                    <tr class="even" role="row">
-                      <td class="sorting_1">03/25/2019</td>
-                      <td>ABC</td>
-                      <td>197</td>
-                    </tr>
-                    <tr class="odd" role="row">
-                      <td class="sorting_1">03/26/2019</td>
-                      <td>ABC</td>
-                      <td>8</td>
-                    </tr>
-                    <tr class="even" role="row">
-                      <td class="sorting_1">03/27/2019</td>
-                      <td>ABC</td>
-                      <td>10</td>
-                    </tr>
+                        
                     </tbody>
                   </table>
                 </div>
@@ -176,7 +136,9 @@ export default {
     typeOfTransaction: undefined,
     account: undefined,
     showDismissibleAlert: false,
-    accountList: []
+    accountList: [],
+        transactionList:[],
+        selected: ""
     }
   },
   computed: {
@@ -189,6 +151,44 @@ export default {
     isMobile () {
       return (window.innerWidth <= 800 && window.innerHeight <= 600)
     }
+  },
+    methods: {
+        changeItem: function changeItem(account, event) {
+	console.log("inside getTransactions");
+    console.log(account);
+        this.selected = event.target.value;
+        const accountId = this.selected; 
+	api
+        .request('post', './rest/accountTransactions',{accountId})
+		.then(response => {
+			var response = response.data;
+			this.transactionList = response;
+			console.log("on load::"+JSON.stringify(response));
+		})
+		.catch(error => {
+           console.log("error");
+		   //alert("Error in Transaction! Please contact administrator");
+         })
+    }
+        
+},
+
+    
+    
+   created() {
+	console.log("inside created");
+	const userId = store.state.user
+	api
+        .request('post', './rest/userAccounts',{userId})
+		.then(response => {
+			var response = response.data;
+			this.accountList = response;
+			console.log("on load::"+JSON.stringify(response));
+		})
+		.catch(error => {
+           console.log("error");
+		   //alert("Error in Transaction! Please contact administrator");
+         })
   },
   mounted () {
     this.$nextTick(() => {
