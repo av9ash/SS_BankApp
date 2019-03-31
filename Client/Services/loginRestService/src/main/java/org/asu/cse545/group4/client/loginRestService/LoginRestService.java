@@ -37,10 +37,8 @@ public class LoginRestService
 	@PostMapping(value="/getAllLockedUsers",consumes="application/json",produces="application/json")
 	public @ResponseBody String getAllLockedUsers() {
 		List<TblUser> lockedUsers = loginService.getAllLockedUsers();
-		Map<String, Object> lockedUserResult = new HashMap<>();
-		lockedUserResult.put("users", lockedUsers);
 		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
-		return gson.toJson(lockedUserResult);
+		return gson.toJson(lockedUsers);
 	}
 
 	@PostMapping(value="/insertUser",consumes="application/json",produces="application/json")
