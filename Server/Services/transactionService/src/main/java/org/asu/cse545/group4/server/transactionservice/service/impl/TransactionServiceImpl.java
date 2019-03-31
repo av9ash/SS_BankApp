@@ -155,4 +155,11 @@ public class TransactionServiceImpl implements TransactionService {
 	{
 		return this.transactionDAO.getUser(user);
 	}
+	
+	@Transactional
+	public  List<TblAccount> getAllAccounts()
+	{
+		return this.transactionDAO.getAllAccounts();
+	}
+	
 }

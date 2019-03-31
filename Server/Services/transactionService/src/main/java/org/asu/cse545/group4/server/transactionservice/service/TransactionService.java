@@ -34,4 +34,7 @@ public abstract interface TransactionService
   public abstract TblAccount createAccount( TblRequest  request  , TblUser approver);
 
   public abstract TblUser getUser(TblUser user);
+  
+  public abstract List<TblAccount> getAllAccounts();
+
 }

@@ -113,6 +113,19 @@ public class TransactionRestService
 		}
 	  }
 
+	  @PostMapping(value="/getAllAccounts",consumes="application/json",produces="application/json")
+		public @ResponseBody String getAllAccounts(@RequestBody TblUser user) {
+		System.out.println("inside getAllAccounts");
+		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
+		if (reqService.isCustomer(user) || reqService.isMerchant(user) )
+		{
+			return gson.toJson("fail");
+		}
+		List<TblAccount> allAccounts = this.transactionService.getAllAccounts();
+		String returnResponse=gson.toJson(allAccounts);
+		return returnResponse;
+	}
+
 
 	  @PostMapping(value="/approveTransaction", consumes = "application/json" , produces = "application/json")
 	  public @ResponseBody String approveTransaction(@RequestBody String requestString)

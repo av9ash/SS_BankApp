@@ -97,4 +97,9 @@ public class LoginServiceImpl implements LoginService {
 		this.loginDAO.updateUserForAuth(user);
 
 	}
+
+	@Transactional
+	public List<TblUser> getAllLockedUsers() {
+		return this.loginDAO.getAllLockedUsers();
+	}
 }
