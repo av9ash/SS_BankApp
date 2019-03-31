@@ -113,6 +113,15 @@ public class TransactionRestService
 		}
 	  }
 
+	  @PostMapping(value="/getAllAccounts",consumes="application/json",produces="application/json")
+		public @ResponseBody String getAllAccounts() {
+		List<TblUser> lockedUsers = loginService.getAllLockedUsers();
+		Map<String, Object> lockedUserResult = new HashMap<>();
+		lockedUserResult.put("users", lockedUsers);
+		Gson gson = new GsonBuilder().setExclusionStrategies(new UserExclusionStrategy()).create();
+		return gson.toJson(lockedUserResult);
+	}
+
 
 	  @PostMapping(value="/approveTransaction", consumes = "application/json" , produces = "application/json")
 	  public @ResponseBody String approveTransaction(@RequestBody String requestString)
