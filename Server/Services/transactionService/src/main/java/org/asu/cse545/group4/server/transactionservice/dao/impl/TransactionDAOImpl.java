@@ -235,7 +235,27 @@ public class TransactionDAOImpl implements TransactionDAO {
 			return "";
 		}
 	}
+	
+	
+	public List<TblAccount> getAllAccounts() {
+        
+        final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<TblAccount> criteriaQuery = builder.createQuery(TblAccount.class);
+		Root<TblAccount> userQuery = criteriaQuery.from(TblAccount.class);
 
+
+		Query<TblAccount> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
+		final List<TblAccount> results = query.getResultList();
+		return results;
+        
+        
+        
+	}
+	
+	
+	
+	
+	
 	public TblUserProfile searchProfile(TblUserProfile userProfile)
 	{
 		try
@@ -402,4 +422,5 @@ public class TransactionDAOImpl implements TransactionDAO {
 		TblUser dbUser = this.sessionFactory.getCurrentSession().get(TblUser.class, user.getUserId());
 		return dbUser;
 	}
+	
 }

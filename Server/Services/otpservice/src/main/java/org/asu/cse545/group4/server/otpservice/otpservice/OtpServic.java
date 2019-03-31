@@ -1,5 +1,7 @@
 package org.asu.cse545.group4.server.otpservice.otpservice;
 
+import org.asu.cse545.group4.server.otpservice.otpservice.Constants.*;
+
 import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -91,25 +93,25 @@ public class OtpServic {
 	
 	public void sendOtpMessage(String toMail, String subject, String otp) {
 		
-		    String from="mysstestuser2019@gmail.com";
-		    String pass="C[xs.fb>Vz3zs3W?";
+//		    String from="mysstestuser2019@gmail.com";
+//		    String pass="C[xs.fb>Vz3zs3W?";
 		    String[] to= new String[] {toMail};
 		    //String subject = "OTP-DevilsSafeBank";
 		    String body = "your otp is "+otp;
 		    
 		    Properties props = System.getProperties();
-		    String host = "smtp.gmail.com";
+//		    String host = "smtp.gmail.com";
 		    props.put("mail.smtp.starttls.enable", "true");
-		    props.put("mail.smtp.host", host);
-		    props.put("mail.smtp.user", from);
-		    props.put("mail.smtp.password", pass);
-		    props.put("mail.smtp.port", "587");
+		    props.put("mail.smtp.host", Constants.HOST);
+		    props.put("mail.smtp.user", Constants.EMAIL);
+		    props.put("mail.smtp.password", Constants.PASSWORD);
+		    props.put("mail.smtp.port", Constants.PORT);
 		    props.put("mail.smtp.auth", "true");
 		    
 		    Session session = Session.getDefaultInstance(props);
 		    MimeMessage message = new MimeMessage(session);
 		    try {
-		        message.setFrom(new InternetAddress(from));
+		        message.setFrom(new InternetAddress(Constants.EMAIL));
 		        InternetAddress[] toAddress = new InternetAddress[to.length];
 		        // To get the array of addresses
 		        for( int i = 0; i < to.length; i++ ) {
@@ -121,7 +123,7 @@ public class OtpServic {
 		        message.setSubject(subject);
 		        message.setText(body);
 		        Transport transport = session.getTransport("smtp");
-		        transport.connect(host, from, pass);
+		        transport.connect(Constants.HOST, Constants.EMAIL, Constants.PASSWORD);
 		        transport.sendMessage(message, message.getAllRecipients());
 		        transport.close();
 		    }
