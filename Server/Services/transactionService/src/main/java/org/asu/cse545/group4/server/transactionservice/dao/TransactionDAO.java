@@ -41,5 +41,5 @@ public abstract interface TransactionDAO
 
   public abstract TblUser getUser(TblUser user);
   
-  public abstract List<TblAccount> getAllAccounts();
+  public abstract String getAllAccounts();
 }

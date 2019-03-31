@@ -237,7 +237,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 	}
 	
 	
-	public List<TblAccount> getAllAccounts() {
+	public String getAllAccounts() {
         
         final CriteriaBuilder builder = sessionFactory.getCurrentSession().getCriteriaBuilder();
 		CriteriaQuery<TblAccount> criteriaQuery = builder.createQuery(TblAccount.class);
@@ -245,8 +245,27 @@ public class TransactionDAOImpl implements TransactionDAO {
 
 
 		Query<TblAccount> query = sessionFactory.getCurrentSession().createQuery(criteriaQuery);
-		final List<TblAccount> results = query.getResultList();
-		return results;
+		final List<TblAccount> accounts = query.getResultList();
+		JSONObject returnObj = new JSONObject();
+		JSONArray jsonArray = new JSONArray();
+		if (accounts != null && !accounts.isEmpty()) 
+		{				
+			for(TblAccount obj : accounts)
+			{
+				JSONObject json = new JSONObject();
+				json.put("FirstName" , obj.getTblUser().getTblUserProfile().getFirstName());
+				json.put("LastName" , obj.getTblUser().getTblUserProfile().getLastName());
+
+				json.put("account_id" , obj.getAccountId());
+				//TODO account type as String
+				json.put("current_amount" , obj.getCurrentAmount());
+				json.put("account_type" , obj.getAccountType());
+				jsonArray.put(json);
+			}
+		}
+		
+		returnObj.put("accounts" ,jsonArray );
+		return returnObj.toString();
         
         
         

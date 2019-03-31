@@ -157,7 +157,7 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 	
 	@Transactional
-	public  List<TblAccount> getAllAccounts()
+	public  String getAllAccounts()
 	{
 		return this.transactionDAO.getAllAccounts();
 	}

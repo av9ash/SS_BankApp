@@ -121,7 +121,7 @@ public class TransactionRestService
 		{
 			return gson.toJson("fail");
 		}
-		List<TblAccount> allAccounts = this.transactionService.getAllAccounts();
+		String allAccounts = this.transactionService.getAllAccounts();
 		String returnResponse=gson.toJson(allAccounts);
 		return returnResponse;
 	}
