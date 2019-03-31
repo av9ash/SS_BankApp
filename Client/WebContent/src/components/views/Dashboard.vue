@@ -5,17 +5,24 @@
 <div v-if="moduleMap.AccountTransactionModule">
 
     <div class="form-group">
-			<select class="form-control" required v-on:change="changeItem(account,$event)">
+			<select class="form-control" v-model="acc" required v-on:change="changeItem(account,$event);setSelected();">
 							  <option value='' disabled selected>Select an Account</option>
-							  <option v-for="account in accountList" :value="account.accountId" >Account number : {{account.accountId}} - Account type : {{account.accountType | changeAcc}}</option>
+							  <option v-for="account in accountList" :value="account" >Account number : {{account.accountId}} - Account type : {{account.accountType | changeAcc}}</option>
 							</select>
 						  </div>
     <br />
 <!--    <button class="'btn btn-primary btn-lg '" v-on:click="getTransactions()">Submit</button>-->
 
+	<div v-if="showBalance">
     <div class="row">
-
-
+		<div class="col-md-4 col-sm-12 col-xs-12">
+        <info-box color-class="bg-yellow"
+                  :icon-classes="['ion', 'ion-cash']"
+                  text="Balance"
+                  v-bind:number="balance"></info-box>
+      </div>
+		</div>
+		
       <!-- Info boxes -->
       
       <!-- /.col -->
@@ -28,7 +35,7 @@
     <!-- /.row -->
 
     <div class="row center-block">
-      <h2>Transaction History: </h2>
+      <h2>Transaction History</h2>
         
       <div class="col-md-12">
         <div class="box">
@@ -63,7 +70,7 @@
                         </tr>
                         <tr class="odd" role="row" v-for="transaction in transactionList"> 
                     <td >{{transaction.transactionCreatedDate}}</td>
-                      <td >{{transaction.transactionStatus}}</td>
+                      <td >{{transaction.transactionStatus | changeStat}}</td>
                       <td >{{transaction.transactionAmount}}</td>
 
                     </tr>
@@ -130,7 +137,10 @@ export default {
     typeOfTransaction: undefined,
     account: undefined,
     showDismissibleAlert: false,
+	showBalance: false,
     accountList: [],
+	balance: undefined,
+	acc: undefined,
         transactionList:[],
         selected: ""
     }
@@ -147,9 +157,9 @@ export default {
     }
   },
     methods: {
-        changeItem: function changeItem(account, event) {
+        /*changeItem: function changeItem(account, event) {
 	    this.selected = event.target.value;
-        const accountId = this.selected; 
+		const accountId = this.selected; 
 	api
         .request('post', './rest/accountTransactions',{accountId})
 		.then(response => {
@@ -158,10 +168,37 @@ export default {
 			
 		})
 		.catch(error => {
-           console.log("error");
+		this.showBalance = false
+           //console.log("error");
 		   //alert("Error in Transaction! Please contact administrator");
          })
-    }
+    },
+	*/
+	
+	changeItem () {
+	    //this.selected = event.target.value;
+		//const accountId = this.selected; 
+		const accountId = this.acc.accountId
+		console.log("accountId::"+accountId)
+	api
+        .request('post', './rest/accountTransactions',{accountId})
+		.then(response => {
+			var response = response.data;
+			this.transactionList = response;
+			
+		})
+		.catch(error => {
+		this.showBalance = false
+           //console.log("error");
+		   //alert("Error in Transaction! Please contact administrator");
+         })
+    },
+	
+	setSelected () {
+		console.log(JSON.stringify(this.acc))
+		this.balance = this.acc.currentAmount
+		this.showBalance = true
+	}
         
 },
 

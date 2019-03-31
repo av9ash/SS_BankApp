@@ -3,14 +3,14 @@
     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
       <!-- The user image in the navbar-->
       <!-- hidden-xs hides the username on small devices so only the image appears. -->
-      <span class="hidden-xs">{{user.displayName}}</span>
+      <span class="hidden-xs">{{username}}</span>
     </a>
     <!-- Account Info and Menu -->
     <ul class="dropdown-menu">
       <li class="user-header" style="height:auto;min-height:85px;padding-bottom:15px;">
         <p>
-          <span>{{user.displayName}}</span>
-          <small v-for="role in user.roles" :key="role">{{role}}</small>
+          <span>{{username}}</span>
+          
         </p>
       </li>
       <li class="user-footer">
@@ -31,8 +31,18 @@
 </template>
 
 <script>
+import store from '../../store'
 export default {
+
   name: 'UserMenu',
-  props: ['user']
+  props: ['user'],
+  data(router)
+  {
+	username: undefined
+  },
+  created () {
+	this.username = store.state.name
+  }
+  
 }
 </script>

@@ -106,10 +106,11 @@ export default {
          }
          else
          {
-            console.log("data"+data);
+				console.log("data"+JSON.stringify(data));
                 this.$store.commit('SET_USER', data.userId)
                 this.$store.commit('SET_MODULE_MAP',data.moduleMap)
                 this.$store.commit('SET_TOKEN',header.authorization)
+                this.$store.commit('SET_NAME',data.userName)
                 axios.defaults.headers.common['Authorization'] = header.authorization;
                 this.$emit('authenticated', true)
                 this.$router.replace({ name: 'Dashboard' })

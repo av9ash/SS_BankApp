@@ -36,7 +36,7 @@
 			</div>
 			<div class="text-right">
 			<button type="submit" class="btn btn-primary" v-on:click="approve()">Approve</button>
-			<button type="submit" class="btn btn-primary" v-on:click="decline()">Decline</button>
+			<button type="submit" class="btn btn-primary">Decline</button>
 		  </div>
 	  </section>
   </div>

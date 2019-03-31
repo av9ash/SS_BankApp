@@ -30,3 +30,15 @@ export function changeAcc (value) {
    return "Savings Account";
  }
 }
+
+export function changeStat (value) {
+ if (value === 1) {
+   return "Pending";
+ }
+ if (value === 2) {
+   return "Approved";
+ }
+ if (value === 3) {
+   return "Declined";
+ }
+}

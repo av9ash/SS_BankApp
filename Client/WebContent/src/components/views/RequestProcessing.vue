@@ -65,7 +65,7 @@ export default {
   },
   methods: {
 	retrieveData() {
-		console.log("ins")
+		//console.log("ins")
 		this.selectedAccount = undefined;
 		var validateValue = this.validate();
 		if(validateValue == false)
@@ -89,14 +89,14 @@ export default {
         .request('post', './rest/searchAccount', {email, phone  })
 		.then(response => {
 			var response = response.data;
-			console.log("response:::"+JSON.stringify(response));
+			//console.log("response:::"+JSON.stringify(response));
 			this.firstName = response.first_name;
 			this.lastName = response.last_name;
 			this.accounts = response.accounts;
 			this.showResult = true;
 		})
 		.catch(error => {
-           console.log("error"+error);
+           //console.log("error"+error);
 		   alert("Error in Transaction! Please contact administrator");
          })
 		
@@ -106,9 +106,9 @@ export default {
 	
 	validate() {
 		var validateValue = true;
-		console.log("this.phone:::"+this.phone);
-		console.log(this.phone == '');
-		console.log(this.phone == undefined);
+		//console.log("this.phone:::"+this.phone);
+		//console.log(this.phone == '');
+		//console.log(this.phone == undefined);
 		if((this.email == undefined && this.phone == undefined) || (this.email == '' && this.phone == '')
 		|| (this.email == '' && this.phone == undefined) || (this.email == undefined && this.phone == ''))
 		{
@@ -116,7 +116,7 @@ export default {
 		}
 	},
 	accountFilter(account) {
-			console.log("in select");
+			//console.log("in select");
             this.selectedAccount = account;
         },
 		
@@ -125,7 +125,7 @@ export default {
 			var validateValue = this.validateTransaction();
 			if(validateValue == false)
 			{
-				console.log("enter all");
+				//console.log("enter all");
 				alert("Enter all required values");
 				return;
 			}
@@ -139,10 +139,10 @@ export default {
         .request('post', './rest/transaction', {transaction_amount, from_account, to_account, type, user_id  })
 		.then(response => {
 			var response = response.data;
-			console.log("response");
+			//console.log("response");
 			if(response === 'OK')
 			{
-				console.log("good");
+				//console.log("good");
 				alert("Transaction Submitted!");
 			}
 			else if(response === "")
@@ -152,7 +152,7 @@ export default {
 		
 		})
 		.catch(error => {
-           console.log("error");
+           //console.log("error");
 		   alert("Error in Transaction! Please contact administrator");
          })
 		},
@@ -161,17 +161,17 @@ export default {
 		validateTransaction()
 		{
 			var validateValue = true;
-			console.log("this.amount::"+this.amount);
+			//console.log("this.amount::"+this.amount);
 			if(this.amount == undefined || this.amount <= 0 || this.amount > 100000)
 			{
 				return false;
 			}
-			console.log("this.selectedAccount::"+this.selectedAccount);
+			//console.log("this.selectedAccount::"+this.selectedAccount);
 			if(this.selectedAccount == undefined)
 			{
 				return false;
 			}
-			console.log("this.account::"+this.account);
+			//console.log("this.account::"+this.account);
 			if(this.account == undefined)
 			{
 				return false;
@@ -191,7 +191,7 @@ export default {
 			.then(response =>
 			{
 				var responseData = response.data;
-				console.log("response::"+responseData)
+				//console.log("response::"+responseData)
 				if(responseData === "OK")
 				{
 					const userId = store.state.user
@@ -283,7 +283,7 @@ export default {
 		  }
 	},
 	created() {
-	console.log("inside created");
+	//console.log("inside created");
 	const userId = store.state.user
 	api
         .request('post', './rest/pendingRequests', {userId})
@@ -301,7 +301,7 @@ export default {
 				}
 			}
 			//this.requests = response;
-			console.log("on load::"+JSON.stringify(response));
+			//console.log("on load::"+JSON.stringify(response));
 		})
 		.catch(error => {
            console.log("error");

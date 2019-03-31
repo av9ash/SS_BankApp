@@ -13,7 +13,7 @@ import routes from './routes'
 import store from './store'
 
 // Import Helpers for filters
-import { domain, count, prettyDate, pluralize, changeAcc } from './filters'
+import { domain, count, prettyDate, pluralize, changeAcc, changeStat } from './filters'
 
 // Import Views - Top level
 import AppView from './components/App.vue'
@@ -34,6 +34,7 @@ Vue.filter('domain', domain)
 Vue.filter('prettyDate', prettyDate)
 Vue.filter('pluralize', pluralize)
 Vue.filter('changeAcc', changeAcc)
+Vue.filter('changeStat', changeStat)
 
 import VueTouchKeyboard from "vue-touch-keyboard";
 import style from "vue-touch-keyboard/dist/vue-touch-keyboard.css";
@@ -60,11 +61,7 @@ const vm = new Vue({
   onIdle() {
     //console.log("idle");
 	
-    //self.location = '#/login';
-	next({
-      path: '/login',
-      query: { redirect: to.fullPath }
-    })
+    self.location = '#/login';
   },
   onActive() {
     //console.log("active");

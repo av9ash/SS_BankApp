@@ -76,7 +76,7 @@ public class LoginDAOImpl implements LoginDAO {
 				List<TblCatalog> user1 = getUserFromCatalog(userId);
 				List<Object> resultUser = new ArrayList<>();
 				resultUser.add(returnedUser.getUserId());
-				resultUser.add(returnedUser.getUsername());
+				resultUser.add(returnedUser.getTblUserProfile().getFirstName() + " " + returnedUser.getTblUserProfile().getLastName());
 				resultUser.add(user1.get(0));
 				//return json object
 

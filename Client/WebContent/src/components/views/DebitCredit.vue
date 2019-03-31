@@ -78,7 +78,7 @@ export default {
 		var validateValue = this.validate();
 		if(validateValue == false)
 		{
-			console.log("enter all");
+			//console.log("enter all");
 			alert("Enter all required values");
 			return;
 		}
@@ -92,10 +92,10 @@ export default {
         .request('post', './rest/transaction', {transaction_amount, from_account, to_account, type, user_id  })
 		.then(response => {
 			var response = response.data;
-			console.log("response");
+			//console.log("response");
 			if(response === 'OK')
 			{
-				console.log("good");
+				//console.log("good");
 				alert("Transaction Submitted!");
 			}
 			else if(response === "")
@@ -131,14 +131,9 @@ export default {
   },
 
   created() {
-	console.log("inside created");
+	//console.log("inside created");
 	const userId = store.state.user
 	const token = store.state.token;
-	console.log("token:::"+token);
-	let tok = token.split(' ')[1]
-	console.log("tok:::"+tok)
-	//const head = Authorization: `Bearer ${tok}`;
-	//console.log("head::"+head);
 		
 		const header = {
 			headers: {
@@ -151,7 +146,7 @@ export default {
 		.then(response => {
 			var response = response.data;
 			this.accountList = response;
-			console.log("on load::"+JSON.stringify(response));
+			//console.log("on load::"+JSON.stringify(response));
 		})
 		.catch(error => {
            console.log("error");

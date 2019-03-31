@@ -11,7 +11,7 @@
         </div>-->
         <div class="pull-left info">
           <div>
-            <p class="white">{{user.displayName}}</p>
+            <p class="white">{{username}}</p>
           </div>
         </div>
       </div>
@@ -44,16 +44,23 @@
 </template>
 <script>
 import SidebarMenu from './SidebarMenu'
-
+import store from '../../store'
 export default {
   name: 'Sidebar',
   props: ['user'],
+  data(router)
+  {
+	username: undefined
+  },
   components: { SidebarMenu },
   mounted: function() {
     window
       .jQuery('[data-toggle="hideseek"]')
       .off()
       .hideseek()
+  },
+  created () {
+	this.username = store.state.name
   }
 }
 </script>

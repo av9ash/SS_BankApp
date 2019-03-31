@@ -5,6 +5,7 @@ export default {
   user: null,
   token: null,
   moduleMap: null,
+  name: null,
   userInfo: {
     messages: [
       {
