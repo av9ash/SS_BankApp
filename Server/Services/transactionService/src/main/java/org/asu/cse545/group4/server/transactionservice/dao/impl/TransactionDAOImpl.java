@@ -264,8 +264,8 @@ public class TransactionDAOImpl implements TransactionDAO {
 			}
 		}
 		
-		returnObj.put("accounts" ,jsonArray );
-		return returnObj.toString();
+//		returnObj.put("accounts" ,jsonArray );
+		return jsonArray.toString();
         
         
         
