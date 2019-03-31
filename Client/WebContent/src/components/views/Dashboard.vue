@@ -19,12 +19,7 @@
 
 
       <!-- Info boxes -->
-      <div class="col-md-4 col-sm-12 col-xs-12">
-        <info-box color-class="bg-yellow"
-                  :icon-classes="['ion', 'ion-cash']"
-                  text="Balance"
-                  number="$236.61"></info-box>
-      </div>
+      
       <!-- /.col -->
       
       <!-- /.col -->
