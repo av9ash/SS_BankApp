@@ -7,12 +7,13 @@ import IdleVue from 'idle-vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 
+
 import { sync } from 'vuex-router-sync'
 import routes from './routes'
 import store from './store'
 
 // Import Helpers for filters
-import { domain, count, prettyDate, pluralize } from './filters'
+import { domain, count, prettyDate, pluralize, changeAcc } from './filters'
 
 // Import Views - Top level
 import AppView from './components/App.vue'
@@ -32,8 +33,12 @@ Vue.filter('count', count)
 Vue.filter('domain', domain)
 Vue.filter('prettyDate', prettyDate)
 Vue.filter('pluralize', pluralize)
+Vue.filter('changeAcc', changeAcc)
 
+import VueTouchKeyboard from "vue-touch-keyboard";
+import style from "vue-touch-keyboard/dist/vue-touch-keyboard.css";
 Vue.use(VueRouter)
+Vue.use(VueTouchKeyboard);
 
 // Vue.use(IdleVue, { eventEmitter: eventsHub, stores })
 
@@ -53,11 +58,16 @@ var router = new VueRouter({
 
 const vm = new Vue({
   onIdle() {
-    console.log("idle");
-    self.location = '#/login';
+    //console.log("idle");
+	
+    //self.location = '#/login';
+	next({
+      path: '/login',
+      query: { redirect: to.fullPath }
+    })
   },
   onActive() {
-    console.log("active");
+    //console.log("active");
   }
 })
 

@@ -1,15 +1,13 @@
 <template>
-  <!-- Main content -->
+  
   <section class="content">
-    <!-- GitHub hint -->
-      
-<div>
-        <p>Select an Account    (Account types: 1 - Credit , 2- Debit, 3- Transfer)</p>
-</div>
+    
+<div v-if="moduleMap.AccountTransactionModule">
+
     <div class="form-group">
 			<select class="form-control" required v-on:change="changeItem(account,$event)">
 							  <option value='' disabled selected>Select an Account</option>
-							  <option v-for="account in accountList" :value="account.accountId" >Account number : {{account.accountId}} - Account type : {{account.accountType}}</option>
+							  <option v-for="account in accountList" :value="account.accountId" >Account number : {{account.accountId}} - Account type : {{account.accountType | changeAcc}}</option>
 							</select>
 						  </div>
     <br />
@@ -31,7 +29,7 @@
 
     <div class="row center-block">
       <h2>Transaction History: </h2>
-        <p>Transaction Status: 1-Pending, 2-Approved, 3-Declined</p>
+        
       <div class="col-md-12">
         <div class="box">
           <div class="box-header">
@@ -49,7 +47,7 @@
 
               <div class="row">
                 <div class="col-sm-12 table-responsive">
-                  <table  role="grid"  class="table table-bordered table-striped dataTable">
+                  <table  role="grid"  class="table table-bordered table-striped">
                     <thead>
                     <tr role="row">
                       <th style="width: 167px;" colspan="1" rowspan="1"  tabindex="0" >transaction Created Date</th>
@@ -81,7 +79,7 @@
       </div>
     </div>
 
-
+</section>
   </section>
   <!-- /.content -->
 </template>
@@ -127,6 +125,7 @@ export default {
         }
         return a
       },
+	moduleMap: undefined,
     amount: undefined,
     typeOfTransaction: undefined,
     account: undefined,
@@ -149,16 +148,14 @@ export default {
   },
     methods: {
         changeItem: function changeItem(account, event) {
-	console.log("inside getTransactions");
-    console.log(account);
-        this.selected = event.target.value;
+	    this.selected = event.target.value;
         const accountId = this.selected; 
 	api
         .request('post', './rest/accountTransactions',{accountId})
 		.then(response => {
 			var response = response.data;
 			this.transactionList = response;
-			console.log("on load::"+JSON.stringify(response));
+			
 		})
 		.catch(error => {
            console.log("error");
@@ -171,85 +168,20 @@ export default {
     
     
    created() {
-	console.log("inside created");
+	
+	this.moduleMap = store.state.moduleMap
 	const userId = store.state.user
 	api
         .request('post', './rest/userAccounts',{userId})
 		.then(response => {
 			var response = response.data;
 			this.accountList = response;
-			console.log("on load::"+JSON.stringify(response));
+			
 		})
 		.catch(error => {
            console.log("error");
 		   //alert("Error in Transaction! Please contact administrator");
          })
-  },
-  mounted () {
-    this.$nextTick(() => {
-      var ctx = document.getElementById('trafficBar').getContext('2d')
-      var config = {
-        type: 'line',
-        data: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-          datasets: [{
-            label: 'CoPilot',
-            fill: false,
-            borderColor: '#284184',
-            pointBackgroundColor: '#284184',
-            backgroundColor: 'rgba(0, 0, 0, 0)',
-            data: this.coPilotNumbers
-          }, {
-            label: 'Personal Site',
-            borderColor: '#4BC0C0',
-            pointBackgroundColor: '#4BC0C0',
-            backgroundColor: 'rgba(0, 0, 0, 0)',
-            data: this.personalNumbers
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: !this.isMobile,
-          legend: {
-            position: 'bottom',
-            display: true
-          },
-          tooltips: {
-            mode: 'label',
-            xPadding: 10,
-            yPadding: 10,
-            bodySpacing: 10
-          }
-        }
-      };
-
-      new Chart(ctx, config) // eslint-disable-line no-new
-
-      var pieChartCanvas = document.getElementById('languagePie').getContext('2d')
-      var pieConfig = {
-        type: 'pie',
-        data: {
-          labels: ['HTML', 'JavaScript', 'CSS'],
-          datasets: [{
-            data: [56.6, 37.7, 4.1],
-            backgroundColor: ['#00a65a', '#f39c12', '#00c0ef'],
-            hoverBackgroundColor: ['#00a65a', '#f39c12', '#00c0ef']
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: !this.isMobile,
-          legend: {
-            position: 'bottom',
-            display: true
-          }
-        }
-      };
-
-      new Chart(pieChartCanvas, pieConfig) // eslint-disable-line no-new
-    });
-
-    $('#example1').DataTable()
   }
 }
 </script>

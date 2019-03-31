@@ -21,3 +21,12 @@ export function pluralize (time, label) {
 
   return time + label + 's'
 }
+
+export function changeAcc (value) {
+ if (value === 1) {
+   return "Checkings Account";
+ }
+ if (value === 2) {
+   return "Savings Account";
+ }
+}

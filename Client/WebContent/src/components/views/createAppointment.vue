@@ -25,21 +25,10 @@
               </div>
               <br>
             </div>
-              <button type="submit" class="'btn btn-primary btn-lg '" v-on:click="submit()">Submit</button>
+              <button type="submit" class="btn btn-primary" v-on:click="submit()">Submit</button>
 
             
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br />
-            <br />
+            
             <!-- /.box-body -->
           </div>
 
@@ -102,19 +91,6 @@ import store from '../../store'
 	}
     }
   }
-
-  $(document).ready(function() {
-    var pickr = $('.datepicker').pickadate({
-      format: 'DD/MM/YYYY',
-      selectMonths: true,
-      selectYears: 5,
-      editable: true
-    });
-    $('select').material_select();
-    $('.datepicker').click(function() {
-      pickr.pickadate('open');
-    });
-  });
 
 </script>
 

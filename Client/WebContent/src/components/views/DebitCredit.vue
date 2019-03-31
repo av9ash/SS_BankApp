@@ -14,7 +14,7 @@
 						  <div class="form-group">
 							<select class="form-control" v-model="account" required>
 							  <option value='' disabled selected>Select an Account</option>
-							  <option v-for="account in accountList" :value="account.accountId">{{account.accountId}} - {{account.accountType}}</option>
+							  <option v-for="account in accountList" :value="account.accountId">Account number : {{account.accountId}} - Account type : {{account.accountType | changeAcc}}</option>
 							</select>
 						  </div>
 						  </div>

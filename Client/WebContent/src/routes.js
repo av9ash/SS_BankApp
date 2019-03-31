@@ -20,6 +20,9 @@ import viewAppointmentView from './components/views/showAppointment'
 import RequestProcessing from './components/views/RequestProcessing'
 import createAccount from './components/views/createAccount'
 import AccountApproval from './components/views/AccountApproval'
+import EventLog from './components/views/EventLog'
+import showAccounts from './components/views/showAccounts'
+import unlockUser from './components/views/unlockUser'
 
 // Routes
 const routes = [
@@ -128,6 +131,24 @@ const routes = [
         component: AccountApproval,
         name: 'Account Approval',
         meta: {description: 'Account Approval'}
+      },
+      {
+        path: 'viewLogs',
+        component: EventLog,
+        name: 'Event Log',
+        meta: {description: 'Event Log'}
+      },
+      {
+        path: 'viewAccount',
+        component: showAccounts,
+        name: 'showAccounts',
+        meta: {description: 'Show Accounts'}
+      },
+      {
+        path: 'unlockUser',
+        component: unlockUser,
+        name: 'unlockUser',
+        meta: {description: 'Unlock User'}
       }
     ]
   }, {

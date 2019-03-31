@@ -30,14 +30,14 @@
         <span class="page">Email/Phone</span>
       </a>
     </router-link>
-    <li class="header" v-if="moduleMap.RequestModule">Authorize</li>
-    <router-link tag="li" class="pageLink" v-if="moduleMap.RequestModule" to="/approvedecline">
+    <li class="header" v-if="moduleMap.RequestModule && !moduleMap.ViewAndModifyModule">Authorize</li>
+    <router-link tag="li" class="pageLink" v-if="moduleMap.RequestModule && !moduleMap.ViewAndModifyModule" to="/approvedecline">
       <a>
         <i class="fa fa-tasks"></i>
         <span class="page">Approve/Decline Transactions</span>
       </a>
     </router-link>
-	<router-link tag="li" class="pageLink" v-if="moduleMap.RequestModule" to="/accountApproval">
+	<router-link tag="li" class="pageLink" v-if="moduleMap.RequestModule && !moduleMap.ViewAndModifyModule" to="/accountApproval">
       <a>
         <i class="fa fa-tasks"></i>
         <span class="page">Approve/Decline Accounts</span>
@@ -78,12 +78,18 @@
         <span class="page">View Accounts</span>
       </a>
     </router-link>
+	<router-link tag="li" class="pageLink" v-if="moduleMap.ViewLogFile" to="/unlockUser">
+      <a>
+        <i class="fa fa-circle-o text-red"></i>
+        <span class="page">Unlock User</span>
+      </a>
+    </router-link>
 
 	<li class="header" v-if="moduleMap.ViewLogFile">System Logs</li>
     <router-link tag="li" v-if="moduleMap.ViewLogFile" class="pageLink" to="/viewLogs">
       <a>
         <i class="fa fa-circle-o text-red"></i>
-        <span class="page">View Accounts</span>
+        <span class="page">View Logs</span>
       </a>
     </router-link>
 
@@ -102,7 +108,6 @@ import store from '../../store'
 	created: function()
 	{
 		this.moduleMap = store.state.moduleMap
-		console.log("this.moduleMap::"+this.moduleMap)
 	}
   }
 </script>

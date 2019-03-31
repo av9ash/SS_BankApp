@@ -9,7 +9,7 @@
 				<div class="box-body">
 					  <div class="row">
 						  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 col-xs-offset-4">
-						  <label>Enter Account Number<span style="color:red">*</span></label>
+						  <label>Enter Account Number To Transfer from<span style="color:red">*</span></label>
 							<input class="form-control" type="number" pattern=".{8,8}" v-model = "toAccountNumber" required />
 						  </div>
 						  <div class="col-xs-3">
@@ -28,10 +28,10 @@
 				<div class="box-body">
 					  <div class="row">
 						  <div class="col-xs-12">
-							<table class="table table-responsive">
+							<table class="table table-bordered table-responsive">
 								<thead>
 									<tr>
-										<th>To Account Number</th>
+										<th>From Account Number</th>
 										<th>Name</th>
 										<th>Account Type</th>
 									</tr>
@@ -41,7 +41,7 @@
 									<tr class="active">
 										<td>{{toAccount.accountId}}</td>
 										<td>{{toAccount.tblUser.tblUserProfile.firstName}} {{toAccount.tblUser.tblUserProfile.lastName}}</td>
-										<td>{{toAccount.accountType}}</td>
+										<td>{{toAccount.accountType | changeAcc}}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -49,7 +49,7 @@
 					  </div>
 					  <div class="row">
 					  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						  <h4>Select Account<span style="color:red">*</span></h4>
+						  <h4>Select To Account<span style="color:red">*</span></h4>
 						  <div class="form-group">
 							<select class="form-control" v-model="fromAccount" required>
 							  <option value='' disabled selected>Select an Account</option>
@@ -67,6 +67,7 @@
 						</span>
 						
 						<input class="form-control" v-model="amount" type="number" min="0.01" step="0.01" max="100000" oninput="validity.valid||(value='');" required />
+						
 					  </div>
 				  </div>
 			  </div>
@@ -85,8 +86,10 @@
 					  <div class="row">
 						  <div class="col-xs-12">
 							<div class="input-group">
-								<input class="form-control" v-model="otpValue" type="number" min="0" step="1" max="999999" oninput="validity.valid||(value='');" required />
+								<input class="form-control" v-model="otpValue" type="number" min="0" step="1" max="999999" oninput="validity.valid||(value='');" required @focus="show" data-layout="numeric" readonly/>
+								
 							</div>
+							<vue-touch-keyboard :options="options" v-if="visible" :layout="layout" :cancel="hide" :accept="accept" :input="input" />
 						  </div>
 					  </div>
 				</div>
@@ -114,10 +117,30 @@ export default {
 	  fromAccount: undefined,
 	  toAccount: undefined,
 	  otpValue: undefined,
-	  showOTPBox: false
+	  showOTPBox: false,
+	  visible: false,
+      layout: "normal",
+      input: null,
+      options: {
+        useKbEvents: false,
+        preventClickEvent: false
+      }
     }
   },
   methods: {
+	accept(text) {
+      
+      this.hide();
+    },
+    show(e) {
+      this.input = e.target;
+      this.layout = e.target.dataset.layout;
+      if (!this.visible)
+        this.visible = true
+    },
+    hide() {
+      this.visible = false;
+    },
 	retrieveData() {
 		console.log("ins")
 		this.showResult = false;
@@ -165,7 +188,7 @@ export default {
 		const userId = store.state.user
 		api.request('post','./rest/generateOtp',{userId})
 			.then(response => {
-				console.log("succes");
+				console.log("success");
 				alert("Enter OTP");
 				this.showOTPBox = true
 				//console.log("true");
@@ -190,11 +213,14 @@ export default {
 		if(this.otpValue == undefined || this.otpValue == '' || this.otpValue.length != 6)
 		{
 					alert("Invalid Otp value!! redirecting to login page");
+					
 					this.showOTPBox = false
 					return;
 		}
-		const from_account = this.fromAccount;
-		const to_account = this.toAccount.accountId;
+		//const from_account = this.fromAccount;
+		//const to_account = this.toAccount.accountId;
+		const from_account = this.toAccount.accountId;
+		const to_account = this.fromAccount
 		const transaction_amount = this.amount;
 		const type = 3;
 		const user_id = store.state.user
@@ -204,14 +230,14 @@ export default {
 					request('post','./rest/validateOtp',{otpValue})
 					.then(response =>
 					{
-						//console.log("response::"+JSON.stringify(response))
+						console.log("response::"+JSON.stringify(response))
 						if(response.data === "SUCCESS")
 						{
 						api
 						.request('post', './rest/transaction', {transaction_amount, from_account, to_account, type, user_id  })
 						.then(response => {
 							var response = response.data;
-							console.log("response");
+							console.log("response::"+response);
 							if(response === 'OK')
 							{
 								console.log("good");
@@ -222,6 +248,7 @@ export default {
 							else if(response === "")
 							{
 								alert("Transaction Declined! Insufficient Balance");
+								
 								this.showOTPBox = false
 							}
 						
@@ -234,13 +261,14 @@ export default {
 						else
 						{
 							alert("invalid otp");
+							this.$router.push('/login')
 							this.showOTPBox = false
 							return;
 						}
 					})
 					.catch(error => {
 							alert("error in validating otp");
-							this.showOTPBox = true
+							this.$router.push('/login')
 							this.showOTPBox = false
 							return;
 					})

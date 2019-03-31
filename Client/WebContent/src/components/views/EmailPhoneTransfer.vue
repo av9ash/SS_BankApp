@@ -39,7 +39,7 @@
 							<table class="table table-responsive table-bordered table-striped">
 								<thead>
 									<tr>
-										<th>Account Number</th>
+										<th>To Account Number</th>
 										<th>First Name</th>
 										<th>Last Name</th>
 										<th>Account Type</th>
@@ -53,7 +53,7 @@
 										<td>{{account.account_id}}</td>
 										<td>{{firstName}}</td>
 										<td>{{lastName}}</td>
-										<td>{{account.account_type}}</td>
+										<td>{{account.account_type | changeAcc}}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -61,7 +61,7 @@
 					  </div>
 					  <div class="row">
 					  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						  <h4>Select Account<span style="color:red">*</span></h4>
+						  <h4>Select From Account<span style="color:red">*</span></h4>
 						  <div class="form-group">
 							<select class="form-control" v-model="account" required>
 							  <option value='' disabled selected>Select an Account</option>
@@ -96,8 +96,12 @@
 					  <div class="row">
 						  <div class="col-xs-12">
 							<div class="input-group">
-								<input class="form-control" v-model="otpValue" type="number" min="0" step="1" max="999999" oninput="validity.valid||(value='');" required />
+								
+								<input class="form-control" v-model="otpValue" type="number" min="0" step="1" max="999999" oninput="validity.valid||(value='');" required @focus="show" data-layout="numeric" readonly/>
+								
+							
 							</div>
+							<vue-touch-keyboard :options="options" v-if="visible" :layout="layout" :cancel="hide" :accept="accept" :input="input" />
 						  </div>
 					  </div>
 				</div>
@@ -129,10 +133,30 @@ export default {
 	  selectedAccount: undefined,
 	  account: undefined,
 	  otpValue: undefined,
-	  showOTPBox: false
+	  showOTPBox: false,
+	  visible: false,
+      layout: "normal",
+      input: null,
+      options: {
+        useKbEvents: false,
+        preventClickEvent: false
+      }
     }
   },
   methods: {
+	accept(text) {
+      
+      this.hide();
+    },
+    show(e) {
+      this.input = e.target;
+      this.layout = e.target.dataset.layout;
+      if (!this.visible)
+        this.visible = true
+    },
+    hide() {
+      this.visible = false;
+    },
 	retrieveData() {
 		console.log("ins")
 		this.selectedAccount = undefined;
