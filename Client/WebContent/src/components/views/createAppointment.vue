@@ -21,7 +21,7 @@
 
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-file-text"></i></span>
-                <input class="form-control" placeholder="Description" required id="description_value"/>
+                <input class="form-control" placeholder="Description" required id="description_value" v-model="descript"/>
               </div>
               <br>
             </div>
@@ -46,6 +46,9 @@ import store from '../../store'
 
   export default {
     name: 'createAccount',
+	data(router) {
+	descript: undefined
+	},
     components: { },
     computed: {
       datetime () {
@@ -59,12 +62,18 @@ import store from '../../store'
     
       submit()
 	{
+		if(this.descript == undefined || this.descript == '')
+		{
+			alert("Enter a description");
+			return;
+		}
         console.log("enter submit()");
         const user_id = store.state.user;
         console.log("user_Id", user_id);
         const obj = {"userId":user_id};
         const tblUserByAppointmentUserId = obj;
-        const descript = document.getElementById("description_value").value;        
+        //const descript = document.getElementById("description_value").value;        
+        const descript = this.descript;
         
         api
         .request('post','./rest/createAppointment',{tblUserByAppointmentUserId, descript})
@@ -74,7 +83,7 @@ import store from '../../store'
             if(response === 'success')
 			{
 				console.log("good");
-                document.getElementById("description_value").reset();        
+                this.descript = undefined
 				alert("Appointment Created!");
 			}
 			else if(response === "FAIL")
