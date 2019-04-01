@@ -179,7 +179,7 @@ export default {
 	    //this.selected = event.target.value;
 		//const accountId = this.selected; 
 		const accountId = this.acc.accountId
-		console.log("accountId::"+accountId)
+		//console.log("accountId::"+accountId)
 	api
         .request('post', './rest/accountTransactions',{accountId})
 		.then(response => {
@@ -195,7 +195,7 @@ export default {
     },
 	
 	setSelected () {
-		console.log(JSON.stringify(this.acc))
+		//console.log(JSON.stringify(this.acc))
 		this.balance = this.acc.currentAmount
 		this.showBalance = true
 	}

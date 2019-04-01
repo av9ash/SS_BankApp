@@ -106,7 +106,6 @@ export default {
          }
          else
          {
-				//console.log("data"+JSON.stringify(data));
                 this.$store.commit('SET_USER', data.userId)
                 this.$store.commit('SET_MODULE_MAP',data.moduleMap)
                 this.$store.commit('SET_TOKEN',header.authorization)

@@ -93,7 +93,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     		}
 			System.out.println(returnedUser.getIncorrectAttempts()+ ": "+ returnedUser.getStatus() );
     		loginService.updateUserForAuth(returnedUser);
-			res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
+			res.setStatus(HttpServletResponse.OK );
 			try
 			{
 				if(incorrectAttempts >= 3)
@@ -113,7 +113,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		}
 		catch( InternalAuthenticationServiceException e)
 		{
-			res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
+			res.setStatus(HttpServletResponse.OK );
 			
 			try
 			{
@@ -152,11 +152,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		TblEventLog event = new TblEventLog();
 		if(returnedUser != null)
 		{
-			event.setEventName("User Logged In Successfully");
+			event.setEventName(user.getUsername()+" Logged In Successfully");
 		}
 		else
 		{
-			event.setEventName("User Logged In Failed");
+			event.setEventName(user.getUsername()+" Logged In Failed");
 		}
 		event.setEventType(1);
 		eventService.logEvent(event);
