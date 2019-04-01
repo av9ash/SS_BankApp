@@ -39,7 +39,7 @@ public class AppointmentDAOImpl implements AppointmentDAO {
 			tblAppointmentsForAppointmentUserId.add(paramTblAppointment);
 			user.setTblAppointmentsForAppointmentUserId(tblAppointmentsForAppointmentUserId);
 			
-			session.saveOrUpdate(user);
+			//session.saveOrUpdate(user);
 			
 	}
 
