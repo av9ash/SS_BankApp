@@ -93,7 +93,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     		}
 			System.out.println(returnedUser.getIncorrectAttempts()+ ": "+ returnedUser.getStatus() );
     		loginService.updateUserForAuth(returnedUser);
-			res.setStatus(HttpServletResponse.OK );
+			res.setStatus(HttpServletResponse.SC_OK );
 			try
 			{
 				if(incorrectAttempts >= 3)
@@ -113,7 +113,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		}
 		catch( InternalAuthenticationServiceException e)
 		{
-			res.setStatus(HttpServletResponse.OK );
+			res.setStatus(HttpServletResponse.SC_OK );
 			
 			try
 			{
