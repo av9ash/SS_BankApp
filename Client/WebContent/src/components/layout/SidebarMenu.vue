@@ -37,7 +37,7 @@
         <span class="page">Approve/Decline Transactions</span>
       </a>
     </router-link>
-	<router-link tag="li" class="pageLink" v-if="moduleMap.RequestModule && !moduleMap.ViewAndModifyModule" to="/accountApproval">
+	<router-link tag="li" class="pageLink" v-if="moduleMap.CreateAccountModule" to="/accountApproval">
       <a>
         <i class="fa fa-tasks"></i>
         <span class="page">Approve/Decline Accounts</span>

@@ -153,3 +153,5 @@ insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_catego
 insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(105,3,"RequestModule,ViewAccountModule,ViewAndModifyModule,ViewLogFile");
 insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(105,4,"AccountTransactionModule,EmailPhoneTransactionModule,AppointmentModule,OpenAccount,BankingStatementModule");
 insert into tbl_catalog(catalog_category_id,catalog_category_type,catalog_category_description) values(105,5,"AccountTransactionModule,EmailPhoneTransactionModule,AppointmentModule,OpenAccount,BankingStatementModule");
+
+update tbl_catalog set catalog_category_description = 'RequestModule,ViewAccountModule,CreateAccountModule' where catalog_category_id= 105 and catalog_category_type = 2;
