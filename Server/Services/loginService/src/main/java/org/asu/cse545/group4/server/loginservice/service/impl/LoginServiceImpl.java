@@ -41,6 +41,7 @@ public class LoginServiceImpl implements LoginService {
 			moduleList.put("AppointmentModule", false);
 			moduleList.put("RequestModule", false);
 			moduleList.put("ViewAccountModule", false);
+			moduleList.put("CreateAccountModule", false);
 			moduleList.put("ViewAndModifyModule", false);
 			moduleList.put("ViewLogFile", false);
 			moduleList.put("BankingStatementModule", false);
